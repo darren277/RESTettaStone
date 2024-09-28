@@ -11,7 +11,7 @@ http {
     server {
             #root /var/www/html;
 
-            listen 8084;
+            listen ${NGINX_PORT};
             server_name localhost 127.0.0.1;
 
             location /tests {
