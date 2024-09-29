@@ -2,6 +2,7 @@ include .env
 PYTHON_BIN=venv/Scripts/
 
 PG_VARS=--env PG_USER=$(PG_USER) --env PG_PASS=$(PG_PASS) --env PG_DB=$(PG_DB) --env PG_HOST=$(PG_IP) --env PG_PORT=$(PG_PORT)
+PG_VARS_BUILD=--build-arg PG_USER=$(PG_USER) --build-arg PG_PASS=$(PG_PASS) --build-arg PG_DB=$(PG_DB) --build-arg PG_HOST=$(PG_IP) --build-arg PG_PORT=$(PG_PORT)
 
 docker-subnet:
 	docker network create --subnet=$(SUBNET_CIDR) $(SUBNET_NAME)
@@ -40,3 +41,10 @@ crowapp-build:
 
 crowapp-run:
 	cd backend/crowapp && docker run -d -it --rm --name crow_app_container --env CROWAPP_PORT=$(CROWAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CROWAPP_IP) -p $(CROWAPP_PORT):$(CROWAPP_PORT) crow_app:1
+
+
+aspnetapp-build:
+	cd backend/aspnetapp && docker build --no-cache --build-arg ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS_BUILD) -t aspnet_app:1 .
+
+aspnetapp-run:
+	cd backend/aspnetapp && docker run -d -it --rm --name aspnet_app_container --env ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ASPNETAPP_IP) -p $(ASPNETAPP_PORT):$(ASPNETAPP_PORT) aspnet_app:1
