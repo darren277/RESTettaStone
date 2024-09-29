@@ -12,6 +12,10 @@ http {
         server ${CROWAPP_IP}:${CROWAPP_PORT};
     }
 
+    upstream aspnetapp {
+        server ${ASPNETAPP_IP}:${ASPNETAPP_PORT};
+    }
+
     server {
             #root /var/www/html;
 
@@ -27,6 +31,15 @@ http {
             location ~ ^/crowapp?(.*)$ {
                 proxy_pass http://crowapp;
                 rewrite /crowapp/(.*) /$1 break;
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $host;
+                proxy_redirect   off;
+            }
+
+            location ~ ^/aspnetapp?(.*)$ {
+                proxy_pass http://aspnetapp;
+                rewrite /aspnetapp/(.*) /$1 break;
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header Host $host;
