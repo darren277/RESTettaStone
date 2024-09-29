@@ -156,3 +156,24 @@ envsubst '${NGINX_PORT},${CROWAPP_IP},${CROWAPP_PORT}' < /usr/local/openresty/ng
 I will be adding each environment variable pair (IP and port) for each subproject as I add them to the repository.
 
 This will, of course, become rather long and cumbersome over time, so I will likely implement a more elegant solution in the future.
+
+# Lessons
+
+## Gotchas
+
+### Docker Gotchas
+
+#### ARGs and Multi Stage Builds
+
+I kept ending up with empty strings for my ENV vars when trying to construct variable rich strings. It turns out that build `ARG` values passed in via the Docker CLI are reset with each build when it comes to multi stage builds.
+
+Refer to: https://stackoverflow.com/a/68061457/10973023
+
+#### Exec Form vs Shell Form for ENTRYPOINT:
+
+When including ENV vars inside of a `Dockerfile`, it is important to note that `ENTRYPOINT` commands will be unable to interprete these values when written in the `exec form` format.
+
+Does NOT work (`exec form`): `ENTRYPOINT ["dotnet", "aspnetapp.dll", "--urls", $URL]`
+DOES work (`shell form`): `ENTRYPOINT dotnet aspnetapp.dll --urls $URL`
+
+Refer to: https://stackoverflow.com/questions/37904682/how-do-i-use-docker-environment-variable-in-entrypoint-array
