@@ -89,3 +89,70 @@ One major example of this was the [COBOL backend](https://github.com/azac/cobol-
 ## Future
 
 The first immediate steps to carry out will be gradually adding each subdirectory as I test them and maybe clean them up a bit by removing unecessary comments and so on.
+
+# How to Use
+
+## Configuring Environment Variables
+
+### `.env` File
+
+You will need a `.env` file in the root directory with quite a few custom defined environment variables.
+
+The universal environment variables for the central control mechanism(s) would look something like this:
+
+```sh
+PG_USER=someusername
+PG_PASS=somepassword
+
+NGINX_VERSION=1.17.3
+NGINX_IP=172.18.0.20
+NGINX_PORT=8084
+LUA_JIT_VERSION=2.0.5
+
+SUBNET_NAME=restetta
+SUBNET_CIDR=172.18.0.0/16
+
+PG_IP=172.18.0.21
+PG_HOST=172.18.0.21
+PG_PORT=5432
+PG_DB=postgres
+
+REDIS_IP=172.18.0.19
+REDIS_PORT=6379
+```
+
+And then individual environment variables for each subproject would look something like this:
+
+```sh
+CROWAPP_IP=172.18.0.22
+CROWAPP_PORT=18080
+```
+
+Please note that a lot of these are quite arbitrary. The CIDR subnet that you use, and the IP addresses for each Docker container can almost be randomly generated. The same applies to the ports.
+
+### Setting Environment Variables in Redis and Nginx
+
+The Nginx configuration process here currently requires knowledge of each container's IP address and port.
+
+You'll notice the following command in the `Makefile`:
+
+```sh
+redis-set-variable:
+    docker exec -it redis_container redis-cli set $(REDIS_KEY) $(REDIS_VALUE)
+```
+
+On Windows (for example), you simply need to open a terminal and execute the following type of command (using a particular illustrative example):
+
+```shell
+$env:REDIS_KEY='CROWAPP_PORT'; $env:REDIS_VALUE='18080'; make redis-set-variable
+```
+
+Take note, as well, of the following command inside the `server/nginx/entrypoint.sh` script:
+
+```sh
+envsubst '${NGINX_PORT},${CROWAPP_IP},${CROWAPP_PORT}' < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/nginx.conf
+```
+
+I will be adding each environment variable pair (IP and port) for each subproject as I add them to the repository.
+
+This will, of course, become rather long and cumbersome over time, so I will likely implement a more elegant solution in the future.
