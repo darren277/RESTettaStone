@@ -48,3 +48,10 @@ aspnetapp-build:
 
 aspnetapp-run:
 	cd backend/aspnetapp && docker run -d -it --rm --name aspnet_app_container --env ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ASPNETAPP_IP) -p $(ASPNETAPP_PORT):$(ASPNETAPP_PORT) aspnet_app:1
+
+
+springbootapp-build:
+	cd backend/springbootapp && docker build --build-arg SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS_BUILD) -t springboot_app:1 .
+
+springbootapp-run:
+	cd backend/springbootapp && docker run -d -it --rm --name springboot_app_container --env SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPRINGBOOTAPP_IP) -p $(SPRINGBOOTAPP_PORT):$(SPRINGBOOTAPP_PORT) springboot_app:1
