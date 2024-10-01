@@ -55,3 +55,10 @@ springbootapp-build:
 
 springbootapp-run:
 	cd backend/springbootapp && docker run -d -it --rm --name springboot_app_container --env SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPRINGBOOTAPP_IP) -p $(SPRINGBOOTAPP_PORT):$(SPRINGBOOTAPP_PORT) springboot_app:1
+
+
+railsapp-build:
+	cd backend/railsapp && docker build --build-arg RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS_BUILD) -t rails_app:1 .
+
+railsapp-run:
+	cd backend/railsapp && docker run -d -it --rm --name rails_app_container --env RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(RAILSAPP_IP) -p $(RAILSAPP_PORT):$(RAILSAPP_PORT) rails_app:1

@@ -20,6 +20,10 @@ http {
         server ${SPRINGBOOTAPP_IP}:${SPRINGBOOTAPP_PORT};
     }
 
+    upstream railsapp {
+        server ${RAILSAPP_IP}:${RAILSAPP_PORT};
+    }
+
     server {
             #root /var/www/html;
 
@@ -53,6 +57,15 @@ http {
             location ~ ^/springbootapp?(.*)$ {
                 proxy_pass http://springbootapp;
                 rewrite /springbootapp/(.*) /$1 break;
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $host;
+                proxy_redirect   off;
+            }
+
+            location ~ ^/railsapp?(.*)$ {
+                proxy_pass http://railsapp;
+                rewrite /railsapp/(.*) /$1 break;
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header Host $host;
