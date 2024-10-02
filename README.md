@@ -58,7 +58,7 @@ I break down the barriers I've faced into a few fundamental categories:
 | Lua / OpenResty   |            |                |                      |           |                 |
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | Y          | Y              | Y                    |           |                 |
-| Perl              | Y          | Y              |                      |           |                 |
+| Perl              | Y          | Y              | Y                    |           |                 |
 | Play (Scala)      |            |                |                      |           |                 |
 | Prolog            | Y          | Y              |                      |           | Language        |
 | Rails (Ruby)      | Y          | Y              | Y                    |           |                 |

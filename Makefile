@@ -62,3 +62,10 @@ railsapp-build:
 
 railsapp-run:
 	cd backend/railsapp && docker run -d -it --rm --name rails_app_container --env RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(RAILSAPP_IP) -p $(RAILSAPP_PORT):$(RAILSAPP_PORT) rails_app:1
+
+
+perlapp-build:
+	cd backend/perlapp && docker build --build-arg PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS_BUILD) -t perl_app:1 .
+
+perlapp-run:
+	cd backend/perlapp && docker run -d -it --rm --name perl_app_container --env PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PERLAPP_IP) -p $(PERLAPP_PORT):$(PERLAPP_PORT) perl_app:1
