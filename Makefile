@@ -69,3 +69,10 @@ perlapp-build:
 
 perlapp-run:
 	cd backend/perlapp && docker run -d -it --rm --name perl_app_container --env PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PERLAPP_IP) -p $(PERLAPP_PORT):$(PERLAPP_PORT) perl_app:1
+
+
+actixapp-build:
+	cd backend/actixapp && docker build --build-arg ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS_BUILD) -t actix_app:1 .
+
+actixapp-run:
+	cd backend/actixapp && docker run -d -it --rm --name actix_app_container --env ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ACTIXAPP_IP) -p $(ACTIXAPP_PORT):$(ACTIXAPP_PORT) actix_app:1

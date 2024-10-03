@@ -28,6 +28,10 @@ http {
         server ${PERLAPP_IP}:${PERLAPP_PORT};
     }
 
+    upstream actixapp {
+        server ${ACTIXAPP_IP}:${ACTIXAPP_PORT};
+    }
+
     server {
             #root /var/www/html;
 
@@ -79,6 +83,15 @@ http {
             location ~ ^/perlapp?(.*)$ {
                 proxy_pass http://perlapp;
                 rewrite /perlapp/(.*) /$1 break;
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $host;
+                proxy_redirect   off;
+            }
+
+            location ~ ^/actixapp?(.*)$ {
+                proxy_pass http://actixapp;
+                rewrite /actixapp/(.*) /$1 break;
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header Host $host;
