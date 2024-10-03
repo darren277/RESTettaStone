@@ -2,9 +2,14 @@
 
 ldconfig
 
-envsubst '${NGINX_PORT},${CROWAPP_IP},${CROWAPP_PORT},${ASPNETAPP_IP},${ASPNETAPP_PORT},\
-  ${SPRINGBOOTAPP_IP},${SPRINGBOOTAPP_PORT},${RAILSAPP_IP},${RAILSAPP_PORT},${PERLAPP_IP},${PERLAPP_PORT},\
-  ${ACTIXAPP_IP},${ACTIXAPP_PORT}'\
+envsubst '${NGINX_PORT},\
+  ${CROWAPP_IP},${CROWAPP_PORT},\
+  ${ASPNETAPP_IP},${ASPNETAPP_PORT},\
+  ${SPRINGBOOTAPP_IP},${SPRINGBOOTAPP_PORT},\
+  ${RAILSAPP_IP},${RAILSAPP_PORT},\
+  ${PERLAPP_IP},${PERLAPP_PORT},\
+  ${ACTIXAPP_IP},${ACTIXAPP_PORT},\
+  ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/nginx.conf
 
 /usr/local/openresty/nginx/sbin/nginx -g 'daemon off;'
