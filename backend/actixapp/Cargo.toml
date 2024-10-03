@@ -1,0 +1,25 @@
+[package]
+authors = ["Darren MacKenzie <darren277@yahoo.com>"]
+name = "actixapp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.2.1"
+actix-files = "0.6.2"
+actix-session = "0.7.2"
+actix-cors = "0.6.4"
+actix-rt = "2.7.0"
+dotenv = "0.15.0"
+env_logger = "0.9.1"
+futures = "0.3.25"
+log = "0.4.17"
+serde = "1.0.147"
+serde_derive = "1.0.147"
+serde_json = "1.0.87"
+listenfd = "1.0.0"
+futures-util = "0.3.30"
+
+[dependencies.diesel]
+features = ["postgres", "r2d2"]
+version = "2.0.2"
