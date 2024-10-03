@@ -42,6 +42,10 @@ http {
                 location /tests/1 {
                     return 200 'Hello world!!!1';
                 }
+                location /tests/dummy_var {
+                    add_header Content-Type application/json;
+                    return 200 '{"DUMMY_VAR":"${DUMMY_VAR}"}';
+                }
             }
 
             location ~ ^/crowapp?(.*)$ {
