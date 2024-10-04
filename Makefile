@@ -76,3 +76,11 @@ actixapp-build:
 
 actixapp-run:
 	cd backend/actixapp && docker run -d -it --rm --name actix_app_container --env ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ACTIXAPP_IP) -p $(ACTIXAPP_PORT):$(ACTIXAPP_PORT) actix_app:1
+
+
+swiftapp-build:
+	cd backend/swiftapp && docker build --build-arg SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS_BUILD) -t swift_app:1 .
+
+swiftapp-run:
+	cd backend/swiftapp && docker run -d -it --rm --name swift_app_container --env SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SWIFTAPP_IP) -p $(SWIFTAPP_PORT):$(SWIFTAPP_PORT) swift_app:1
+
