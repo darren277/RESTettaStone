@@ -36,6 +36,10 @@ http {
         server ${SWIFTAPP_IP}:${SWIFTAPP_PORT};
     }
 
+    upstream goapp {
+        server ${GOAPP_IP}:${GOAPP_PORT};
+    }
+
     server {
             #root /var/www/html;
 
@@ -109,6 +113,15 @@ http {
             location ~ ^/swiftapp?(.*)$ {
                 proxy_pass http://swiftapp;
                 rewrite /swiftapp/(.*) /$1 break;
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $host;
+                proxy_redirect   off;
+            }
+
+            location ~ ^/goapp?(.*)$ {
+                proxy_pass http://goapp;
+                rewrite /goapp/(.*) /$1 break;
                 proxy_set_header X-Forwarded-For $remote_addr;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header Host $host;

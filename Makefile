@@ -84,3 +84,9 @@ swiftapp-build:
 swiftapp-run:
 	cd backend/swiftapp && docker run -d -it --rm --name swift_app_container --env SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SWIFTAPP_IP) -p $(SWIFTAPP_PORT):$(SWIFTAPP_PORT) swift_app:1
 
+
+goapp-build:
+	cd backend/goapp && docker build --build-arg GOAPP_PORT=$(GOAPP_PORT) $(PG_VARS_BUILD) -t go_app:1 .
+
+goapp-run:
+	cd backend/goapp && docker run -d -it --rm --name go_app_container --env GOAPP_PORT=$(GOAPP_PORT) --net $(SUBNET_NAME) --ip $(GOAPP_IP) -p $(GOAPP_PORT):$(GOAPP_PORT) $(PG_VARS) go_app:1
