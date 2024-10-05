@@ -10,6 +10,7 @@ envsubst '${NGINX_PORT},\
   ${PERLAPP_IP},${PERLAPP_PORT},\
   ${ACTIXAPP_IP},${ACTIXAPP_PORT},\
   ${SWIFTAPP_IP},${SWIFTAPP_PORT},\
+  ${GOAPP_IP},${GOAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/nginx.conf.template > /usr/local/openresty/nginx/conf/nginx.conf
 
