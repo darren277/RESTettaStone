@@ -8,43 +8,15 @@ http {
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*.*;
 
-    upstream crowapp {
-        server ${CROWAPP_IP}:${CROWAPP_PORT};
-    }
-
-    upstream aspnetapp {
-        server ${ASPNETAPP_IP}:${ASPNETAPP_PORT};
-    }
-
-    upstream springbootapp {
-        server ${SPRINGBOOTAPP_IP}:${SPRINGBOOTAPP_PORT};
-    }
-
-    upstream railsapp {
-        server ${RAILSAPP_IP}:${RAILSAPP_PORT};
-    }
-
-    upstream perlapp {
-        server ${PERLAPP_IP}:${PERLAPP_PORT};
-    }
-
-    upstream actixapp {
-        server ${ACTIXAPP_IP}:${ACTIXAPP_PORT};
-    }
-
-    upstream swiftapp {
-        server ${SWIFTAPP_IP}:${SWIFTAPP_PORT};
-    }
-
-    upstream goapp {
-        server ${GOAPP_IP}:${GOAPP_PORT};
-    }
+    include /usr/local/openresty/nginx/conf/upstreams*.conf;
 
     server {
             #root /var/www/html;
 
             listen ${NGINX_PORT};
             server_name localhost 127.0.0.1;
+
+            include /usr/local/openresty/nginx/conf/locations*.conf;
 
             location /tests {
                 location /tests/1 {
@@ -54,78 +26,6 @@ http {
                     add_header Content-Type application/json;
                     return 200 '{"DUMMY_VAR":"${DUMMY_VAR}"}';
                 }
-            }
-
-            location ~ ^/crowapp?(.*)$ {
-                proxy_pass http://crowapp;
-                rewrite /crowapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/aspnetapp?(.*)$ {
-                proxy_pass http://aspnetapp;
-                rewrite /aspnetapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/springbootapp?(.*)$ {
-                proxy_pass http://springbootapp;
-                rewrite /springbootapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/railsapp?(.*)$ {
-                proxy_pass http://railsapp;
-                rewrite /railsapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/perlapp?(.*)$ {
-                proxy_pass http://perlapp;
-                rewrite /perlapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/actixapp?(.*)$ {
-                proxy_pass http://actixapp;
-                rewrite /actixapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/swiftapp?(.*)$ {
-                proxy_pass http://swiftapp;
-                rewrite /swiftapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
-            }
-
-            location ~ ^/goapp?(.*)$ {
-                proxy_pass http://goapp;
-                rewrite /goapp/(.*) /$1 break;
-                proxy_set_header X-Forwarded-For $remote_addr;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $host;
-                proxy_redirect   off;
             }
     }
 }

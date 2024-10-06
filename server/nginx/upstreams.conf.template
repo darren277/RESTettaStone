@@ -1,0 +1,35 @@
+upstream crowapp {
+        server ${CROWAPP_IP}:${CROWAPP_PORT};
+    }
+
+upstream aspnetapp {
+    server ${ASPNETAPP_IP}:${ASPNETAPP_PORT};
+}
+
+upstream springbootapp {
+    server ${SPRINGBOOTAPP_IP}:${SPRINGBOOTAPP_PORT};
+}
+
+upstream railsapp {
+    server ${RAILSAPP_IP}:${RAILSAPP_PORT};
+}
+
+upstream perlapp {
+    server ${PERLAPP_IP}:${PERLAPP_PORT};
+}
+
+upstream actixapp {
+    server ${ACTIXAPP_IP}:${ACTIXAPP_PORT};
+}
+
+upstream swiftapp {
+    server ${SWIFTAPP_IP}:${SWIFTAPP_PORT};
+}
+
+upstream goapp {
+    server ${GOAPP_IP}:${GOAPP_PORT};
+}
+
+upstream bunapp {
+    server ${BUNAPP_IP}:${BUNAPP_PORT};
+}
