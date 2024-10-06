@@ -157,6 +157,47 @@ I will be adding each environment variable pair (IP and port) for each subprojec
 
 This will, of course, become rather long and cumbersome over time, so I will likely implement a more elegant solution in the future.
 
+## Using the Makefile
+
+The Makefile, which requires installation of `make` if you do not already have it, is provided to fascilitate the execution of many of the commands needed to run the different pieces of this project.
+
+### Overview of Commands
+
+#### Docker
+
+Most of the commands in the Makefile(s) are calling the `docker` CLI tool.
+
+This includes tasks such as creating the network, building images from individual `Dockerfile`s, running these Docker images, and, in some cases, interacting with them.
+
+I also recently separated the original single `Makefile` into two separate files (with a third to come - namely, `Makefile.frontend`).
+
+To run a command from the main central `Makefile`, you simply enter something like the following into the terminal:
+
+```shell
+make docker-subnet
+make docker-psql
+make nginx-build
+make nginx-run
+```
+
+As for the `Makefile.backend`, the recurring pattern looks as follows:
+
+```shell
+make b actixapp-build
+make b actixapp-run
+```
+
+Or:
+
+```shell
+make b cobolapp-build
+make b cobolapp-run
+```
+
+Note that the `b` is a shorthand I created to simplify referencing the `Makefile.backend` file.
+
+Don't forget to define your environment variables in a `.env` file, as they are used by these `Makefile` commands. See above section on environment variables for details.
+
 # Lessons
 
 ## Gotchas
