@@ -90,3 +90,10 @@ goapp-build:
 
 goapp-run:
 	cd backend/goapp && docker run -d -it --rm --name go_app_container --env GOAPP_PORT=$(GOAPP_PORT) --net $(SUBNET_NAME) --ip $(GOAPP_IP) -p $(GOAPP_PORT):$(GOAPP_PORT) $(PG_VARS) go_app:1
+
+
+bunapp-build:
+	cd backend/bunapp && docker build --build-arg BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS_BUILD) -t bun_app:1 .
+
+bunapp-run:
+	cd backend/bunapp && docker run -d -it --rm --name bun_app_container --env BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(BUNAPP_IP) -p $(BUNAPP_PORT):$(BUNAPP_PORT) bun_app:1

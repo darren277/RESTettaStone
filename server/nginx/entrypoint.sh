@@ -13,6 +13,7 @@ envsubst '${NGINX_PORT},\
   ${ACTIXAPP_IP},${ACTIXAPP_PORT},\
   ${SWIFTAPP_IP},${SWIFTAPP_PORT},\
   ${GOAPP_IP},${GOAPP_PORT},\
+  ${BUNAPP_IP},${BUNAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
