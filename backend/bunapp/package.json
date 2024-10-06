@@ -1,0 +1,6 @@
+{
+  "version": "0.0.80",
+  "name": "bunapp",
+  "_dependencies": {"@kapsonfire/bun-bakery": "latest", "moment": "latest", "path": "latest", "@typescript-eslint/eslint-plugin": "latest", "@typescript-eslint/parser": "latest", "bun-types": "latest"},
+  "_scripts": {"start": "bun run index.js", "test": "bun wiptest test"}
+}
