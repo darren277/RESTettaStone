@@ -29,7 +29,3 @@ upstream swiftapp {
 upstream goapp {
     server ${GOAPP_IP}:${GOAPP_PORT};
 }
-
-upstream bunapp {
-    server ${BUNAPP_IP}:${BUNAPP_PORT};
-}
