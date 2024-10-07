@@ -1,4 +1,4 @@
-# Adapted from: https://raw.githubusercontent.com/vapor/template/refs/heads/main/Dockerfile
+# Adapted from: https://github.com/vapor/template/blob/main/Dockerfile
 
 # ================================
 # Build image
