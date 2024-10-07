@@ -33,3 +33,7 @@ upstream goapp {
 upstream bunapp {
     server ${BUNAPP_IP}:${BUNAPP_PORT};
 }
+
+upstream zigapp {
+    server ${ZIGAPP_IP}:${ZIGAPP_PORT};
+}
