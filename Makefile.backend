@@ -65,3 +65,10 @@ bunapp-build:
 
 bunapp-run:
 	cd backend/bunapp && docker run -d -it --rm --name bun_app_container --env BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(BUNAPP_IP) -p $(BUNAPP_PORT):$(BUNAPP_PORT) bun_app:1
+
+
+zigapp-build:
+	cd backend/zigapp && docker build --build-arg ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS_BUILD) -t zig_app:1 .
+
+zigapp-run:
+	cd backend/zigapp && docker run -d -it --rm --name zig_app_container --env ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ZIGAPP_IP) -p $(ZIGAPP_PORT):$(ZIGAPP_PORT) zig_app:1
