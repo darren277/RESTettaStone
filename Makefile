@@ -30,10 +30,17 @@ redis-set-variable:
 
 
 nginx-build:
-	cd server/nginx && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) -t nginx:latest .
+	cd server/nginx && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) --build-arg NGINX_PORT=$(NGINX_PORT) -t nginx:latest .
 
 nginx-run:
-	docker run -it --name nginx -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx:latest
+	docker run -it --name nginx -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env NGINX_PORT=$(NGINX_PORT) --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx:latest
+
+
+nginx-v2-build:
+	cd server/nginx && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) --build-arg ENTRYPOINT_VERSION=2 --build-arg NGINX_PORT=$(NGINX_PORT) --build-arg LOCATIONS="-more" -t nginx-v2:latest .
+
+nginx-v2-run:
+	docker run -it --name nginx-v2 -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env ENTRYPOINT_VERSION=2 --env NGINX_PORT=$(NGINX_PORT) --env LOCATIONS="-more" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx-v2:latest
 
 
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
