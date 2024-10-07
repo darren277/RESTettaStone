@@ -1,3 +1,5 @@
+# Adapted from: https://github.com/vapor/template/blob/main/Dockerfile
+
 # ================================
 # Build image
 # ================================
