@@ -218,3 +218,38 @@ Does NOT work (`exec form`): `ENTRYPOINT ["dotnet", "aspnetapp.dll", "--urls", $
 DOES work (`shell form`): `ENTRYPOINT dotnet aspnetapp.dll --urls $URL`
 
 Refer to: https://stackoverflow.com/questions/37904682/how-do-i-use-docker-environment-variable-in-entrypoint-array
+
+### Make Gotchas
+
+#### Tabs vs Spaces
+
+Makefiles require tabs and will throw an error if you use spaces instead.
+
+For instance, the following will throw an error:
+
+**Makefile**:
+```shell
+nginx-v2-build:
+    cd server/nginx-v2 && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) --build-arg ENTRYPOINT_VERSION=2 --build-arg NGINX_PORT=$(NGINX_PORT) -t nginx-v2:latest .
+```
+
+**Error**:
+```shell
+(venv) PS C:\Users\Darren\PycharmProjects\Miniprojects\RESTettaStone> make nginx-v2-build
+Makefile:43: *** multiple target patterns.  Stop.
+```
+
+Whereas this next snippet will work just fine:
+
+```shell
+nginx-v2-build:
+	cd server/nginx-v2 && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) --build-arg ENTRYPOINT_VERSION=2 --build-arg NGINX_PORT=$(NGINX_PORT) -t nginx-v2:latest .
+```
+
+So Makefiles are picky about this... so what, right?
+
+It's the completely ambiguous error message that makes this particularly frustrating.
+
+The message *"multiple target patterns"* seems to indicate another root cause altogether, so if you don't already associate that error in your mind with a case of using the wrong whitespace for indentation, it can be perplexing indeed.
+
+Just something to keep in mind.
