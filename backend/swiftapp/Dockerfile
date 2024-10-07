@@ -1,3 +1,5 @@
+# Adapted from: https://raw.githubusercontent.com/vapor/template/refs/heads/main/Dockerfile
+
 # ================================
 # Build image
 # ================================
