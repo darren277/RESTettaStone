@@ -14,11 +14,9 @@ COPY upstreams*.conf.template /usr/local/openresty/nginx/conf/
 COPY locations.conf /usr/local/openresty/nginx/conf/
 COPY locations$LOCATIONS.conf /usr/local/openresty/nginx/conf/
 
-RUN ls
 COPY entrypoint$ENTRYPOINT_VERSION.sh /entrypoint.sh
 
-#COPY sites/*.conf /etc/nginx/sites-enabled/
-
+# For debugging inside the container:
 RUN apk add nano
 
 RUN chmod +x /entrypoint.sh
