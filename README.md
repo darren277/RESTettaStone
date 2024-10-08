@@ -25,7 +25,7 @@ I found myself dusting it off a couple of times, briefly, during 2024.
 
 I've decided to set out to complete as much of what's left as I can now, hoping to maybe finish it before the year is out.
 
-## Current Status (Tables)
+## Current Status
 
 This table represents the status of the project as of November 2022.
 
