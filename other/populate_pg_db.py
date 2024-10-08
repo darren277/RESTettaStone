@@ -15,13 +15,15 @@ engine = create_engine(PG_URL.replace('postgres://', 'postgresql://'))
 #print(engine.table_names())
 
 def create_table(table_name: str):
+    s = f"CREATE TABLE {table_name} (id serial PRIMARY KEY, name varchar, email varchar);"
     with engine.connect() as connection:
-        connection.execute(text(f"CREATE TABLE {table_name} (id serial PRIMARY KEY, name varchar, email varchar);"))
+        connection.execute(text(s))
+        connection.commit()
 
 def insert_data(table_name: str, name: str, email: str):
     with engine.connect() as connection:
         connection.execute(text(f"INSERT INTO {table_name} (name, email) VALUES ('{name}', '{email}');"))
-
+        connection.commit()
 
 def select_data(table_name: str):
     with engine.connect() as connection:
@@ -30,23 +32,20 @@ def select_data(table_name: str):
         print(row)
 
 def drop_table(table_name: str):
-    ## NO LONGER WORKS AFTER UPDATE!
     with engine.connect() as connection:
         connection.execute(text(f"DROP TABLE IF EXISTS {table_name}"))
-
+        connection.commit()
 
 try:
     create_table('users')
-except:
-    pass
-
+except Exception as e:
+    print(e)
 
 def add_user(name: str, email: str):
     insert_data('users', name, email)
 
 def add_users():
     pg_data = json.loads(open('other/pg_data.json').read())
-
     for user in pg_data:
         add_user(user['name'], user['email'])
 
