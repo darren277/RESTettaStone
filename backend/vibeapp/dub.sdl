@@ -1,0 +1,6 @@
+name "vibeapp"
+description ""
+authors ""
+dependency "vibe-d" version="0.10.0"
+dependency "dpq2" version="~>1.2.0-rc.1"
+versions "VibeDefaultMain"

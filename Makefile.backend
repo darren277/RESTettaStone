@@ -72,3 +72,10 @@ zigapp-build:
 
 zigapp-run:
 	cd backend/zigapp && docker run -d -it --rm --name zig_app_container --env ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ZIGAPP_IP) -p $(ZIGAPP_PORT):$(ZIGAPP_PORT) zig_app:1
+
+
+vibeapp-build:
+	cd backend/vibeapp && docker build --build-arg VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS_BUILD) -t vibe_app:1 .
+
+vibeapp-run:
+	cd backend/vibeapp && docker run -d -it --rm --name vibe_app_container --env VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(VIBEAPP_IP) -p $(VIBEAPP_PORT):$(VIBEAPP_PORT) vibe_app:1
