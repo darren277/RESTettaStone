@@ -37,3 +37,7 @@ upstream bunapp {
 upstream zigapp {
     server ${ZIGAPP_IP}:${ZIGAPP_PORT};
 }
+
+upstream vibeapp {
+    server ${VIBEAPP_IP}:${VIBEAPP_PORT};
+}
