@@ -25,7 +25,7 @@ I found myself dusting it off a couple of times, briefly, during 2024.
 
 I've decided to set out to complete as much of what's left as I can now, hoping to maybe finish it before the year is out.
 
-## Current Status (Tables)
+## Current Status
 
 This table represents the status of the project as of November 2022.
 
@@ -37,37 +37,41 @@ I break down the barriers I've faced into a few fundamental categories:
 * **Networking**: This is a case where I have difficulties accessing the endpoint for some reason. I recall a particular scenario where `0.0.0.0` was not doing what it was supposed to be doing, and I just hit a wall with it and gave up at the time. Looking at the table, it looks like that was one of the Rust frameworks. I plan to revisit that and troubleshoot it further.
 * **Build**: This is where the Dockerfile fails to execute every step and the application simply does not run. It looks like Zig was the only such scenario. This is another one I will try revisiting after all this time.
 
+Note that I use `Y` to indicate that the task is completed, tested, and merged into `main`. I use `'` to indicate that the task was completed at some point (likely two years ago), and is going through a testing stage before a PR is made.
+
+I also have two asterisks (`*`) but I can't remember what those were for. I'm leaving them in for now.
+
 ### Backend
 
 |                   | Dockerized | REST Responses | Postgres Interaction | Full CRUD | Current Barrier |
 |-------------------|------------|----------------|----------------------|-----------|-----------------|
-| Actix (Rust)      | Y          |                |                      |           | Language        |
+| Actix (Rust)      | Y          | Y              | Y                    |           | ~~Language~~    |
 | Asp.Net (C#)      | Y          | Y              | Y                    |           |                 |
-| Bun (JS)          | Y          | Y              |                      |           | Libraries       |
-| Cobol             | Y*         | Y              |                      |           | Language        |
+| Bun (JS)          | Y          | Y              | Y                    |           | ~~Libraries~~   |
+| Cobol             | '*         | '              |                      |           | Language        |
 | Crow (C++)        | Y          | Y              | Y                    |           |                 |
-| Django (Python)   |            |                |                      |           |                 |
-| Firebase (JS)     | Y          | Y              | N/A                  |           |                 |
-| Flask (Python)    |            |                |                      |           |                 |
+| Django (Python)   | '          | '              | '                    |           |                 |
+| Firebase (JS)     | '          | '              | N/A                  |           |                 |
+| Flask (Python)    | '          | '              | '                    |           |                 |
 | Fortran           |            |                |                      |           | Language        |
-| F#                | Y          |                |                      |           | Language        |
-| Go                | Y          | Y              | Maybe?               |           |                 |
-| Haskell           |            |                |                      |           |                 |
-| Laravel (PHP)     | Y          | Y              | Y                    |           |                 |
-| Lisp              |            |                |                      |           |                 |
+| F#                | '          | '              | '                    |           | ~~Language~~    |
+| Go                | Y          | Y              | Y                    |           |                 |
+| Haskell           |            |                |                      |           | Language        |
+| Laravel (PHP)     | '          | '              | '                    |           |                 |
+| Lisp              |            |                |                      |           | Langauge        |
 | Lua / OpenResty   |            |                |                      |           |                 |
-| Node (JS)         | Y          | Y              | Y                    |           |                 |
-| Pascal            | Y          | Y              | Y                    |           |                 |
+| Node (JS)         | '          | '              | '                    |           |                 |
+| Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
 | Play (Scala)      |            |                |                      |           |                 |
-| Prolog            | Y          | Y              |                      |           | Language        |
+| Prolog            | '          | '              |                      |           | Language        |
 | Rails (Ruby)      | Y          | Y              | Y                    |           |                 |
-| Rocket (Rust)     | Y*         | Y              |                      |           | Networking      |
+| Rocket (Rust)     | '*         | '              |                      |           | Networking      |
 | SpringBoot (Java) | Y          | Y              | Y                    |           |                 |
-| Swift             |            |                |                      |           |                 |
-| Symfony (PHP)     |            |                |                      |           |                 |
-| Vibe (D)          | Y*         | Y              |                      |           | Networking      |
-| Zig               |            |                |                      |           | Build           |
+| Swift             | Y          | Y              | Y                    |           |                 |
+| Symfony (PHP)     | '          | '              |                      |           |                 |
+| Vibe (D)          | Y          | Y              | Y                    |           | ~~Networking~~  |
+| Zig               | Y          | Y              | Y                    |           | ~~Build~~       |
 
 ### Frontend
 
