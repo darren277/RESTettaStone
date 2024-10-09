@@ -79,3 +79,10 @@ vibeapp-build:
 
 vibeapp-run:
 	cd backend/vibeapp && docker run -d -it --rm --name vibe_app_container --env VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(VIBEAPP_IP) -p $(VIBEAPP_PORT):$(VIBEAPP_PORT) vibe_app:1
+
+
+fsharpapp-build:
+	cd backend/fsharpapp && docker build --build-arg FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS_BUILD) -t fsharp_app:1 .
+
+fsharpapp-run:
+	cd backend/fsharpapp && docker run -d -it --rm --name fsharp_app_container --env FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FSHARPAPP_IP) -p $(FSHARPAPP_PORT):$(FSHARPAPP_PORT) fsharp_app:1

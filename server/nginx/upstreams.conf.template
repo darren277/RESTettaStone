@@ -41,3 +41,7 @@ upstream zigapp {
 upstream vibeapp {
     server ${VIBEAPP_IP}:${VIBEAPP_PORT};
 }
+
+upstream fsharpapp {
+    server ${FSHARPAPP_IP}:${FSHARPAPP_PORT};
+}
