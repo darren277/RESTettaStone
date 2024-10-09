@@ -54,7 +54,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Firebase (JS)     | '          | '              | N/A                  |           |                 |
 | Flask (Python)    | '          | '              | '                    |           |                 |
 | Fortran           |            |                |                      |           | Language        |
-| F#                | '          | '              | '                    |           | ~~Language~~    |
+| F#                | Y          | Y              | Y                    |           | ~~Language~~    |
 | Go                | Y          | Y              | Y                    |           |                 |
 | Haskell           |            |                |                      |           | Language        |
 | Laravel (PHP)     | '          | '              | '                    |           |                 |
