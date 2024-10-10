@@ -45,3 +45,7 @@ upstream vibeapp {
 upstream fsharpapp {
     server ${FSHARPAPP_IP}:${FSHARPAPP_PORT};
 }
+
+upstream prologapp {
+    server ${PROLOGAPP_IP}:${PROLOGAPP_PORT};
+}

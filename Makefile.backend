@@ -86,3 +86,10 @@ fsharpapp-build:
 
 fsharpapp-run:
 	cd backend/fsharpapp && docker run -d -it --rm --name fsharp_app_container --env FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FSHARPAPP_IP) -p $(FSHARPAPP_PORT):$(FSHARPAPP_PORT) fsharp_app:1
+
+
+prologapp-build:
+	cd backend/prologapp && docker build --build-arg PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS_BUILD) -t prolog_app:1 .
+
+prologapp-run:
+	cd backend/prologapp && docker run -d -it --rm --name prolog_app_container --env PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PROLOGAPP_IP) -p $(PROLOGAPP_PORT):$(PROLOGAPP_PORT) prolog_app:1
