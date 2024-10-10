@@ -64,7 +64,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
 | Play (Scala)      |            |                |                      |           |                 |
-| Prolog            | '          | '              |                      |           | Language        |
+| Prolog            | Y          | Y              | Y                    |           | ~~Language~~    |
 | Rails (Ruby)      | Y          | Y              | Y                    |           |                 |
 | Rocket (Rust)     | '*         | '              |                      |           | Networking      |
 | SpringBoot (Java) | Y          | Y              | Y                    |           |                 |
