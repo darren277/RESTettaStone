@@ -17,6 +17,7 @@ envsubst '${NGINX_PORT},\
   ${ZIGAPP_IP},${ZIGAPP_PORT},\
   ${VIBEAPP_IP},${VIBEAPP_PORT},\
   ${FSHARPAPP_IP},${FSHARPAPP_PORT},\
+  ${PROLOGAPP_IP},${PROLOGAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
