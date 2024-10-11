@@ -69,7 +69,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Rocket (Rust)     | '*         | '              |                      |           | Networking      |
 | SpringBoot (Java) | Y          | Y              | Y                    |           |                 |
 | Swift             | Y          | Y              | Y                    |           |                 |
-| Symfony (PHP)     | '          | '              |                      |           |                 |
+| Symfony (PHP)     | Y          | Y              | Y                    |           |                 |
 | Vibe (D)          | Y          | Y              | Y                    |           | ~~Networking~~  |
 | Zig               | Y          | Y              | Y                    |           | ~~Build~~       |
 
@@ -257,3 +257,62 @@ It's the completely ambiguous error message that makes this particularly frustra
 The message *"multiple target patterns"* seems to indicate another root cause altogether, so if you don't already associate that error in your mind with a case of using the wrong whitespace for indentation, it can be perplexing indeed.
 
 Just something to keep in mind.
+
+### Language and Framework Gotchas
+
+#### Symfony (PHP)
+
+##### Headers vs Body and the Whitespace Issue
+
+I struggled with the fact that I was receiving a response in plain text while I was setting the `Content-Type` header to `application/json`.
+
+I quadruple checked that the string I was sending was perfectly structured to the satisfaction of the JSON specifications, but it just kept showing up as `text/html`.
+
+It turned out that there was some extra whitespace finding its way into the response. The solution to that, as it turns out, is to wrap the entire construction of the response inside of a pair of functions that deal with *output buffering* (`ob_start()` and `ob_end_clean()`).
+
+Here is an example of how that looks:
+```php
+class UserController extends AbstractController
+{
+    #[Route('/users', name: 'users')]
+    public function hello(EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
+    {
+        ob_start(); // Start output buffering
+
+        $repository = $entityManager->getRepository(User::class);
+
+        $response = new Response();$users = $repository->findAll();
+        $jsonContent = $serializer->serialize($users, 'json');
+        $response = new Response($jsonContent, Response::HTTP_OK, ['Content-Type' => 'application/json',]);
+
+        ob_end_clean(); // End output buffering
+
+        return $response;
+    }
+}
+```
+
+##### CLI Race Condition
+
+I encountered a very bizarre peculiarity with running Symfony in a Docker container that I have not encountered in any of the other subprojects.
+
+After a lot of trial and error, it eventually came down to adding a 5 second delay to wait for the application to be fully up and running.
+
+The following `ENTRYPOINT` command resulted in the container exiting immediately:
+```shell
+ENTRYPOINT symfony serve --port=$PORT
+```
+
+Whereas, during my debugging, I was able to get it to work just fine by replacing that line with `ENTRYPOINT bash` and then accessing the internal CLI and entering `symfony serve --port=$PORT`.
+
+Ultimately, the following `ENRTYPOINT` ended up working:
+```shell
+ENTRYPOINT bash -c "sleep 5 && symfony serve --port=${PORT}"
+```
+
+A note on one of the techniques I was able to use to help ensure at least that the application was executing successfully and not throwing any errors was the following command:
+```shell
+docker run -it symfony_app:1 /bin/bash
+```
+
+This super helpful command will likely come in handy in the future when I'm looking to troubleshoot containers that close immediately.

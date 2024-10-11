@@ -49,3 +49,7 @@ upstream fsharpapp {
 upstream prologapp {
     server ${PROLOGAPP_IP}:${PROLOGAPP_PORT};
 }
+
+upstream symfonyapp {
+    server ${SYMFONYAPP_IP}:${SYMFONYAPP_PORT};
+}
