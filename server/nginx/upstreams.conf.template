@@ -53,3 +53,7 @@ upstream prologapp {
 upstream symfonyapp {
     server ${SYMFONYAPP_IP}:${SYMFONYAPP_PORT};
 }
+
+upstream rocketapp {
+    server ${ROCKETAPP_IP}:${ROCKETAPP_PORT};
+}

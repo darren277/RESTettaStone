@@ -100,3 +100,10 @@ symfonyapp-build:
 
 symfonyapp-run:
 	cd backend/symfonyapp && docker run -d -it --rm --name symfony_app_container --env SYMFONYAPP_PORT=$(SYMFONYAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SYMFONYAPP_IP) -p $(SYMFONYAPP_PORT):$(SYMFONYAPP_PORT) symfony_app:1
+
+
+rocketapp-build:
+	cd backend/rocketapp && docker build --build-arg ROCKETAPP_IP=$(ROCKETAPP_IP) --build-arg ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS_BUILD) -t rocket_app:1 .
+
+rocketapp-run:
+	cd backend/rocketapp && docker run -d -it --rm --name rocket_app_container --env ROCKETAPP_IP=$(ROCKETAPP_IP) --env ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ROCKETAPP_IP) -p $(ROCKETAPP_PORT):$(ROCKETAPP_PORT) rocket_app:1
