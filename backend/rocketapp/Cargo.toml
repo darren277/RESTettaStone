@@ -1,0 +1,16 @@
+[package]
+name = "rocketapp"
+version = "0.1.0"
+authors = ["Darren MacKenzie <darren277@yahoo.com>"]
+edition = "2021"
+
+[dependencies]
+postgres = "0.19.9"
+rocket = {version = "0.5.1", features=["json"]}
+rocket_contrib = "0.4.11"
+serde = {version = "1.0.210", features = ["derive"]}
+serde_json = "1.0.128"
+tokio-postgres = "0.7.12"
+
+[toolchain]
+channel = "nightly"
