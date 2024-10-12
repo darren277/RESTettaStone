@@ -66,7 +66,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Play (Scala)      |            |                |                      |           |                 |
 | Prolog            | Y          | Y              | Y                    |           | ~~Language~~    |
 | Rails (Ruby)      | Y          | Y              | Y                    |           |                 |
-| Rocket (Rust)     | '*         | '              |                      |           | Networking      |
+| Rocket (Rust)     | Y          | Y              | Y                    |           | ~~Networking~~  |
 | SpringBoot (Java) | Y          | Y              | Y                    |           |                 |
 | Swift             | Y          | Y              | Y                    |           |                 |
 | Symfony (PHP)     | Y          | Y              | Y                    |           |                 |
