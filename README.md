@@ -316,3 +316,18 @@ docker run -it symfony_app:1 /bin/bash
 ```
 
 This super helpful command will likely come in handy in the future when I'm looking to troubleshoot containers that close immediately.
+
+#### Rocket (Rust)
+
+##### Pear Codegen Dependency
+
+I encountered a somewhat silly error when trying to build the Rocket app. The message was something to the effect of "failed to run custom build command for `pear_codegen v0.1.5`".
+
+I had tried explicitly specifying a newer version of `pear_codegen` in my `Cargo.toml` configuration file, but it was a dependency of a dependency, so that might be why I was unable to override it.
+
+Interestingly, others have encounters problems with this exact scenario going back about six years: https://github.com/SergioBenitez/Pear/issues/13
+
+The solution that ultimately worked was adding the following command to the `Dockerfile` (even though I explicity define the Rust version to be `nightly` in several places):
+```shell
+RUN /usr/local/cargo/bin/rustup override set nightly
+```
