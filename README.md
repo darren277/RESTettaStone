@@ -60,7 +60,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Laravel (PHP)     | '          | '              | '                    |           |                 |
 | Lisp              |            |                |                      |           | Langauge        |
 | Lua / OpenResty   |            |                |                      |           |                 |
-| Node (JS)         | '          | '              | '                    |           |                 |
+| Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
 | Play (Scala)      |            |                |                      |           |                 |
