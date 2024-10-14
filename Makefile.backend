@@ -107,3 +107,10 @@ rocketapp-build:
 
 rocketapp-run:
 	cd backend/rocketapp && docker run -d -it --rm --name rocket_app_container --env ROCKETAPP_IP=$(ROCKETAPP_IP) --env ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ROCKETAPP_IP) -p $(ROCKETAPP_PORT):$(ROCKETAPP_PORT) rocket_app:1
+
+
+nodeapp-build:
+	cd backend/nodeapp && docker build --build-arg NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS_BUILD) -t node_app:1 .
+
+nodeapp-run:
+	cd backend/nodeapp && docker run -d -it --rm --name node_app_container --env NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(NODEAPP_IP) -p $(NODEAPP_PORT):$(NODEAPP_PORT) node_app:1
