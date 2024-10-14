@@ -57,3 +57,7 @@ upstream symfonyapp {
 upstream rocketapp {
     server ${ROCKETAPP_IP}:${ROCKETAPP_PORT};
 }
+
+upstream nodeapp {
+    server ${NODEAPP_IP}:${NODEAPP_PORT};
+}
