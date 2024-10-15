@@ -114,3 +114,10 @@ nodeapp-build:
 
 nodeapp-run:
 	cd backend/nodeapp && docker run -d -it --rm --name node_app_container --env NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(NODEAPP_IP) -p $(NODEAPP_PORT):$(NODEAPP_PORT) node_app:1
+
+
+luaapp-build:
+	cd backend/luaapp && docker build --build-arg LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS_BUILD) -t lua_app:1 .
+
+luaapp-run:
+	cd backend/luaapp && docker run -d -it --rm --name lua_app_container --env LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(LUAAPP_IP) -p $(LUAAPP_PORT):$(LUAAPP_PORT) lua_app:1

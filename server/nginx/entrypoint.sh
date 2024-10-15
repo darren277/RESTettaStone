@@ -21,6 +21,7 @@ envsubst '${NGINX_PORT},\
   ${SYMFONYAPP_IP},${SYMFONYAPP_PORT},\
   ${ROCKETAPP_IP},${ROCKETAPP_PORT},\
   ${NODEAPP_IP},${NODEAPP_PORT},\
+  ${LUAAPP_IP},${LUAAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 

@@ -59,7 +59,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Haskell           |            |                |                      |           | Language        |
 | Laravel (PHP)     | '          | '              | '                    |           |                 |
 | Lisp              |            |                |                      |           | Langauge        |
-| Lua / OpenResty   |            |                |                      |           |                 |
+| Lua / OpenResty   | Y          | Y              | Y                    |           |                 |
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
@@ -205,6 +205,14 @@ Don't forget to define your environment variables in a `.env` file, as they are 
 # Lessons
 
 ## Gotchas
+
+### Nginx Gotchas
+
+#### Environment Variables
+
+When trying to assign a variable port to the `listen` directive, I discovered that Nginx simply does not allow for that, even when using leveraging lua.
+
+I had to use an `envsubst` call in the Dockerfile as a work around.
 
 ### Docker Gotchas
 
