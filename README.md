@@ -206,6 +206,14 @@ Don't forget to define your environment variables in a `.env` file, as they are 
 
 ## Gotchas
 
+### Nginx Gotchas
+
+#### Environment Variables
+
+When trying to assign a variable port to the `listen` directive, I discovered that Nginx simply does not allow for that, even when using leveraging lua.
+
+I had to use an `envsubst` call in the Dockerfile as a work around.
+
 ### Docker Gotchas
 
 #### ARGs and Multi Stage Builds
