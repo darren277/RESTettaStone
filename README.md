@@ -59,7 +59,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Haskell           |            |                |                      |           | Language        |
 | Laravel (PHP)     | '          | '              | '                    |           |                 |
 | Lisp              |            |                |                      |           | Langauge        |
-| Lua / OpenResty   |            |                |                      |           |                 |
+| Lua / OpenResty   | Y          | Y              | Y                    |           |                 |
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
