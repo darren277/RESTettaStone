@@ -61,3 +61,7 @@ upstream rocketapp {
 upstream nodeapp {
     server ${NODEAPP_IP}:${NODEAPP_PORT};
 }
+
+upstream luaapp {
+        server ${LUAAPP_IP}:${LUAAPP_PORT};
+}
