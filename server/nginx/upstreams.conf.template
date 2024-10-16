@@ -65,3 +65,7 @@ upstream nodeapp {
 upstream luaapp {
         server ${LUAAPP_IP}:${LUAAPP_PORT};
 }
+
+upstream playapp {
+    server ${PLAYAPP_IP}:${PLAYAPP_PORT};
+}
