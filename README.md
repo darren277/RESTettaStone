@@ -63,7 +63,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
 | Perl              | Y          | Y              | Y                    |           |                 |
-| Play (Scala)      |            |                |                      |           |                 |
+| Play (Scala)      | Y          | Y              | Y                    |           |                 |
 | Prolog            | Y          | Y              | Y                    |           | ~~Language~~    |
 | Rails (Ruby)      | Y          | Y              | Y                    |           |                 |
 | Rocket (Rust)     | Y          | Y              | Y                    |           | ~~Networking~~  |
