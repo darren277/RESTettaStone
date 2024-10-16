@@ -121,3 +121,10 @@ luaapp-build:
 
 luaapp-run:
 	cd backend/luaapp && docker run -d -it --rm --name lua_app_container --env LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(LUAAPP_IP) -p $(LUAAPP_PORT):$(LUAAPP_PORT) lua_app:1
+
+
+playapp-build:
+	cd backend/playapp && docker build --build-arg PLAYAPP_PORT=$(PLAYAPP_PORT) --build-arg SECRET_KEY=$(SECRET_KEY) $(PG_VARS_BUILD) -t play_app:1 .
+
+playapp-run:
+	cd backend/playapp && docker run -d -it --rm --name play_app_container --env PLAYAPP_PORT=$(PLAYAPP_PORT) --env SECRET_KEY=$(SECRET_KEY) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PLAYAPP_IP) -p $(PLAYAPP_PORT):$(PLAYAPP_PORT) play_app:1
