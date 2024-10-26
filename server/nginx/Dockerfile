@@ -12,6 +12,7 @@ COPY nginx.conf.template /usr/local/openresty/nginx/conf/nginx.conf.template
 COPY upstreams*.conf.template /usr/local/openresty/nginx/conf/
 
 COPY locations.conf /usr/local/openresty/nginx/conf/
+COPY locations-frontend.conf /usr/local/openresty/nginx/conf/
 COPY locations$LOCATIONS.conf /usr/local/openresty/nginx/conf/
 
 COPY entrypoint$ENTRYPOINT_VERSION.sh /entrypoint.sh
