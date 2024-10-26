@@ -1,0 +1,25 @@
+FROM python:3.9
+
+ARG FLASKAPP_PORT
+ENV FLASKAPP_PORT=$FLASKAPP_PORT
+ENV PORT=$FLASKAPP_PORT
+
+ARG PG_HOST
+ARG PG_PORT
+ARG PG_USER
+ARG PG_PASS
+ARG PG_DB
+
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASS=$PG_PASS
+ENV PG_DB=$PG_DB
+
+WORKDIR /app
+COPY ./requirements.txt /app/requirements.txt
+RUN pip3 install -r ./requirements.txt
+COPY ./main.py /app/main.py
+EXPOSE $FLASKAPP_PORT
+ENTRYPOINT ["python3", "main.py"]
+# gunicorn...

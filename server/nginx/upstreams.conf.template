@@ -69,3 +69,7 @@ upstream luaapp {
 upstream playapp {
     server ${PLAYAPP_IP}:${PLAYAPP_PORT};
 }
+
+upstream flaskapp {
+    server ${FLASKAPP_IP}:${FLASKAPP_PORT};
+}

@@ -128,3 +128,10 @@ playapp-build:
 
 playapp-run:
 	cd backend/playapp && docker run -d -it --rm --name play_app_container --env PLAYAPP_PORT=$(PLAYAPP_PORT) --env SECRET_KEY=$(SECRET_KEY) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PLAYAPP_IP) -p $(PLAYAPP_PORT):$(PLAYAPP_PORT) play_app:1
+
+
+flaskapp-build:
+	cd backend/flaskapp && docker build --build-arg FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS_BUILD) -t flask_app:1 .
+
+flaskapp-run:
+	cd backend/flaskapp && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1
