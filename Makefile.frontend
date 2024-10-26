@@ -1,0 +1,10 @@
+include .env
+
+NGINX_VARS_BUILD=--build-arg NGINX_HOST=$(NGINX_HOST) --build-arg NGINX_PORT=$(NGINX_PORT)
+
+
+reactapp-build:
+	cd frontend/reactapp && docker build --build-arg REACTAPP_PORT=$(REACTAPP_PORT) $(NGINX_VARS_BUILD) -t react_app:1 .
+
+reactapp-run:
+	cd frontend/reactapp && docker run -d -it --rm --name react_app_container --env REACTAPP_PORT=$(REACTAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTAPP_IP) -p $(REACTAPP_PORT):$(REACTAPP_PORT) react_app:1

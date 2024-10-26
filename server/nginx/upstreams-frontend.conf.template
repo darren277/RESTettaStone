@@ -1,0 +1,4 @@
+
+upstream reactapp {
+    server ${REACTAPP_IP}:${REACTAPP_PORT};
+}

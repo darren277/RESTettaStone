@@ -52,7 +52,7 @@ b:
 # Frontend: Runs commands in Makefile.frontend
 # NOTE FOR THE READER: There is no such file at the moment as the frontend applications have not been added yet.
 f:
-	@$(MAKE) -s -C . -f Makefile.f $(filter-out $@,$(MAKECMDGOALS))
+	@$(MAKE) -s -C . -f Makefile.frontend $(filter-out $@,$(MAKECMDGOALS))
 
 
 # This is to avoid "No rule to make target" errors.

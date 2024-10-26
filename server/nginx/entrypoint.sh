@@ -26,5 +26,7 @@ envsubst '${NGINX_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
+envsubst '${REACTAPP_IP},${REACTAPP_PORT}' < /usr/local/openresty/nginx/conf/upstreams-frontend.conf.template > /usr/local/openresty/nginx/conf/upstreams-frontend.conf
+
 /usr/local/openresty/nginx/sbin/nginx -g 'daemon off;'
 while true; do sleep 1d; done
