@@ -73,3 +73,7 @@ upstream playapp {
 upstream flaskapp {
     server ${FLASKAPP_IP}:${FLASKAPP_PORT};
 }
+
+upstream laravelapp {
+    server ${LARAVELAPP_IP}:${LARAVELAPP_PORT};
+}
