@@ -135,3 +135,10 @@ flaskapp-build:
 
 flaskapp-run:
 	cd backend/flaskapp && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1
+
+
+laravelapp-build:
+	cd backend/laravelapp && docker build --build-arg LARAVELAPP_PORT=$(LARAVELAPP_PORT) --build-arg SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS_BUILD) -t laravel_app:1 .
+
+laravelapp-run:
+	cd backend/laravelapp && docker run -d -it --rm --name laravel_app_container --env LARAVELAPP_PORT=$(LARAVELAPP_PORT) --env SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS) --net $(SUBNET_NAME) --ip $(LARAVELAPP_IP) -p $(LARAVELAPP_PORT):$(LARAVELAPP_PORT) laravel_app:1
