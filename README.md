@@ -52,13 +52,13 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Crow (C++)        | Y          | Y              | Y                    |           |                 |
 | Django (Python)   | Y          | Y              | Y                    |           |                 |
 | Firebase (JS)     | '          | '              | N/A                  |           |                 |
-| Flask (Python)    | '          | '              | '                    |           |                 |
+| Flask (Python)    | Y          | Y              | Y                    |           |                 |
 | Fortran           |            |                |                      |           | Language        |
 | F#                | Y          | Y              | Y                    |           | ~~Language~~    |
 | Go                | Y          | Y              | Y                    |           |                 |
 | Haskell           |            |                |                      |           | Language        |
 | Laravel (PHP)     | Y          | Y              | Y                    |           |                 |
-| Lisp              |            |                |                      |           | Langauge        |
+| Lisp              |            |                |                      |           | Language        |
 | Lua / OpenResty   | Y          | Y              | Y                    |           |                 |
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
@@ -75,14 +75,14 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Frontend
 
-|             | Dockerized | Backend Integration   | Full CRUD |
-|-------------|------------|-----------------------|-----------|
-| Angular     |            |                       |           |
-| Gatsby      |            |                       |           |
-| Next        |            |                       |           |
-| React       |            |                       |           |
-| React Fiber |            |                       |           |
-| Vue         |            |                       |           |
+|             | Dockerized | Backend Integration | Full CRUD |
+|-------------|------------|---------------------|-----------|
+| Angular     |            |                     |           |
+| Gatsby      |            |                     |           |
+| Next        |            |                     |           |
+| React       | Y          | Y                   |           |
+| React Fiber |            |                     |           |
+| Vue         |            |                     |           |
 
 ## Standing on the Shoulders of Giants
 

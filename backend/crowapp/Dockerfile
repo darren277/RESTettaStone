@@ -31,6 +31,7 @@ RUN apt-get install -y curl zip
 RUN vcpkg/bootstrap-vcpkg.sh
 
 # install crow package
+RUN apt-get install -y pkg-config
 RUN /vcpkg/vcpkg install crow
 
 RUN apt-get install -y libpqxx-dev
