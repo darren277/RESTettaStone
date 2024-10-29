@@ -50,7 +50,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Bun (JS)          | Y          | Y              | Y                    |           | ~~Libraries~~   |
 | Cobol             | '*         | '              |                      |           | Language        |
 | Crow (C++)        | Y          | Y              | Y                    |           |                 |
-| Django (Python)   | '          | '              | '                    |           |                 |
+| Django (Python)   | Y          | Y              | Y                    |           |                 |
 | Firebase (JS)     | '          | '              | N/A                  |           |                 |
 | Flask (Python)    | '          | '              | '                    |           |                 |
 | Fortran           |            |                |                      |           | Language        |
@@ -339,3 +339,25 @@ The solution that ultimately worked was adding the following command to the `Doc
 ```shell
 RUN /usr/local/cargo/bin/rustup override set nightly
 ```
+
+#### Django (Python)
+
+##### Project Structure
+
+I'll be honest, I struggled a bit with Django. I had worked with the framework many years ago, so it has been a while. There's that, and then the fact that I have a general preference for working with frameworks that are a lot less rigidly structured. I will always prefer Flask over Django, for example.
+
+In order to use the framework, one is instructed that they must run a couple of code generation steps, and then modify the generated boilerplate as needed. Well, I kind of skipped that step, to make it more like working with Flask (where you build from bottom up). This led to some initial difficulties while I was getting to know exactly how the files are meant to be named and structured throughout.
+
+##### URL Routing
+
+I faced similar challenges with URL routing as I did with the project structure.
+
+This might have been exacerbated by my Docker container networking and Nginx configurations for this particular project. For example, I disabled i18n in the `settings.py` to avoid any `en` prefixes.
+
+##### Django REST Framework
+
+It is pretty clear that Django proper is meant to be server HTML files (in the form of templates). This particular use case here though is REST endpoints exclusively (for the backend portion, at least).
+
+For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
+
+In fact, I may add such a subproject to the ever growing collection here.
