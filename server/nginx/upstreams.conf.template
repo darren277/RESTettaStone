@@ -77,3 +77,7 @@ upstream flaskapp {
 upstream laravelapp {
     server ${LARAVELAPP_IP}:${LARAVELAPP_PORT};
 }
+
+upstream djangoapp {
+    server ${DJANGOAPP_IP}:${DJANGOAPP_PORT};
+}

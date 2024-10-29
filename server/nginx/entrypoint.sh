@@ -25,6 +25,7 @@ envsubst '${NGINX_PORT},\
   ${PLAYAPP_IP},${PLAYAPP_PORT},\
   ${FLASKAPP_IP},${FLASKAPP_PORT},\
   ${LARAVELAPP_IP},${LARAVELAPP_PORT},\
+  ${DJANGOAPP_IP},${DJANGOAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
