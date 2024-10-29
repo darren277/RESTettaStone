@@ -58,7 +58,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Go                | Y          | Y              | Y                    |           |                 |
 | Haskell           |            |                |                      |           | Language        |
 | Laravel (PHP)     | Y          | Y              | Y                    |           |                 |
-| Lisp              |            |                |                      |           | Langauge        |
+| Lisp              |            |                |                      |           | Language        |
 | Lua / OpenResty   | Y          | Y              | Y                    |           |                 |
 | Node (JS)         | Y          | Y              | Y                    |           |                 |
 | Pascal            | '          | '              | '                    |           |                 |
