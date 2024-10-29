@@ -142,3 +142,10 @@ laravelapp-build:
 
 laravelapp-run:
 	cd backend/laravelapp && docker run -d -it --rm --name laravel_app_container --env LARAVELAPP_PORT=$(LARAVELAPP_PORT) --env SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS) --net $(SUBNET_NAME) --ip $(LARAVELAPP_IP) -p $(LARAVELAPP_PORT):$(LARAVELAPP_PORT) laravel_app:1
+
+
+djangoapp-build:
+	cd backend/djangoapp && docker build --build-arg DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS_BUILD) -t django_app:1 .
+
+djangoapp-run:
+	cd backend/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
