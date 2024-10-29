@@ -50,7 +50,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Bun (JS)          | Y          | Y              | Y                    |           | ~~Libraries~~   |
 | Cobol             | '*         | '              |                      |           | Language        |
 | Crow (C++)        | Y          | Y              | Y                    |           |                 |
-| Django (Python)   | '          | '              | '                    |           |                 |
+| Django (Python)   | Y          | Y              | Y                    |           |                 |
 | Firebase (JS)     | '          | '              | N/A                  |           |                 |
 | Flask (Python)    | '          | '              | '                    |           |                 |
 | Fortran           |            |                |                      |           | Language        |
