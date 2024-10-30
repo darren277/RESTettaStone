@@ -114,14 +114,14 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Frontend
 
-|                                                                                  | Dockerized | Backend Integration | Full CRUD |
-|----------------------------------------------------------------------------------|------------|---------------------|-----------|
-| Angular                                                                          |            |                     |           |
-| Gatsby                                                                           |            |                     |           |
-| Next                                                                             |            |                     |           |
-| [React](https://github.com/darren277/RESTettaStone/tree/master/backend/reactapp) | Y          | Y                   |           |
-| React Fiber                                                                      |            |                     |           |
-| Vue                                                                              |            |                     |           |
+|                                                                                   | Dockerized | Backend Integration | Full CRUD |
+|-----------------------------------------------------------------------------------|------------|---------------------|-----------|
+| Angular                                                                           |            |                     |           |
+| Gatsby                                                                            |            |                     |           |
+| Next                                                                              |            |                     |           |
+| [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp) | Y          | Y                   |           |
+| React Fiber                                                                       |            |                     |           |
+| Vue                                                                               |            |                     |           |
 
 ## Standing on the Shoulders of Giants
 
