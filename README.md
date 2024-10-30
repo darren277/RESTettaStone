@@ -202,6 +202,20 @@ Note that the `b` is a shorthand I created to simplify referencing the `Makefile
 
 Don't forget to define your environment variables in a `.env` file, as they are used by these `Makefile` commands. See above section on environment variables for details.
 
+## Debugger / Tester
+
+I created a Dockerfile for a new container that can be used for testing endpoints.
+
+I've also included one example usage:
+```shell
+crowapp-test:
+	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/api/users
+```
+
+The next thing I'd like to add to this generalized debugger container is a logging system that can create logs either on the host machine or at least be very easily accessible via another `Make` command.
+
+Or, better yet, perhaps create some kind of visual user interface for viewing these logs (or leveraging something like `Kibana` or `Grafana`).
+
 # Lessons
 
 ## Gotchas
