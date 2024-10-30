@@ -1,4 +1,43 @@
 
+# TOC
+
+- [About](#about)
+  * [Parts](#parts)
+    + [Database](#database)
+  * [History](#history)
+  * [Current Status](#current-status)
+    + [Backend](#backend)
+    + [Frontend](#frontend)
+  * [Standing on the Shoulders of Giants](#standing-on-the-shoulders-of-giants)
+  * [Future](#future)
+- [How to Use](#how-to-use)
+  * [Configuring Environment Variables](#configuring-environment-variables)
+    + [`.env` File](#env-file)
+    + [Setting Environment Variables in Redis and Nginx](#setting-environment-variables-in-redis-and-nginx)
+  * [Using the Makefile](#using-the-makefile)
+    + [Overview of Commands](#overview-of-commands)
+  * [Docker](#docker)
+    + [Debugger / Tester](#debugger---tester)
+- [Lessons](#lessons)
+  * [DevOps Gotchas](#devops-gotchas)
+    + [Nginx Gotchas](#nginx-gotchas)
+      - [Environment Variables](#environment-variables)
+    + [Docker Gotchas](#docker-gotchas)
+      - [ARGS and Multi Stage Builds](#args-and-multi-stage-builds)
+      - [Exec Form vs Shell Form for ENTRYPOINT:](#exec-form-vs-shell-form-for-entrypoint-)
+    + [Make Gotchas](#make-gotchas)
+      - [Tabs vs Spaces](#tabs-vs-spaces)
+  * [Language and Framework Gotchas](#language-and-framework-gotchas)
+    + [Symfony (PHP)](#symfony--php-)
+      - [Headers vs Body and the Whitespace Issue](#headers-vs-body-and-the-whitespace-issue)
+      - [CLI Race Condition](#CLI-Race-Condition)
+    + [Rocket (Rust)](#rocket--rust-)
+      - [Pear Codegen Dependency](#pear-codegen-dependency)
+    + [Django (Python)](#django--python-)
+      - [Project Structure](#project-structure)
+      - [URL Routing](#url-routing)
+      - [Django REST Framework](#django-rest-framework)
+
 # About
 
 This is a project I started back in Fall of 2022. The purpose is to have a repository showcasing basic REST API functionality, Dockerized, for a multitude of programming languages and frameworks.
@@ -218,7 +257,7 @@ Or, better yet, perhaps create some kind of visual user interface for viewing th
 
 # Lessons
 
-## Gotchas
+## DevOps Gotchas
 
 ### Nginx Gotchas
 
@@ -280,11 +319,11 @@ The message *"multiple target patterns"* seems to indicate another root cause al
 
 Just something to keep in mind.
 
-### Language and Framework Gotchas
+## Language and Framework Gotchas
 
-#### Symfony (PHP)
+### Symfony (PHP)
 
-##### Headers vs Body and the Whitespace Issue
+#### Headers vs Body and the Whitespace Issue
 
 I struggled with the fact that I was receiving a response in plain text while I was setting the `Content-Type` header to `application/json`.
 
@@ -314,7 +353,7 @@ class UserController extends AbstractController
 }
 ```
 
-##### CLI Race Condition
+#### CLI Race Condition
 
 I encountered a very bizarre peculiarity with running Symfony in a Docker container that I have not encountered in any of the other subprojects.
 
@@ -339,9 +378,9 @@ docker run -it symfony_app:1 /bin/bash
 
 This super helpful command will likely come in handy in the future when I'm looking to troubleshoot containers that close immediately.
 
-#### Rocket (Rust)
+### Rocket (Rust)
 
-##### Pear Codegen Dependency
+#### Pear Codegen Dependency
 
 I encountered a somewhat silly error when trying to build the Rocket app. The message was something to the effect of "failed to run custom build command for `pear_codegen v0.1.5`".
 
@@ -354,21 +393,21 @@ The solution that ultimately worked was adding the following command to the `Doc
 RUN /usr/local/cargo/bin/rustup override set nightly
 ```
 
-#### Django (Python)
+### Django (Python)
 
-##### Project Structure
+#### Project Structure
 
 I'll be honest, I struggled a bit with Django. I had worked with the framework many years ago, so it has been a while. There's that, and then the fact that I have a general preference for working with frameworks that are a lot less rigidly structured. I will always prefer Flask over Django, for example.
 
 In order to use the framework, one is instructed that they must run a couple of code generation steps, and then modify the generated boilerplate as needed. Well, I kind of skipped that step, to make it more like working with Flask (where you build from bottom up). This led to some initial difficulties while I was getting to know exactly how the files are meant to be named and structured throughout.
 
-##### URL Routing
+#### URL Routing
 
 I faced similar challenges with URL routing as I did with the project structure.
 
 This might have been exacerbated by my Docker container networking and Nginx configurations for this particular project. For example, I disabled i18n in the `settings.py` to avoid any `en` prefixes.
 
-##### Django REST Framework
+#### Django REST Framework
 
 It is pretty clear that Django proper is meant to be server HTML files (in the form of templates). This particular use case here though is REST endpoints exclusively (for the backend portion, at least).
 
