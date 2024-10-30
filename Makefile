@@ -43,6 +43,13 @@ nginx-v2-run:
 	docker run -it --name nginx-v2 -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env ENTRYPOINT_VERSION=2 --env NGINX_PORT=$(NGINX_PORT) --env LOCATIONS="-more" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx-v2:latest
 
 
+debugger-build:
+	cd other/debugger && docker build -t debugger:1 .
+
+debugger-run:
+	docker run -d -it --rm --name debugger --network $(SUBNET_NAME) --ip $(DEBUGGER_IP) --publish $(DEBUGGER_PORT):$(DEBUGGER_PORT) debugger:1
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend
