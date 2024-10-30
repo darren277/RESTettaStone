@@ -10,6 +10,9 @@ crowapp-build:
 crowapp-run:
 	cd backend/crowapp && docker run -d -it --rm --name crow_app_container --env CROWAPP_PORT=$(CROWAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CROWAPP_IP) -p $(CROWAPP_PORT):$(CROWAPP_PORT) crow_app:1
 
+crowapp-test:
+	docker exec -it debugger curl http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/api/users
+
 
 aspnetapp-build:
 	cd backend/aspnetapp && docker build --no-cache --build-arg ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS_BUILD) -t aspnet_app:1 .
