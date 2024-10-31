@@ -1,4 +1,7 @@
-
 upstream reactapp {
     server ${REACTAPP_IP}:${REACTAPP_PORT};
+}
+
+upstream vueapp {
+    server ${VUEAPP_IP}:${VUEAPP_PORT};
 }
