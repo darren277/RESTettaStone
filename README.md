@@ -100,7 +100,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Lisp                                                                                              |            |                |                      |           | Language        |
 | [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp)          | Y          | Y              | Y                    |           |                 |
 | [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp)               | Y          | Y              | Y                    |           |                 |
-| Pascal/actixapp)                                                                                  | '          | '              | '                    |           |                 |
+| Pascal                                                                                            | '          | '              | '                    |           |                 |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp)                    | Y          | Y              | Y                    |           |                 |
 | [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp)            | Y          | Y              | Y                    |           |                 |
 | [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp)                | Y          | Y              | Y                    |           | ~~Language~~    |
