@@ -121,7 +121,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Next                                                                              |            |                     |           |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp) | Y          | Y                   |           |
 | React Fiber                                                                       |            |                     |           |
-| Vue                                                                               |            |                     |           |
+| [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)     | Y          | Y                   |           |
 
 ## Standing on the Shoulders of Giants
 
