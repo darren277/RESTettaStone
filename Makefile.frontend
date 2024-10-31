@@ -8,3 +8,10 @@ reactapp-build:
 
 reactapp-run:
 	cd frontend/reactapp && docker run -d -it --rm --name react_app_container --env REACTAPP_PORT=$(REACTAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTAPP_IP) -p $(REACTAPP_PORT):$(REACTAPP_PORT) react_app:1
+
+
+vueapp-build:
+	cd frontend/vueapp && docker build --build-arg VUEAPP_PORT=$(VUEAPP_PORT) $(NGINX_VARS_BUILD) -t vue_app:1 .
+
+vueapp-run:
+	cd frontend/vueapp && docker run -d -it --rm --name vue_app_container -v logs:/var/log --env VUEAPP_PORT=$(VUEAPP_PORT) --net $(SUBNET_NAME) --ip $(VUEAPP_IP) -p $(VUEAPP_PORT):$(VUEAPP_PORT) vue_app:1
