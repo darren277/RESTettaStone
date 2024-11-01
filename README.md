@@ -8,6 +8,7 @@
   * [Current Status](#current-status)
     + [Backend](#backend)
     + [Frontend](#frontend)
+    + [Other](#other)
   * [Standing on the Shoulders of Giants](#standing-on-the-shoulders-of-giants)
   * [Future](#future)
 - [How to Use](#how-to-use)
@@ -122,6 +123,13 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp) | Y          | Y                   |           |
 | React Fiber                                                                       |            |                     |           |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)     | Y          | Y                   |           |
+
+### Other
+
+|                                                                                      | Dockerized | Backend Integration | Full CRUD |
+|--------------------------------------------------------------------------------------|------------|---------------------|-----------|
+| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp) | N/A        | Y                   |           |
+| Chalice                                                                              |            |                     |           |
 
 ## Standing on the Shoulders of Giants
 
