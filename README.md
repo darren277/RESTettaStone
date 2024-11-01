@@ -10,6 +10,9 @@
     + [Frontend](#frontend)
   * [Standing on the Shoulders of Giants](#standing-on-the-shoulders-of-giants)
   * [Future](#future)
+  * [See Also](#see-also)
+    + [Theoretical](#theoretical)
+    + [Practical](#practical)
 - [How to Use](#how-to-use)
   * [Configuring Environment Variables](#configuring-environment-variables)
     + [`.env` File](#env-file)
@@ -132,6 +135,23 @@ One major example of this was the [COBOL backend](https://github.com/azac/cobol-
 ## Future
 
 The first immediate steps to carry out will be gradually adding each subdirectory as I test them and maybe clean them up a bit by removing unecessary comments and so on.
+
+## See Also
+
+What follows in this section are some other projects I have worked on that are at various stages of completion. They relate to this one in that they explore other aspects of web and desktop application development that do not necessarily fit directly into this repository, or are simply much bigger projects and deserve to stand in their own right.
+
+### Theoretical
+
+* [Series of tubes](https://github.com/darren277/series-of-tubes) is a repository where I analyze the underlying structure of Internet protocols and various constituent parts that compose the various kinds of Internet traffic that make up the World Wide Web. It is a work in progress with many more parts to come.
+* [byodb](https://github.com/darren277/byodb) is an implementation of a SQLite like database from the ground up in C. It is based on a tutorial referenced inside the repository.
+
+### Practical
+
+* [Python to JS/JSX Transpiler](https://github.com/darren277/Transpiler) is a project for transpiling Python code into either JavaScript or JSX code. Theoretically, it could potentially be leveraged to write entire React applications in Python.
+* [Wasm-FRP](https://github.com/darren277/wasm-frp) is a project that uses Rust at every level of the stack.
+  - The back end uses Tokio to construct a REST based web server.
+  - The front end uses Yew to construct a WebAssembly based front end that is compiled and then served client side.
+  - The database it interacts with is even a Rust based technology called SurrealDB. It is a multimodal database with a lot of fun potential.
 
 # How to Use
 
