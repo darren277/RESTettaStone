@@ -15,3 +15,10 @@ vueapp-build:
 
 vueapp-run:
 	cd frontend/vueapp && docker run -d -it --rm --name vue_app_container -v logs:/var/log --env VUEAPP_PORT=$(VUEAPP_PORT) --net $(SUBNET_NAME) --ip $(VUEAPP_IP) -p $(VUEAPP_PORT):$(VUEAPP_PORT) vue_app:1
+
+
+angularapp-build:
+	cd frontend/angularapp && docker build --build-arg ANGULARAPP_PORT=$(ANGULARAPP_PORT) $(NGINX_VARS_BUILD) -t angular_app:1 .
+
+angularapp-run:
+	cd frontend/angularapp && docker run -d -it --rm --name angular_app_container --env ANGULARAPP_PORT=$(ANGULARAPP_PORT) --net $(SUBNET_NAME) --ip $(ANGULARAPP_IP) -p $(ANGULARAPP_PORT):$(ANGULARAPP_PORT) angular_app:1
