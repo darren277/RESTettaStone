@@ -1,6 +1,7 @@
 include .env
 
 NGINX_VARS_BUILD=--build-arg NGINX_HOST=$(NGINX_HOST) --build-arg NGINX_PORT=$(NGINX_PORT)
+NGINX_VARS_BUILD_GATSBY=--build-arg NGINX_HOST=host.docker.internal --build-arg NGINX_PORT=$(NGINX_PORT)
 
 
 reactapp-build:
@@ -25,7 +26,7 @@ angularapp-run:
 
 
 gatsbyapp-build:
-	cd frontend/gatsbyapp && docker build --build-arg GATSBYAPP_PORT=$(GATSBYAPP_PORT) $(NGINX_VARS_BUILD) -t gatsby_app:1 .
+	cd frontend/gatsbyapp && docker build --build-arg GATSBYAPP_PORT=$(GATSBYAPP_PORT) $(NGINX_VARS_BUILD_GATSBY) -t gatsby_app:1 .
 
 # --add-host=host.docker.internal:host-gateway
 gatsbyapp-run:
