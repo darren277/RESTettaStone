@@ -22,3 +22,10 @@ angularapp-build:
 
 angularapp-run:
 	cd frontend/angularapp && docker run -d -it --rm --name angular_app_container --env ANGULARAPP_PORT=$(ANGULARAPP_PORT) --net $(SUBNET_NAME) --ip $(ANGULARAPP_IP) -p $(ANGULARAPP_PORT):$(ANGULARAPP_PORT) angular_app:1
+
+
+reactfiberapp-build:
+	cd frontend/reactfiberapp && docker build --build-arg REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) $(NGINX_VARS_BUILD) -t reactfiber_app:1 .
+
+reactfiberapp-run:
+	cd frontend/reactfiberapp && docker run -d -it --rm --name reactfiber_app_container --env REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTFIBERAPP_IP) -p $(REACTFIBERAPP_PORT):$(REACTFIBERAPP_PORT) reactfiber_app:1
