@@ -22,3 +22,10 @@ angularapp-build:
 
 angularapp-run:
 	cd frontend/angularapp && docker run -d -it --rm --name angular_app_container --env ANGULARAPP_PORT=$(ANGULARAPP_PORT) --net $(SUBNET_NAME) --ip $(ANGULARAPP_IP) -p $(ANGULARAPP_PORT):$(ANGULARAPP_PORT) angular_app:1
+
+
+nextapp-build:
+	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD) -t next_app:1 .
+
+nextapp-run:
+	cd frontend/nextapp && docker run -d -it --rm --name next_app_container --env NEXTAPP_PORT=$(NEXTAPP_PORT) --net $(SUBNET_NAME) --ip $(NEXTAPP_IP) -p $(NEXTAPP_PORT):$(NEXTAPP_PORT) next_app:1
