@@ -5,3 +5,7 @@ upstream reactapp {
 upstream vueapp {
     server ${VUEAPP_IP}:${VUEAPP_PORT};
 }
+
+upstream angularapp {
+    server ${ANGULARAPP_IP}:${ANGULARAPP_PORT};
+}
