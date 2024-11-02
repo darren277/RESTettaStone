@@ -122,7 +122,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |---------------------------------------------------------------------------------------|------------|---------------------|-----------|
 | [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp) | Y          | Y                   |           |
 | Gatsby                                                                                |            |                     |           |
-| Next                                                                                  |            |                     |           |
+| [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)       | Y          | Y                   |           |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)     | Y          | Y                   |           |
 | React Fiber                                                                           |            |                     |           |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)         | Y          | Y                   |           |
