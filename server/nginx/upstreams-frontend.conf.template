@@ -9,3 +9,7 @@ upstream vueapp {
 upstream angularapp {
     server ${ANGULARAPP_IP}:${ANGULARAPP_PORT};
 }
+
+upstream gatsbyapp {
+    server ${GATSBYAPP_IP}:${GATSBYAPP_PORT};
+}
