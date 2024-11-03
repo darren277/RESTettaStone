@@ -31,6 +31,7 @@ envsubst '${NGINX_PORT},\
 
 envsubst '${REACTAPP_IP},${REACTAPP_PORT},\
   ${VUEAPP_IP},${VUEAPP_PORT},\
+  ${GATSBYAPP_IP},${GATSBYAPP_PORT},\
   ${REACTFIBERAPP_IP},${REACTFIBERAPP_PORT},\
   ${ANGULARAPP_IP},${ANGULARAPP_PORT}' < /usr/local/openresty/nginx/conf/upstreams-frontend.conf.template > /usr/local/openresty/nginx/conf/upstreams-frontend.conf
 

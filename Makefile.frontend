@@ -31,3 +31,10 @@ gatsbyapp-build:
 # --add-host=host.docker.internal:host-gateway
 gatsbyapp-run:
 	cd frontend/gatsbyapp && docker run --add-host=host.docker.internal:host-gateway -d -it --rm --name gatsby_app_container --env GATSBYAPP_PORT=$(GATSBYAPP_PORT) --net $(SUBNET_NAME) --ip $(GATSBYAPP_IP) -p $(GATSBYAPP_PORT):$(GATSBYAPP_PORT) gatsby_app:1
+
+
+reactfiberapp-build:
+	cd frontend/reactfiberapp && docker build --build-arg REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) $(NGINX_VARS_BUILD) -t reactfiber_app:1 .
+
+reactfiberapp-run:
+	cd frontend/reactfiberapp && docker run -d -it --rm --name reactfiber_app_container --env REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTFIBERAPP_IP) -p $(REACTFIBERAPP_PORT):$(REACTFIBERAPP_PORT) reactfiber_app:1
