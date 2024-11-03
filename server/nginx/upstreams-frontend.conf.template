@@ -17,3 +17,7 @@ upstream gatsbyapp {
 upstream reactfiberapp {
     server ${REACTFIBERAPP_IP}:${REACTFIBERAPP_PORT};
 }
+
+upstream nextapp {
+    server ${NEXTAPP_IP}:${NEXTAPP_PORT};
+}
