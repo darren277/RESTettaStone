@@ -10,6 +10,10 @@ upstream angularapp {
     server ${ANGULARAPP_IP}:${ANGULARAPP_PORT};
 }
 
-upstream nextapp {
-    server ${NEXTAPP_IP}:${NEXTAPP_PORT};
+upstream gatsbyapp {
+    server ${GATSBYAPP_IP}:${GATSBYAPP_PORT};
+}
+
+upstream reactfiberapp {
+    server ${REACTFIBERAPP_IP}:${REACTFIBERAPP_PORT};
 }

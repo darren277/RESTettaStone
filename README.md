@@ -118,14 +118,14 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Frontend
 
-|                                                                                       | Dockerized | Backend Integration | Full CRUD |
-|---------------------------------------------------------------------------------------|------------|---------------------|-----------|
-| [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp) | Y          | Y                   |           |
-| Gatsby                                                                                |            |                     |           |
-| [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)       | Y          | Y                   |           |
-| [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)     | Y          | Y                   |           |
-| React Fiber                                                                           |            |                     |           |
-| [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)         | Y          | Y                   |           |
+|                                                                                              | Dockerized | Backend Integration | Full CRUD |
+|----------------------------------------------------------------------------------------------|------------|---------------------|-----------|
+| [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp)        | Y          | Y                   |           |
+| [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)          | Y          | Y                   |           |
+| Next                                                                                         |            |                     |           |
+| [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)            | Y          | Y                   |           |
+| [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | Y          | Y                   |           |
+| [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | Y          | Y                   |           |
 
 ### Other
 
