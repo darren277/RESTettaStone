@@ -121,7 +121,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |                                                                                       | Dockerized | Backend Integration | Full CRUD |
 |---------------------------------------------------------------------------------------|------------|---------------------|-----------|
 | [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp) | Y          | Y                   |           |
-| Gatsby                                                                                |            |                     |           |
+| [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)   | Y          | Y                   |           |
 | Next                                                                                  |            |                     |           |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)     | Y          | Y                   |           |
 | React Fiber                                                                           |            |                     |           |
