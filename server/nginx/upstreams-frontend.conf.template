@@ -9,3 +9,7 @@ upstream vueapp {
 upstream angularapp {
     server ${ANGULARAPP_IP}:${ANGULARAPP_PORT};
 }
+
+upstream reactfiberapp {
+    server ${REACTFIBERAPP_IP}:${REACTFIBERAPP_PORT};
+}
