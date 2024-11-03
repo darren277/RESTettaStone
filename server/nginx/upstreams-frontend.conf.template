@@ -13,3 +13,7 @@ upstream angularapp {
 upstream gatsbyapp {
     server ${GATSBYAPP_IP}:${GATSBYAPP_PORT};
 }
+
+upstream reactfiberapp {
+    server ${REACTFIBERAPP_IP}:${REACTFIBERAPP_PORT};
+}
