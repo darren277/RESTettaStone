@@ -22,6 +22,7 @@
     + [Overview of Commands](#overview-of-commands)
       - [Docker](#docker)
   * [Debugger / Tester](#debugger---tester)
+  * [Performance Testing with Locust](#performance-testing-with-locust)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -282,6 +283,44 @@ crowapp-test:
 The next thing I'd like to add to this generalized debugger container is a logging system that can create logs either on the host machine or at least be very easily accessible via another `Make` command.
 
 Or, better yet, perhaps create some kind of visual user interface for viewing these logs (or leveraging something like `Kibana` or `Grafana`).
+
+## Performance Testing with Locust
+
+I've added a container definition and Locust file and configuration options for performance testing.
+
+There are `make` commands in the `Makefile`:
+
+```shell
+locust-build:
+	cd other/performance && docker build --build-arg TARGET_HOST=$(TARGET_HOST) --build-arg TARGET_PORT=$(TARGET_PORT) -t locust-$(NAME):1 .
+
+locust-run:
+	docker run -d -it --rm -p 8089:8089 --name locust-$(NAME) --network $(SUBNET_NAME) locust-$(NAME):1
+```
+
+You can manually run the `docker build` command as follows:
+```shell
+locust-build NAME=crowapp TARGET_HOST=127.420.69.42 TARGET_PORT=2024
+```
+
+And then run the container with the following command:
+```shell
+locust-run NAME=crowapp
+```
+
+**_Or_**, more preferably... You will likely want to define your own tailored `Make` commands, following the given Flask example already in the `Makefile`:
+
+```shell
+locust-build-flask:
+	$(MAKE) locust-build NAME=flask TARGET_HOST=$(FLASKAPP_IP) TARGET_PORT=$(FLASKAPP_PORT)
+
+locust-run-flask:
+	$(MAKE) locust-run NAME=flask
+```
+
+I may add a separate `Makefile` in the future that is defined to calling all the different performance testing configurations.
+
+In the meantime, however, I will leave that as an exercise for the reader.
 
 # Lessons
 
