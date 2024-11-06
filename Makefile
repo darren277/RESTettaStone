@@ -66,6 +66,10 @@ locust-run-flask:
 	$(MAKE) locust-run NAME=flask
 
 
+ngrok:
+	docker run --net=host -it -e NGROK_AUTHTOKEN=$(NGROK_AUTHTOKEN) ngrok/ngrok:latest http --log=stdout --url=$(NGROK_URL) http://127.0.0.1:$(NGROK_PORT)
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend
