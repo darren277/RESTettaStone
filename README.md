@@ -95,7 +95,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Cobol                                                                                             | '*         | '              |                      |           | Language        |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp)              | Y          | Y              | Y                    |           |                 |
 | [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp)       | Y          | Y              | Y                    |           |                 |
-| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp)       | '          | '              | N/A                  |           |                 |
+| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp)       | Y          | Y              | N/A                  |           |                 |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp)         | Y          | Y              | Y                    |           |                 |
 | Fortran                                                                                           |            |                |                      |           | Language        |
 | [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp)                    | Y          | Y              | Y                    |           | ~~Language~~    |
@@ -130,10 +130,11 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Other
 
-|                                                                                      | Dockerized | Backend Integration | Full CRUD |
-|--------------------------------------------------------------------------------------|------------|---------------------|-----------|
-| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp) | N/A        | Y                   |           |
-| Chalice                                                                              |            |                     |           |
+|                                                                                             | Dockerized | Backend Integration | Full CRUD |
+|---------------------------------------------------------------------------------------------|------------|---------------------|-----------|
+| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A        | Y                   |           |
+| [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A        | Y                   |           |
+| Chalice                                                                                     |            |                     |           |
 
 ## Standing on the Shoulders of Giants
 
