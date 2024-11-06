@@ -1,0 +1,19 @@
+FROM golang:latest
+
+ENV GOFLAGS="-mod=vendor"
+
+WORKDIR /app
+
+RUN go mod init example.com/mygrpcapp-client
+
+RUN go get -u google.golang.org/grpc
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
+
+COPY client.go .
+
+COPY ./entrypoint-client.sh /app/entrypoint-client.sh
+RUN chmod +x entrypoint-client.sh
+
+CMD tail -f /dev/null
+
+#CMD ["./grpc-client"]
