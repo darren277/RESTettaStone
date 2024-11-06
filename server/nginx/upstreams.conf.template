@@ -81,3 +81,7 @@ upstream laravelapp {
 upstream djangoapp {
     server ${DJANGOAPP_IP}:${DJANGOAPP_PORT};
 }
+
+upstream firebaseapp {
+    server ${FIREBASEAPP_IP}:${FIREBASEAPP_PORT};
+}

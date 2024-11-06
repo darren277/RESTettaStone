@@ -2,6 +2,7 @@ include .env
 
 PG_VARS=--env PG_USER=$(PG_USER) --env PG_PASS=$(PG_PASS) --env PG_DB=$(PG_DB) --env PG_HOST=$(PG_IP) --env PG_PORT=$(PG_PORT)
 PG_VARS_BUILD=--build-arg PG_USER=$(PG_USER) --build-arg PG_PASS=$(PG_PASS) --build-arg PG_DB=$(PG_DB) --build-arg PG_HOST=$(PG_IP) --build-arg PG_PORT=$(PG_PORT)
+FIREBASE_VARS_BUILD=--build-arg FIREBASE_API_KEY=$(FIREBASE_API_KEY) --build-arg FIREBASE_AUTH_DOMAIN=$(FIREBASE_AUTH_DOMAIN) --build-arg FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID) --build-arg FIREBASE_STORAGE_BUCKET=$(FIREBASE_STORAGE_BUCKET) --build-arg FIREBASE_MESSAGING_SENDER_ID=$(FIREBASE_MESSAGING_SENDER_ID) --build-arg FIREBASE_APP_ID=$(FIREBASE_APP_ID) --build-arg FIREBASE_MEASUREMENT_ID=$(FIREBASE_MEASUREMENT_ID)
 
 
 crowapp-build:
@@ -152,3 +153,16 @@ djangoapp-build:
 
 djangoapp-run:
 	cd backend/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
+
+
+firebaseapp-build:
+	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
+
+firebaseapp-run:
+	cd backend/firebaseapp && docker run -d -it --rm --name firebase_app_container --env FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) --net $(SUBNET_NAME) --ip $(FIREBASEAPP_IP) -p $(FIREBASEAPP_PORT):$(FIREBASEAPP_PORT) firebase_app:1
+
+firebaseapp-test-create-user:
+	docker exec -it debugger curl -X POST -H "Content-Type: application/json" -d '{"id":1, "email":"tester@gmail.com"}' http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/api/user
+
+firebaseapp-test-get-users:
+	docker exec -it debugger curl http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/api/users
