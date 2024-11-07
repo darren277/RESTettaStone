@@ -155,6 +155,13 @@ djangoapp-run:
 	cd backend/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
 
 
+tomcatapp-build:
+	cd backend/tomcatapp && docker build --build-arg TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS_BUILD) -t tomcat_app:1 .
+
+tomcatapp-run:
+	cd backend/tomcatapp && docker run -d -it --rm --name tomcat_app_container --env TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(TOMCATAPP_IP) -p $(TOMCATAPP_PORT):$(TOMCATAPP_PORT) tomcat_app:1
+
+
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
