@@ -114,6 +114,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp) | Y          | Y              | Y                    |           |                 |
 | [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp)                  | Y          | Y              | Y                    |           |                 |
 | [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp)        | Y          | Y              | Y                    |           |                 |
+| [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp)         | Y          | Y              | Y                    |           |                 |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp)                | Y          | Y              | Y                    |           | ~~Networking~~  |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp)                      | Y          | Y              | Y                    |           | ~~Build~~       |
 
