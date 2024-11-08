@@ -162,6 +162,13 @@ tomcatapp-run:
 	cd backend/tomcatapp && docker run -d -it --rm --name tomcat_app_container --env TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(TOMCATAPP_IP) -p $(TOMCATAPP_PORT):$(TOMCATAPP_PORT) tomcat_app:1
 
 
+fatfreeapp-build:
+	cd backend/fatfreeapp && docker build --build-arg FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS_BUILD) -t fatfree_app:1 .
+
+fatfreeapp-run:
+	cd backend/fatfreeapp && docker run -d -it --rm --name fatfree_app_container --env FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FATFREEAPP_IP) -p $(FATFREEAPP_PORT):$(FATFREEAPP_PORT) fatfree_app:1
+
+
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 

@@ -89,3 +89,7 @@ upstream firebaseapp {
 upstream tomcatapp {
     server ${TOMCATAPP_IP}:${TOMCATAPP_PORT};
 }
+
+upstream fatfreeapp {
+    server ${FATFREEAPP_IP}:${FATFREEAPP_PORT};
+}
