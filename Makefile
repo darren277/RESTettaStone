@@ -43,6 +43,33 @@ nginx-v2-run:
 	docker run -it --name nginx-v2 -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env ENTRYPOINT_VERSION=2 --env NGINX_PORT=$(NGINX_PORT) --env LOCATIONS="-more" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx-v2:latest
 
 
+debugger-build:
+	cd other/debugger && docker build -t debugger:1 .
+
+debugger-run:
+	docker run -d -it --rm --name debugger --network $(SUBNET_NAME) --ip $(DEBUGGER_IP) --publish $(DEBUGGER_PORT):$(DEBUGGER_PORT) debugger:1
+
+
+locust-build:
+	cd other/performance && docker build --build-arg TARGET_HOST=$(TARGET_HOST) --build-arg TARGET_PORT=$(TARGET_PORT) -t locust-$(NAME):1 .
+
+# You may eventually need to add local volume mounting for downloading results (?).
+# --mount type=bind,source=$(LOCUST_DATA_DIR),target=/mnt/locust
+locust-run:
+	docker run -d -it --rm -p 8089:8089 --name locust-$(NAME) --network $(SUBNET_NAME) locust-$(NAME):1
+
+# Using Flask as an example:
+locust-build-flask:
+	$(MAKE) locust-build NAME=flask TARGET_HOST=$(FLASKAPP_IP) TARGET_PORT=$(FLASKAPP_PORT)
+
+locust-run-flask:
+	$(MAKE) locust-run NAME=flask
+
+
+ngrok:
+	docker run --net=host -it -e NGROK_AUTHTOKEN=$(NGROK_AUTHTOKEN) ngrok/ngrok:latest http --log=stdout --url=$(NGROK_URL) http://127.0.0.1:$(NGROK_PORT)
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend

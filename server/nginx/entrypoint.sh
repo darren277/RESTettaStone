@@ -24,10 +24,21 @@ envsubst '${NGINX_PORT},\
   ${LUAAPP_IP},${LUAAPP_PORT},\
   ${PLAYAPP_IP},${PLAYAPP_PORT},\
   ${FLASKAPP_IP},${FLASKAPP_PORT},\
+  ${LARAVELAPP_IP},${LARAVELAPP_PORT},\
+  ${DJANGOAPP_IP},${DJANGOAPP_PORT},\
+  ${FIREBASEAPP_IP},${FIREBASEAPP_PORT},\
+  ${TOMCATAPP_IP},${TOMCATAPP_PORT},\
+  ${FATFREEAPP_IP},${FATFREEAPP_PORT},\
+  ${PHPAPP_IP},${PHPAPP_PORT},
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
-envsubst '${REACTAPP_IP},${REACTAPP_PORT}' < /usr/local/openresty/nginx/conf/upstreams-frontend.conf.template > /usr/local/openresty/nginx/conf/upstreams-frontend.conf
+envsubst '${REACTAPP_IP},${REACTAPP_PORT},\
+  ${VUEAPP_IP},${VUEAPP_PORT},\
+  ${GATSBYAPP_IP},${GATSBYAPP_PORT},\
+  ${REACTFIBERAPP_IP},${REACTFIBERAPP_PORT},\
+  ${NEXTAPP_IP},${NEXTAPP_PORT},\
+  ${ANGULARAPP_IP},${ANGULARAPP_PORT}' < /usr/local/openresty/nginx/conf/upstreams-frontend.conf.template > /usr/local/openresty/nginx/conf/upstreams-frontend.conf
 
 /usr/local/openresty/nginx/sbin/nginx -g 'daemon off;'
 while true; do sleep 1d; done

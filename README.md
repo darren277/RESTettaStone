@@ -1,4 +1,66 @@
 
+# TOC
+
+- [About](#about)
+  * [Parts](#parts)
+    + [Database](#database)
+  * [History](#history)
+  * [Current Status](#current-status)
+    + [Backend](#backend)
+    + [Frontend](#frontend)
+    + [Other](#other)
+  * [Standing on the Shoulders of Giants](#standing-on-the-shoulders-of-giants)
+  * [Future](#future)
+  * [See Also](#see-also)
+    + [Theoretical](#theoretical)
+    + [Practical](#practical)
+- [How to Use](#how-to-use)
+  * [Configuring Environment Variables](#configuring-environment-variables)
+    + [`.env` File](#env-file)
+    + [Setting Environment Variables in Redis and Nginx](#setting-environment-variables-in-redis-and-nginx)
+  * [Using the Makefile](#using-the-makefile)
+    + [Overview of Commands](#overview-of-commands)
+      - [Docker](#docker)
+  * [Debugger / Tester](#debugger---tester)
+  * [Performance Testing with Locust](#performance-testing-with-locust)
+- [Lessons](#lessons)
+  * [DevOps Gotchas](#devops-gotchas)
+    + [Nginx Gotchas](#nginx-gotchas)
+      - [Environment Variables](#environment-variables)
+    + [Docker Gotchas](#docker-gotchas)
+      - [ARGS and Multi Stage Builds](#args-and-multi-stage-builds)
+      - [Exec Form vs Shell Form for ENTRYPOINT:](#exec-form-vs-shell-form-for-entrypoint-)
+    + [Make Gotchas](#make-gotchas)
+      - [Tabs vs Spaces](#tabs-vs-spaces)
+  * [Language and Framework Gotchas](#language-and-framework-gotchas)
+    + [Symfony (PHP)](#symfony--php-)
+      - [Headers vs Body and the Whitespace Issue](#headers-vs-body-and-the-whitespace-issue)
+      - [CLI Race Condition](#CLI-Race-Condition)
+    + [Rocket (Rust)](#rocket--rust-)
+      - [Pear Codegen Dependency](#pear-codegen-dependency)
+    + [Django (Python)](#django--python-)
+      - [Project Structure](#project-structure)
+      - [URL Routing](#url-routing)
+      - [Django REST Framework](#django-rest-framework)
+  * [Comparisons](#comparisons)
+    + [Projects by Language](#projects-by-language)
+      - [Classic](#classic)
+      - [Performant](#performant)
+      - [Procedural](#procedural)
+      - [Object Oriented](#object-oriented)
+      - [Functional](#functional)
+      - [Multi-Paradigm](#multi-paradigm)
+      - [Versatile or Other](#versatile-or-other)
+      - [JavaScript](#javascript)
+    + [Metrics](#metrics)
+      - [Qualitative](#qualitative)
+        - [Simplicity](#simplicity)
+      - [Quantitative](#quantitative)
+        - [Performance](#performance)
+      - [Both Qualitative and Quantitative](#both-qualitative-and-quantitative)
+        - [Security](#security)
+        - [Safety](#safety)
+
 # About
 
 This is a project I started back in Fall of 2022. The purpose is to have a repository showcasing basic REST API functionality, Dockerized, for a multitude of programming languages and frameworks.
@@ -43,46 +105,57 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Backend
 
-|                   | Dockerized | REST Responses | Postgres Interaction | Full CRUD | Current Barrier |
-|-------------------|------------|----------------|----------------------|-----------|-----------------|
-| Actix (Rust)      | Y          | Y              | Y                    |           | ~~Language~~    |
-| Asp.Net (C#)      | Y          | Y              | Y                    |           |                 |
-| Bun (JS)          | Y          | Y              | Y                    |           | ~~Libraries~~   |
-| Cobol             | '*         | '              |                      |           | Language        |
-| Crow (C++)        | Y          | Y              | Y                    |           |                 |
-| Django (Python)   | '          | '              | '                    |           |                 |
-| Firebase (JS)     | '          | '              | N/A                  |           |                 |
-| Flask (Python)    | '          | '              | '                    |           |                 |
-| Fortran           |            |                |                      |           | Language        |
-| F#                | Y          | Y              | Y                    |           | ~~Language~~    |
-| Go                | Y          | Y              | Y                    |           |                 |
-| Haskell           |            |                |                      |           | Language        |
-| Laravel (PHP)     | '          | '              | '                    |           |                 |
-| Lisp              |            |                |                      |           | Langauge        |
-| Lua / OpenResty   | Y          | Y              | Y                    |           |                 |
-| Node (JS)         | Y          | Y              | Y                    |           |                 |
-| Pascal            | '          | '              | '                    |           |                 |
-| Perl              | Y          | Y              | Y                    |           |                 |
-| Play (Scala)      | Y          | Y              | Y                    |           |                 |
-| Prolog            | Y          | Y              | Y                    |           | ~~Language~~    |
-| Rails (Ruby)      | Y          | Y              | Y                    |           |                 |
-| Rocket (Rust)     | Y          | Y              | Y                    |           | ~~Networking~~  |
-| SpringBoot (Java) | Y          | Y              | Y                    |           |                 |
-| Swift             | Y          | Y              | Y                    |           |                 |
-| Symfony (PHP)     | Y          | Y              | Y                    |           |                 |
-| Vibe (D)          | Y          | Y              | Y                    |           | ~~Networking~~  |
-| Zig               | Y          | Y              | Y                    |           | ~~Build~~       |
+|                                                                                                   | Dockerized | REST Responses | Postgres Interaction | Full CRUD | Current Barrier |
+|---------------------------------------------------------------------------------------------------|------------|----------------|----------------------|-----------|-----------------|
+| [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/actixapp)           | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/aspnetapp)          | Y          | Y              | Y                    |           |                 |
+| [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/bunapp)                 | Y          | Y              | Y                    |           | ~~Libraries~~   |
+| Cobol                                                                                             | '*         | '              |                      |           | Language        |
+| [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp)              | Y          | Y              | Y                    |           |                 |
+| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp)       | Y          | Y              | Y                    |           |                 |
+| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/fatfreeapp)       | Y          | Y              | Y                    |           |                 |
+| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp)       | Y          | Y              | N/A                  |           |                 |
+| [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp)         | Y          | Y              | Y                    |           |                 |
+| Fortran                                                                                           |            |                |                      |           | Language        |
+| [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp)                    | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/goapp)                        | Y          | Y              | Y                    |           |                 |
+| Haskell                                                                                           |            |                |                      |           | Language        |
+| [Laravel (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/laravelapp)        | Y          | Y              | Y                    |           |                 |
+| Lisp                                                                                              |            |                |                      |           | Language        |
+| [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp)          | Y          | Y              | Y                    |           |                 |
+| [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp)               | Y          | Y              | Y                    |           |                 |
+| Pascal                                                                                            | '          | '              | '                    |           |                 |
+| [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp)                    | Y          | Y              | Y                    |           |                 |
+| [PHP](https://github.com/darren277/RESTettaStone/tree/master/backend/phpapp)                      | Y          | Y              | Y                    |           |                 |
+| [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp)            | Y          | Y              | Y                    |           |                 |
+| [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp)                | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp)           | Y          | Y              | Y                    |           |                 |
+| [Rocket (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rocketapp)         | Y          | Y              | Y                    |           | ~~Networking~~  |
+| [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp) | Y          | Y              | Y                    |           |                 |
+| [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp)                  | Y          | Y              | Y                    |           |                 |
+| [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp)        | Y          | Y              | Y                    |           |                 |
+| [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp)         | Y          | Y              | Y                    |           |                 |
+| [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp)                | Y          | Y              | Y                    |           | ~~Networking~~  |
+| [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp)                      | Y          | Y              | Y                    |           | ~~Build~~       |
 
 ### Frontend
 
-|             | Dockerized | Backend Integration   | Full CRUD |
-|-------------|------------|-----------------------|-----------|
-| Angular     |            |                       |           |
-| Gatsby      |            |                       |           |
-| Next        |            |                       |           |
-| React       |            |                       |           |
-| React Fiber |            |                       |           |
-| Vue         |            |                       |           |
+|                                                                                              | Dockerized | Backend Integration | Full CRUD |
+|----------------------------------------------------------------------------------------------|------------|---------------------|-----------|
+| [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp)        | Y          | Y                   |           |
+| [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)          | Y          | Y                   |           |
+| [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)       | Y          | Y                   |           |
+| [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)            | Y          | Y                   |           |
+| [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | Y          | Y                   |           |
+| [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | Y          | Y                   |           |
+
+### Other
+
+|                                                                                             | Dockerized | Backend Integration | Full CRUD |
+|---------------------------------------------------------------------------------------------|------------|---------------------|-----------|
+| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A        | Y                   |           |
+| [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A        | Y                   |           |
+| Chalice                                                                                     |            |                     |           |
 
 ## Standing on the Shoulders of Giants
 
@@ -93,6 +166,23 @@ One major example of this was the [COBOL backend](https://github.com/azac/cobol-
 ## Future
 
 The first immediate steps to carry out will be gradually adding each subdirectory as I test them and maybe clean them up a bit by removing unecessary comments and so on.
+
+## See Also
+
+What follows in this section are some other projects I have worked on that are at various stages of completion. They relate to this one in that they explore other aspects of web and desktop application development that do not necessarily fit directly into this repository, or are simply much bigger projects and deserve to stand in their own right.
+
+### Theoretical
+
+* [Series of tubes](https://github.com/darren277/series-of-tubes) is a repository where I analyze the underlying structure of Internet protocols and various constituent parts that compose the various kinds of Internet traffic that make up the World Wide Web. It is a work in progress with many more parts to come.
+* [byodb](https://github.com/darren277/byodb) is an implementation of a SQLite like database from the ground up in C. It is based on a tutorial referenced inside the repository.
+
+### Practical
+
+* [Python to JS/JSX Transpiler](https://github.com/darren277/Transpiler) is a project for transpiling Python code into either JavaScript or JSX code. Theoretically, it could potentially be leveraged to write entire React applications in Python.
+* [Wasm-FRP](https://github.com/darren277/wasm-frp) is a project that uses Rust at every level of the stack.
+  - The back end uses Tokio to construct a REST based web server.
+  - The front end uses Yew to construct a WebAssembly based front end that is compiled and then served client side.
+  - The database it interacts with is even a Rust based technology called SurrealDB. It is a multimodal database with a lot of fun potential.
 
 # How to Use
 
@@ -202,9 +292,61 @@ Note that the `b` is a shorthand I created to simplify referencing the `Makefile
 
 Don't forget to define your environment variables in a `.env` file, as they are used by these `Makefile` commands. See above section on environment variables for details.
 
+## Debugger / Tester
+
+I created a Dockerfile for a new container that can be used for testing endpoints.
+
+I've also included one example usage:
+```shell
+crowapp-test:
+	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/api/users
+```
+
+The next thing I'd like to add to this generalized debugger container is a logging system that can create logs either on the host machine or at least be very easily accessible via another `Make` command.
+
+Or, better yet, perhaps create some kind of visual user interface for viewing these logs (or leveraging something like `Kibana` or `Grafana`).
+
+## Performance Testing with Locust
+
+I've added a container definition and Locust file and configuration options for performance testing.
+
+There are `make` commands in the `Makefile`:
+
+```shell
+locust-build:
+	cd other/performance && docker build --build-arg TARGET_HOST=$(TARGET_HOST) --build-arg TARGET_PORT=$(TARGET_PORT) -t locust-$(NAME):1 .
+
+locust-run:
+	docker run -d -it --rm -p 8089:8089 --name locust-$(NAME) --network $(SUBNET_NAME) locust-$(NAME):1
+```
+
+You can manually run the `docker build` command as follows:
+```shell
+locust-build NAME=crowapp TARGET_HOST=127.420.69.42 TARGET_PORT=2024
+```
+
+And then run the container with the following command:
+```shell
+locust-run NAME=crowapp
+```
+
+**_Or_**, more preferably... You will likely want to define your own tailored `Make` commands, following the given Flask example already in the `Makefile`:
+
+```shell
+locust-build-flask:
+	$(MAKE) locust-build NAME=flask TARGET_HOST=$(FLASKAPP_IP) TARGET_PORT=$(FLASKAPP_PORT)
+
+locust-run-flask:
+	$(MAKE) locust-run NAME=flask
+```
+
+I may add a separate `Makefile` in the future that is defined to calling all the different performance testing configurations.
+
+In the meantime, however, I will leave that as an exercise for the reader.
+
 # Lessons
 
-## Gotchas
+## DevOps Gotchas
 
 ### Nginx Gotchas
 
@@ -266,11 +408,11 @@ The message *"multiple target patterns"* seems to indicate another root cause al
 
 Just something to keep in mind.
 
-### Language and Framework Gotchas
+## Language and Framework Gotchas
 
-#### Symfony (PHP)
+### Symfony (PHP)
 
-##### Headers vs Body and the Whitespace Issue
+#### Headers vs Body and the Whitespace Issue
 
 I struggled with the fact that I was receiving a response in plain text while I was setting the `Content-Type` header to `application/json`.
 
@@ -300,7 +442,7 @@ class UserController extends AbstractController
 }
 ```
 
-##### CLI Race Condition
+#### CLI Race Condition
 
 I encountered a very bizarre peculiarity with running Symfony in a Docker container that I have not encountered in any of the other subprojects.
 
@@ -325,9 +467,9 @@ docker run -it symfony_app:1 /bin/bash
 
 This super helpful command will likely come in handy in the future when I'm looking to troubleshoot containers that close immediately.
 
-#### Rocket (Rust)
+### Rocket (Rust)
 
-##### Pear Codegen Dependency
+#### Pear Codegen Dependency
 
 I encountered a somewhat silly error when trying to build the Rocket app. The message was something to the effect of "failed to run custom build command for `pear_codegen v0.1.5`".
 
@@ -339,3 +481,172 @@ The solution that ultimately worked was adding the following command to the `Doc
 ```shell
 RUN /usr/local/cargo/bin/rustup override set nightly
 ```
+
+### Django (Python)
+
+#### Project Structure
+
+I'll be honest, I struggled a bit with Django. I had worked with the framework many years ago, so it has been a while. There's that, and then the fact that I have a general preference for working with frameworks that are a lot less rigidly structured. I will always prefer Flask over Django, for example.
+
+In order to use the framework, one is instructed that they must run a couple of code generation steps, and then modify the generated boilerplate as needed. Well, I kind of skipped that step, to make it more like working with Flask (where you build from bottom up). This led to some initial difficulties while I was getting to know exactly how the files are meant to be named and structured throughout.
+
+#### URL Routing
+
+I faced similar challenges with URL routing as I did with the project structure.
+
+This might have been exacerbated by my Docker container networking and Nginx configurations for this particular project. For example, I disabled i18n in the `settings.py` to avoid any `en` prefixes.
+
+#### Django REST Framework
+
+It is pretty clear that Django proper is meant to be server HTML files (in the form of templates). This particular use case here though is REST endpoints exclusively (for the backend portion, at least).
+
+For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
+
+In fact, I may add such a subproject to the ever growing collection here.
+
+## Comparisons
+
+### Projects by Language
+
+Please note that some of these categorizations are a bit arbitrary and open to debate. I simply wanted to cluster them for readability sake (refer to the concept of ["chunking"](https://en.wikipedia.org/wiki/Chunking_(psychology)) in cognitive psychology research into working memory).
+
+#### Classic
+
+See also: [Performant](#performant)
+
+* **C**: See [Series of Tubes repo](https://github.com/darren277/series-of-tubes).
+* **C++**:
+  * [Crow](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp).
+
+#### Performant
+
+See also: [C and C++](#classic)
+
+These are the languages frequently used for compiled system level applications, where memory management and type safety are of critical concern.
+
+* **Rust**:
+  * [Actix](https://github.com/darren277/RESTettaStone/tree/master/backend/actixapp).
+  * [Rocket](https://github.com/darren277/RESTettaStone/tree/master/backend/rocketapp).
+  * See also: [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+  * Yew (Front end framework): See [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+* **Zig**:
+  * [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp).
+* **Go**:
+  * [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/goapp).
+* **D**:
+  * [Vibe](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp).
+
+#### Object Oriented
+
+This category is pretty straight forward. These are the primarily object oriented languages.
+
+(PS: As a personal aside, these are by far my least favorite languages to work with. I frequently refer to them as the boilerplate languages as it takes so many lines of code to write the equivalent to other languages. And it's not even that I dislike object oriented programming. Python, JavaScript, and Ruby also allow for OOP without all the excessive boilerplate. See also: The [discussion regarding language simplicity](#simplicity))
+
+* **C#**:
+  * [Asp.Net](https://github.com/darren277/RESTettaStone/tree/master/backend/aspnetapp).
+* **Java**:
+  * [SpringBoot](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp).
+  * [Tomcat](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp).
+
+#### Procedural
+
+* **Fortran**:
+  * (Still incoming) [Fortran](https://github.com/darren277/RESTettaStone/tree/master/backend/fortranapp).
+* **Pascal**:
+  * (Still incoming) [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascalapp).
+* **COBOL**:
+  * (Still incoming) [COBOL](https://github.com/darren277/RESTettaStone/tree/master/backend/cobolapp).
+
+#### Functional
+
+These languages are the prototypical functional programming languages.
+
+* **Lisp**:
+  * (Still incoming) [Lisp](https://github.com/darren277/RESTettaStone/tree/master/backend/lispapp).
+* **Haskell**:
+  * (Still incoming) [Haskell](https://github.com/darren277/RESTettaStone/tree/master/backend/haskellapp).
+  * (Still incoming) [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/spockapp).
+
+#### Multi-Paradigm
+
+With these languages, you get to have the best of both worlds. You can write object oriented code or you can write functional code. Or you can mix the two.
+
+* **Scala**:
+  * [Play](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp).
+* **Swift**:
+  * [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp).
+* **F#**:
+  * [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp).
+
+#### Versatile or Other
+
+This category is almost a catch all of sorts. These are languages that can be written with different paradigms in mind, perhaps have loose typing, and are generally more flexible. While I created a dedicated section for Scala, Swift, and F# as the "multi-paradigm" languages, they could just as easily fit into this cluster. However, [as mentioned above](#projects-by-language), I am categorizing these mostly for the sake of readability.
+
+Some of these languages are frequently categorized as "scripting languages." I'm a not a big fan of that particular characterization as it gives the impression that they are less capable than the others, when in fact, their versatility makes them that much more powerful. They are all Turing complete languages, so if you find them particularly limiting, that's just a skill issue.
+
+And then there's Prolog. Prolog is a truly unique language as it falls under the rare category of logic programming.
+
+Note that I consider [JavaScript](#javascript) to fall into this category as well, but it gets its own section because there are so many frameworks built for it.
+
+* **Lua**:
+  * [Lua](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp).
+* **Perl**:
+  * [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp).
+* **PHP**:
+  * [Fat Free](https://github.com/darren277/RESTettaStone/tree/master/backend/fatfreeapp).
+  * [Laravel](https://github.com/darren277/RESTettaStone/tree/master/backend/laravelapp).
+  * [Symfony](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp).
+* **Python**:
+  * [Django](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp).
+  * [Flask](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp).
+  * (Still incoming) [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp).
+* **Ruby**:
+  * [Rails](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp).
+* **Prolog**:
+  * [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp).
+
+#### JavaScript
+
+This language gets its own category simply because it is so frequently used in front end frameworks.
+
+* **Back End JS**:
+  * [Bun](https://github.com/darren277/RESTettaStone/tree/master/backend/bunapp).
+  * [Firebase](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp).
+  * [Node](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp).
+* **Front End JS**:
+  * [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp).
+  * [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp).
+  * [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp).
+  * [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp).
+  * [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp).
+  * [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp).
+  * [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp).
+  * [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp).
+
+### Metrics
+
+**NOTE**: **This section is a work in progress.**
+
+This is where I will discuss the various trade offs between the different languages and frameworks.
+
+#### Qualitative
+
+##### Simplicity
+
+This is where I will discuss the trade off between simplicity and complexity of code (from a human readability standpoint, not in terms of, say, cyclic complexity, which is a more quantitative measure). This includes factors such as intuitiveness, ease of use, and the number of lines of code needed to accomplish a given task.
+
+#### Quantitative
+
+##### Performance
+
+TBD...
+
+#### Both Qualitative and Quantitative
+
+##### Security
+
+TBD...
+
+##### Safety
+
+Type safety, memory safety, etc.

@@ -1,4 +1,23 @@
-
 upstream reactapp {
     server ${REACTAPP_IP}:${REACTAPP_PORT};
+}
+
+upstream vueapp {
+    server ${VUEAPP_IP}:${VUEAPP_PORT};
+}
+
+upstream angularapp {
+    server ${ANGULARAPP_IP}:${ANGULARAPP_PORT};
+}
+
+upstream gatsbyapp {
+    server ${GATSBYAPP_IP}:${GATSBYAPP_PORT};
+}
+
+upstream reactfiberapp {
+    server ${REACTFIBERAPP_IP}:${REACTFIBERAPP_PORT};
+}
+
+upstream nextapp {
+    server ${NEXTAPP_IP}:${NEXTAPP_PORT};
 }

@@ -2,6 +2,7 @@ include .env
 
 PG_VARS=--env PG_USER=$(PG_USER) --env PG_PASS=$(PG_PASS) --env PG_DB=$(PG_DB) --env PG_HOST=$(PG_IP) --env PG_PORT=$(PG_PORT)
 PG_VARS_BUILD=--build-arg PG_USER=$(PG_USER) --build-arg PG_PASS=$(PG_PASS) --build-arg PG_DB=$(PG_DB) --build-arg PG_HOST=$(PG_IP) --build-arg PG_PORT=$(PG_PORT)
+FIREBASE_VARS_BUILD=--build-arg FIREBASE_API_KEY=$(FIREBASE_API_KEY) --build-arg FIREBASE_AUTH_DOMAIN=$(FIREBASE_AUTH_DOMAIN) --build-arg FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID) --build-arg FIREBASE_STORAGE_BUCKET=$(FIREBASE_STORAGE_BUCKET) --build-arg FIREBASE_MESSAGING_SENDER_ID=$(FIREBASE_MESSAGING_SENDER_ID) --build-arg FIREBASE_APP_ID=$(FIREBASE_APP_ID) --build-arg FIREBASE_MEASUREMENT_ID=$(FIREBASE_MEASUREMENT_ID)
 
 
 crowapp-build:
@@ -9,6 +10,9 @@ crowapp-build:
 
 crowapp-run:
 	cd backend/crowapp && docker run -d -it --rm --name crow_app_container --env CROWAPP_PORT=$(CROWAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CROWAPP_IP) -p $(CROWAPP_PORT):$(CROWAPP_PORT) crow_app:1
+
+crowapp-test:
+	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/api/users
 
 
 aspnetapp-build:
@@ -135,3 +139,51 @@ flaskapp-build:
 
 flaskapp-run:
 	cd backend/flaskapp && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1
+
+
+laravelapp-build:
+	cd backend/laravelapp && docker build --build-arg LARAVELAPP_PORT=$(LARAVELAPP_PORT) --build-arg SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS_BUILD) -t laravel_app:1 .
+
+laravelapp-run:
+	cd backend/laravelapp && docker run -d -it --rm --name laravel_app_container --env LARAVELAPP_PORT=$(LARAVELAPP_PORT) --env SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS) --net $(SUBNET_NAME) --ip $(LARAVELAPP_IP) -p $(LARAVELAPP_PORT):$(LARAVELAPP_PORT) laravel_app:1
+
+
+djangoapp-build:
+	cd backend/djangoapp && docker build --build-arg DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS_BUILD) -t django_app:1 .
+
+djangoapp-run:
+	cd backend/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
+
+
+tomcatapp-build:
+	cd backend/tomcatapp && docker build --build-arg TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS_BUILD) -t tomcat_app:1 .
+
+tomcatapp-run:
+	cd backend/tomcatapp && docker run -d -it --rm --name tomcat_app_container --env TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(TOMCATAPP_IP) -p $(TOMCATAPP_PORT):$(TOMCATAPP_PORT) tomcat_app:1
+
+
+fatfreeapp-build:
+	cd backend/fatfreeapp && docker build --build-arg FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS_BUILD) -t fatfree_app:1 .
+
+fatfreeapp-run:
+	cd backend/fatfreeapp && docker run -d -it --rm --name fatfree_app_container --env FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FATFREEAPP_IP) -p $(FATFREEAPP_PORT):$(FATFREEAPP_PORT) fatfree_app:1
+
+
+phpapp-build:
+	cd backend/phpapp && docker build --build-arg PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS_BUILD) -t php_app:1 .
+
+phpapp-run:
+	cd backend/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
+
+
+firebaseapp-build:
+	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
+
+firebaseapp-run:
+	cd backend/firebaseapp && docker run -d -it --rm --name firebase_app_container --env FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) --net $(SUBNET_NAME) --ip $(FIREBASEAPP_IP) -p $(FIREBASEAPP_PORT):$(FIREBASEAPP_PORT) firebase_app:1
+
+firebaseapp-test-create-user:
+	docker exec -it debugger curl -X POST -H "Content-Type: application/json" -d '{"id":1, "email":"tester@gmail.com"}' http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/api/user
+
+firebaseapp-test-get-users:
+	docker exec -it debugger curl http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/api/users

@@ -1,10 +1,47 @@
 include .env
 
 NGINX_VARS_BUILD=--build-arg NGINX_HOST=$(NGINX_HOST) --build-arg NGINX_PORT=$(NGINX_PORT)
-
+NGINX_VARS_BUILD_SSR=--build-arg NGINX_HOST=host.docker.internal --build-arg NGINX_PORT=$(NGINX_PORT)
 
 reactapp-build:
 	cd frontend/reactapp && docker build --build-arg REACTAPP_PORT=$(REACTAPP_PORT) $(NGINX_VARS_BUILD) -t react_app:1 .
 
 reactapp-run:
 	cd frontend/reactapp && docker run -d -it --rm --name react_app_container --env REACTAPP_PORT=$(REACTAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTAPP_IP) -p $(REACTAPP_PORT):$(REACTAPP_PORT) react_app:1
+
+
+vueapp-build:
+	cd frontend/vueapp && docker build --build-arg VUEAPP_PORT=$(VUEAPP_PORT) $(NGINX_VARS_BUILD) -t vue_app:1 .
+
+vueapp-run:
+	cd frontend/vueapp && docker run -d -it --rm --name vue_app_container -v logs:/var/log --env VUEAPP_PORT=$(VUEAPP_PORT) --net $(SUBNET_NAME) --ip $(VUEAPP_IP) -p $(VUEAPP_PORT):$(VUEAPP_PORT) vue_app:1
+
+
+angularapp-build:
+	cd frontend/angularapp && docker build --build-arg ANGULARAPP_PORT=$(ANGULARAPP_PORT) $(NGINX_VARS_BUILD) -t angular_app:1 .
+
+angularapp-run:
+	cd frontend/angularapp && docker run -d -it --rm --name angular_app_container --env ANGULARAPP_PORT=$(ANGULARAPP_PORT) --net $(SUBNET_NAME) --ip $(ANGULARAPP_IP) -p $(ANGULARAPP_PORT):$(ANGULARAPP_PORT) angular_app:1
+
+
+gatsbyapp-build:
+	cd frontend/gatsbyapp && docker build --build-arg GATSBYAPP_PORT=$(GATSBYAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t gatsby_app:1 .
+
+# --add-host=host.docker.internal:host-gateway
+gatsbyapp-run:
+	cd frontend/gatsbyapp && docker run --add-host=host.docker.internal:host-gateway -d -it --rm --name gatsby_app_container --env GATSBYAPP_PORT=$(GATSBYAPP_PORT) --net $(SUBNET_NAME) --ip $(GATSBYAPP_IP) -p $(GATSBYAPP_PORT):$(GATSBYAPP_PORT) gatsby_app:1
+
+
+reactfiberapp-build:
+	cd frontend/reactfiberapp && docker build --build-arg REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) $(NGINX_VARS_BUILD) -t reactfiber_app:1 .
+
+reactfiberapp-run:
+	cd frontend/reactfiberapp && docker run -d -it --rm --name reactfiber_app_container --env REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTFIBERAPP_IP) -p $(REACTFIBERAPP_PORT):$(REACTFIBERAPP_PORT) reactfiber_app:1
+
+
+nextapp-build:
+	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t next_app:1 .
+
+# --add-host=host.docker.internal:host-gateway
+nextapp-run:
+	cd frontend/nextapp && docker run --add-host=host.docker.internal:host-gateway -d -it --rm --name next_app_container --env NEXTAPP_PORT=$(NEXTAPP_PORT) --net $(SUBNET_NAME) --ip $(NEXTAPP_IP) -p $(NEXTAPP_PORT):$(NEXTAPP_PORT) next_app:1

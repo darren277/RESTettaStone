@@ -1,0 +1,31 @@
+{
+  "name": "gatsby-app",
+  "description": "Gatsby App",
+  "version": "1.0.0",
+  "author": "Darren MacKenzie <darren277@yahoo.com>",
+  "dependencies": {
+    "gatsby": "^5.13.7",
+    "gatsby-link": "^5.13.1",
+    "gatsby-plugin-catch-links": "^5.13.1",
+    "gatsby-plugin-react-helmet": "^6.13.1",
+    "gatsby-source-filesystem": "^5.13.1",
+    "gatsby-transformer-remark": "^6.13.1",
+    "react-helmet": "^6.1.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-scripts": "5.0.1",
+    "crypto-js": "^4.2.0",
+    "@types/crypto-js": "^4.2.2"
+  },
+  "keywords": ["gatsby"],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write 'src/**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "prettier": "^1.11.1"
+  }
+}
