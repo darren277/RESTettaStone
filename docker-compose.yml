@@ -1,0 +1,87 @@
+services:
+  rails:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    image: restetta-stone-flask
+    command: gunicorn -b :5000 server:app
+    environment:
+      - PGHOST=db
+      - PGDB=${PGDB}
+      - PGUSER=${PGUSER}
+      - PGPASS=${PGPASS}
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+    image: restetta-stone-react-client
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_ADMIN=postgres
+      - POSTGRES_ADMIN_PASSWORD=${PG_ADMIN_PASS}
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASS}
+      - POSTGRES_DB=${PGDB}
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    image: restetta-stone-nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - api
+      - client
+  php:
+    build:
+      context: .
+      dockerfile: phpapp/Dockerfile
+    image: restetta-stone-php
+    ports:
+      - 9000:9000
+    depends_on:
+      - api
+      - client
+    networks:
+      - internal
+  springboot:
+    volumes:
+      - "${HOME}/.m2:/root/.m2"
+    build:
+      context: .
+      dockerfile: springboot/Dockerfile
+    image: restetta-stone-springboot
+    ports:
+      - 8080:8080
+    depends_on:
+      - api
+      - client
+    networks:
+      - mynet123
+volumes:
+  postgres_data:
+
+networks:
+    default:
+        name: mynet123
+        external: true
+
+
