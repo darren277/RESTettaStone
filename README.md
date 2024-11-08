@@ -550,21 +550,21 @@ This category is pretty straight forward. These are the primarily object oriente
 #### Procedural
 
 * **Fortran**:
-  * [Fortran](https://github.com/darren277/RESTettaStone/tree/master/backend/fortranapp).
+  * (Still incoming) [Fortran](https://github.com/darren277/RESTettaStone/tree/master/backend/fortranapp).
 * **Pascal**:
-  * [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascalapp).
+  * (Still incoming) [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascalapp).
 * **COBOL**:
-  * [COBOL](https://github.com/darren277/RESTettaStone/tree/master/backend/cobolapp).
+  * (Still incoming) [COBOL](https://github.com/darren277/RESTettaStone/tree/master/backend/cobolapp).
 
 #### Functional
 
 These languages are the prototypical functional programming languages.
 
 * **Lisp**:
-  * [Lisp](https://github.com/darren277/RESTettaStone/tree/master/backend/lispapp).
+  * (Still incoming) [Lisp](https://github.com/darren277/RESTettaStone/tree/master/backend/lispapp).
 * **Haskell**:
-  * [Haskell](https://github.com/darren277/RESTettaStone/tree/master/backend/haskellapp).
-  * [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/spockapp).
+  * (Still incoming) [Haskell](https://github.com/darren277/RESTettaStone/tree/master/backend/haskellapp).
+  * (Still incoming) [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/spockapp).
 
 #### Multi-Paradigm
 
@@ -598,7 +598,7 @@ Note that I consider [JavaScript](#javascript) to fall into this category as wel
 * **Python**:
   * [Django](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp).
   * [Flask](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp).
-  * [Chalice](https://github.com/darren277/RESTettaStone/tree/master/backend/chaliceapp).
+  * (Still incoming) [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp).
 * **Ruby**:
   * [Rails](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp).
 * **Prolog**:
