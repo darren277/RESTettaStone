@@ -93,3 +93,7 @@ upstream tomcatapp {
 upstream fatfreeapp {
     server ${FATFREEAPP_IP}:${FATFREEAPP_PORT};
 }
+
+upstream phpapp {
+    server ${PHPAPP_IP}:${PHPAPP_PORT};
+}
