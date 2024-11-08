@@ -42,6 +42,24 @@
       - [Project Structure](#project-structure)
       - [URL Routing](#url-routing)
       - [Django REST Framework](#django-rest-framework)
+  * [Comparisons](#comparisons)
+    + [Projects by Language](#projects-by-language)
+      - [Classic](#classic)
+      - [Performant](#performant)
+      - [Procedural](#procedural)
+      - [Object Oriented](#object-oriented)
+      - [Functional](#functional)
+      - [Multi-Paradigm](#multi-paradigm)
+      - [Versatile or Other](#versatile-or-other)
+      - [JavaScript](#javascript)
+    + [Metrics](#metrics)
+      - [Qualitative](#qualitative)
+        - [Simplicity](#simplicity)
+      - [Quantitative](#quantitative)
+        - [Performance](#performance)
+      - [Both Qualitative and Quantitative](#both-qualitative-and-quantitative)
+        - [Security](#security)
+        - [Safety](#safety)
 
 # About
 
@@ -484,3 +502,148 @@ It is pretty clear that Django proper is meant to be server HTML files (in the f
 For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
 
 In fact, I may add such a subproject to the ever growing collection here.
+
+## Comparisons
+
+### Projects by Language
+
+Please note that some of these categorizations are a bit arbitrary and open to debate. I simply wanted to cluster them for readability sake.
+
+#### Classic
+
+See also: [Performant](#performant)
+
+* **C**: See [Series of Tubes repo](https://github.com/darren277/series-of-tubes).
+* **C++**:
+  * [Crow](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp).
+
+#### Performant
+
+See also: [C and C++](#classic)
+
+These are the languages frequently used for compiled system level applications, where memory management and type safety are of critical concern.
+
+* **Rust**:
+  * [Actix](https://github.com/darren277/RESTettaStone/tree/master/backend/actixapp).
+  * [Rocket](https://github.com/darren277/RESTettaStone/tree/master/backend/rocketapp).
+  * See also: [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+  * Yew (Front end framework): See [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+* **Zig**:
+  * [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp).
+* **Go**:
+  * [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/goapp).
+* **D**:
+  * [Vibe](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp).
+
+#### Object Oriented
+
+This category is pretty straight forward. These are the primarily object oriented languages.
+
+(PS: As a personal aside, these are by far my least favorite languages to work with. I frequently refer to them as the boilerplate languages as it takes so many lines of code to write the equivalent to other languages. And it's not even that I dislike object oriented programming. Python, JavaScript, and Ruby also allow for OOP without all the excessive boilerplate. See also: The [discussion regarding language simplicity](#simplicity))
+
+* **C#**:
+  * [Asp.Net](https://github.com/darren277/RESTettaStone/tree/master/backend/aspnetapp).
+* **Java**:
+  * [SpringBoot](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp).
+  * [Tomcat](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp).
+
+#### Procedural
+
+* **Fortran**:
+  * [Fortran](https://github.com/darren277/RESTettaStone/tree/master/backend/fortranapp).
+* **Pascal**:
+  * [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascalapp).
+* **COBOL**:
+  * [COBOL](https://github.com/darren277/RESTettaStone/tree/master/backend/cobolapp).
+
+#### Functional
+
+These languages are the prototypical functional programming languages.
+
+* **Lisp**:
+  * [Lisp](https://github.com/darren277/RESTettaStone/tree/master/backend/lispapp).
+* **Haskell**:
+  * [Haskell](https://github.com/darren277/RESTettaStone/tree/master/backend/haskellapp).
+  * [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/spockapp).
+
+#### Multi-Paradigm
+
+With these languages, you get to have the best of both worlds. You can write object oriented code or you can write functional code. Or you can mix the two.
+
+* **Scala**:
+  * [Play](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp).
+* **Swift**:
+  * [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp).
+* **F#**:
+  * [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp).
+
+#### Versatile or Other
+
+This category is almost a catch all of sorts. These are languages that can be written with different paradigms in mind, perhaps have loose typing, and are generally more flexible.
+
+Some of these languages are frequently categorized as "scripting languages." I'm a not a big fan of that particular characterization as it gives the impression that they are less capable than the others, when in fact, their versatility makes them that much more powerful. They are all Turing complete languages, so if you find them particularly limiting, that's just a skill issue.
+
+And then there's Prolog. Prolog is a truly unique language as it falls under the rare category of logic programming.
+
+* **Lua**:
+  * [Lua](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp).
+* **Perl**:
+  * [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp).
+* **PHP**:
+  * [Fat Free](https://github.com/darren277/RESTettaStone/tree/master/backend/fatfreeapp).
+  * [Laravel](https://github.com/darren277/RESTettaStone/tree/master/backend/laravelapp).
+  * [Symfony](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp).
+* **Python**:
+  * [Django](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp).
+  * [Flask](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp).
+  * [Chalice](https://github.com/darren277/RESTettaStone/tree/master/backend/chaliceapp).
+* **Ruby**:
+  * [Rails](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp).
+* **Prolog**:
+  * [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp).
+
+#### JavaScript
+
+This language gets its own category simply because it is so frequently used in front end frameworks.
+
+* **Back End JS**:
+  * [Bun](https://github.com/darren277/RESTettaStone/tree/master/backend/bunapp).
+  * [Firebase](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp).
+  * [Node](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp).
+* **Front End JS**:
+  * [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp).
+  * [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp).
+  * [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp).
+  * [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp).
+  * [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp).
+  * [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp).
+  * [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp).
+  * [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp).
+
+### Metrics
+
+**NOTE**: **This section is a work in progress.**
+
+This is where I will discuss the various trade offs between the different languages and frameworks.
+
+#### Qualitative
+
+##### Simplicity
+
+This is where I will discuss the trade off between simplicity and complexity of code (from a human readability standpoint, not in terms of, say, cyclic complexity, which is a more quantitative measure). This includes factors such as intuitiveness, ease of use, and the number of lines of code needed to accomplish a given task.
+
+#### Quantitative
+
+##### Performance
+
+TBD...
+
+#### Both Qualitative and Quantitative
+
+##### Security
+
+TBD...
+
+##### Safety
+
+Type safety, memory safety, etc.
