@@ -176,6 +176,13 @@ phpapp-run:
 	cd backend/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
 
 
+spockapp-build:
+	cd backend/spockapp && docker build --build-arg SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS_BUILD) -t spock_app:1 .
+
+spockapp-run:
+	cd backend/spockapp && docker run -d -it --rm --name spock_app_container --env SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPOCKAPP_IP) -p $(SPOCKAPP_PORT):$(SPOCKAPP_PORT) spock_app:1
+
+
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
