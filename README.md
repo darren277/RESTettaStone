@@ -507,7 +507,7 @@ In fact, I may add such a subproject to the ever growing collection here.
 
 ### Projects by Language
 
-Please note that some of these categorizations are a bit arbitrary and open to debate. I simply wanted to cluster them for readability sake.
+Please note that some of these categorizations are a bit arbitrary and open to debate. I simply wanted to cluster them for readability sake (refer to the concept of ["chunking"](https://en.wikipedia.org/wiki/Chunking_(psychology)) in cognitive psychology research into working memory).
 
 #### Classic
 
@@ -579,11 +579,13 @@ With these languages, you get to have the best of both worlds. You can write obj
 
 #### Versatile or Other
 
-This category is almost a catch all of sorts. These are languages that can be written with different paradigms in mind, perhaps have loose typing, and are generally more flexible.
+This category is almost a catch all of sorts. These are languages that can be written with different paradigms in mind, perhaps have loose typing, and are generally more flexible. While I created a dedicated section for Scala, Swift, and F# as the "multi-paradigm" languages, they could just as easily fit into this cluster. However, [as mentioned above](#projects-by-language), I am categorizing these mostly for the sake of readability.
 
 Some of these languages are frequently categorized as "scripting languages." I'm a not a big fan of that particular characterization as it gives the impression that they are less capable than the others, when in fact, their versatility makes them that much more powerful. They are all Turing complete languages, so if you find them particularly limiting, that's just a skill issue.
 
 And then there's Prolog. Prolog is a truly unique language as it falls under the rare category of logic programming.
+
+Note that I consider [JavaScript](#javascript) to fall into this category as well, but it gets its own section because there are so many frameworks built for it.
 
 * **Lua**:
   * [Lua](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp).
