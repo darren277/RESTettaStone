@@ -176,6 +176,13 @@ phpapp-run:
 	cd backend/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
 
 
+haskellapp-build:
+	cd backend/haskellapp && docker build --build-arg HASKELLAPP_PORT=$(HASKELLAPP_PORT) $(PG_VARS_BUILD) -t haskell_app:1 .
+
+haskellapp-run:
+	cd backend/haskellapp && docker run -d -it --rm --name haskell_app_container --env HASKELLAPP_PORT=$(HASKELLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(HASKELLAPP_IP) -p $(HASKELLAPP_PORT):$(HASKELLAPP_PORT) haskell_app:1
+
+
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
