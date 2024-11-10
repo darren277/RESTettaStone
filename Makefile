@@ -43,6 +43,14 @@ nginx-v2-run:
 	docker run -it --name nginx-v2 -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env ENTRYPOINT_VERSION=2 --env NGINX_PORT=$(NGINX_PORT) --env LOCATIONS="-more" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx-v2:latest
 
 
+apache-build:
+	cd server/apache && docker build --build-arg APACHE_PORT=$(APACHE_PORT) -t apache:latest .
+
+# apachectl -D FOREGROUND
+apache-run:
+	docker run -it --name apache -p $(APACHE_PORT):$(APACHE_PORT) --env-file ".env" --env APACHE_PORT=$(APACHE_PORT) --net $(SUBNET_NAME) --ip $(APACHE_IP) -d apache:latest
+
+
 debugger-build:
 	cd other/debugger && docker build -t debugger:1 .
 

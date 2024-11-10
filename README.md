@@ -157,6 +157,13 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A        | Y                   |           |
 | Chalice                                                                                     |            |                     |           |
 
+### Servers
+
+|                                                                                      | Dockerized | Backend Integration | Frontend Integration |
+|--------------------------------------------------------------------------------------|------------|---------------------|----------------------|
+| [Nginx](https://github.com/darren277/RESTettaStone/tree/master/server/nginx)         | Y          | Y                   | Y                    |
+| [Apache Httpd](https://github.com/darren277/RESTettaStone/tree/master/server/apache) | Y          | Y                   | Y                    |
+
 ## Standing on the Shoulders of Giants
 
 In many cases, I made use of some existing projects out there as templates or boilerplate. I wound up modifying many of the Dockerfiles I found, for example, quite substantially, to suit my custom needs. There were also a few repositories I found on GitHub that helped guide my initial efforts for some of the languages where I significantly lacked direct experience.
