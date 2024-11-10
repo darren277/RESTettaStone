@@ -175,6 +175,9 @@ phpapp-build:
 phpapp-run:
 	cd backend/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
 
+phpapp-test:
+	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/app.php/users
+
 
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
