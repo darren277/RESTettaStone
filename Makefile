@@ -48,7 +48,7 @@ apache-build:
 
 # apachectl -D FOREGROUND
 apache-run:
-	docker run -it --name apache -p $(APACHE_PORT):$(APACHE_PORT) --env APACHE_PORT=$(APACHE_PORT) --net $(SUBNET_NAME) --ip $(APACHE_IP) -d apache:latest
+	docker run -it --name apache -p $(APACHE_PORT):$(APACHE_PORT) --env-file ".env" --env APACHE_PORT=$(APACHE_PORT) --net $(SUBNET_NAME) --ip $(APACHE_IP) -d apache:latest
 
 
 debugger-build:
