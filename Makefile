@@ -1,7 +1,7 @@
 include .env
 PYTHON_BIN=venv/Scripts/
 
-.PHONY: b f
+.PHONY: b f aws
 
 
 docker-subnet:
@@ -88,6 +88,10 @@ b:
 # NOTE FOR THE READER: There is no such file at the moment as the frontend applications have not been added yet.
 f:
 	@$(MAKE) -s -C . -f Makefile.frontend $(filter-out $@,$(MAKECMDGOALS))
+
+# AWS: Runs commands in Makefile.aws
+aws:
+	@$(MAKE) -s -C . -f Makefile.aws $(filter-out $@,$(MAKECMDGOALS))
 
 
 # This is to avoid "No rule to make target" errors.

@@ -1,0 +1,4 @@
+include .env
+
+chalice-deploy:
+	cd other/chaliceapp && ../../venv/Scripts/chalice deploy
