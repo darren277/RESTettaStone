@@ -1,7 +1,7 @@
 include .env
 PYTHON_BIN=venv/Scripts/
 
-.PHONY: b f
+.PHONY: b f aws
 
 
 docker-subnet:
@@ -43,6 +43,14 @@ nginx-v2-run:
 	docker run -it --name nginx-v2 -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env ENTRYPOINT_VERSION=2 --env NGINX_PORT=$(NGINX_PORT) --env LOCATIONS="-more" --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx-v2:latest
 
 
+apache-build:
+	cd server/apache && docker build --build-arg APACHE_PORT=$(APACHE_PORT) -t apache:latest .
+
+# apachectl -D FOREGROUND
+apache-run:
+	docker run -it --name apache -p $(APACHE_PORT):$(APACHE_PORT) --env-file ".env" --env APACHE_PORT=$(APACHE_PORT) --net $(SUBNET_NAME) --ip $(APACHE_IP) -d apache:latest
+
+
 debugger-build:
 	cd other/debugger && docker build -t debugger:1 .
 
@@ -80,6 +88,10 @@ b:
 # NOTE FOR THE READER: There is no such file at the moment as the frontend applications have not been added yet.
 f:
 	@$(MAKE) -s -C . -f Makefile.frontend $(filter-out $@,$(MAKECMDGOALS))
+
+# AWS: Runs commands in Makefile.aws
+aws:
+	@$(MAKE) -s -C . -f Makefile.aws $(filter-out $@,$(MAKECMDGOALS))
 
 
 # This is to avoid "No rule to make target" errors.

@@ -22,4 +22,9 @@ EXPOSE $REACTAPP_PORT
 RUN echo "REACT_APP_NGINX_HOST=$NGINX_HOST" > /app/.env
 RUN echo "REACT_APP_NGINX_PORT=$NGINX_PORT" >> /app/.env
 
-CMD ["npm" , "start"]
+#CMD ["npm" , "start"]
+#To create a production build, use npm run build.
+RUN npm run build
+
+RUN yarn global add serve
+CMD serve -s build -l $REACTAPP_PORT

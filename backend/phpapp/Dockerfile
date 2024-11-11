@@ -26,3 +26,5 @@ COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./ /var/www/html/
 
 EXPOSE $PORT
+
+CMD php -S 0.0.0.0:9000 -t /var/www/html

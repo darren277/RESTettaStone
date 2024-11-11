@@ -155,7 +155,14 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |---------------------------------------------------------------------------------------------|------------|---------------------|-----------|
 | [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A        | Y                   |           |
 | [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A        | Y                   |           |
-| Chalice                                                                                     |            |                     |           |
+| [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A        | N/A                 |           |
+
+### Servers
+
+|                                                                                      | Dockerized | Backend Integration | Frontend Integration |
+|--------------------------------------------------------------------------------------|------------|---------------------|----------------------|
+| [Nginx](https://github.com/darren277/RESTettaStone/tree/master/server/nginx)         | Y          | Y                   | Y                    |
+| [Apache Httpd](https://github.com/darren277/RESTettaStone/tree/master/server/apache) | Y          | Y                   | Y                    |
 
 ## Standing on the Shoulders of Giants
 

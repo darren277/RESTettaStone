@@ -1,0 +1,45 @@
+LoadModule unixd_module modules/mod_unixd.so
+
+LoadModule authz_core_module modules/mod_authz_core.so
+LoadModule authn_core_module modules/mod_authn_core.so
+
+LoadModule mpm_event_module modules/mod_mpm_event.so
+
+LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
+
+LoadModule log_config_module modules/mod_log_config.so
+
+# Add these modules for proxying and rewriting
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
+LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule headers_module modules/mod_headers.so
+
+ServerName localhost
+ServerRoot "/usr/local/apache2"
+
+Listen ${APACHE_PORT}
+
+DocumentRoot "/usr/local/apache2/htdocs"
+
+<Directory "/usr/local/apache2/htdocs">
+    AllowOverride None
+    Require all granted
+</Directory>
+
+Include /usr/local/apache2/conf/locations-frontend.conf
+
+<VirtualHost *:${APACHE_PORT}>
+    # Set headers
+    #RequestHeader set Host "%{HTTP_HOST}s"
+    #RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
+    #RequestHeader set X-Forwarded-For "%{REMOTE_ADDR}s"
+
+    Include /usr/local/apache2/conf/locations.conf
+
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    ErrorLog "/usr/local/apache2/logs/error_log"
+    CustomLog "/usr/local/apache2/logs/access_log" combined
+</VirtualHost>
