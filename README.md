@@ -21,6 +21,7 @@
   * [Using the Makefile](#using-the-makefile)
     + [Overview of Commands](#overview-of-commands)
       - [Docker](#docker)
+  * [Using Docker Compose](#using-docker-compose)
   * [Debugger / Tester](#debugger---tester)
   * [Performance Testing with Locust](#performance-testing-with-locust)
 - [Lessons](#lessons)
@@ -30,6 +31,8 @@
     + [Docker Gotchas](#docker-gotchas)
       - [ARGS and Multi Stage Builds](#args-and-multi-stage-builds)
       - [Exec Form vs Shell Form for ENTRYPOINT:](#exec-form-vs-shell-form-for-entrypoint-)
+    + [Docker Compose Gotchas](#docker-compose-gotchas)
+      - [Dynamic Build Args](#dynamic-build-args)
     + [Make Gotchas](#make-gotchas)
       - [Tabs vs Spaces](#tabs-vs-spaces)
   * [Language and Framework Gotchas](#language-and-framework-gotchas)
@@ -262,6 +265,28 @@ This will, of course, become rather long and cumbersome over time, so I will lik
 
 The Makefile, which requires installation of `make` if you do not already have it, is provided to fascilitate the execution of many of the commands needed to run the different pieces of this project.
 
+## Using Docker Compose
+
+**NOTE**: I've abandoned this route as I absolutely refuse to hardcode the build args directly inside of the `docker-compose.yml` file.
+
+For a project of this size, with dozens of subprojects each with their own `Docker` container specifications, it just doesn't make sense if Docker Compose won't accomodate dynamic build arg interpolation.
+
+See also: [The build arg gotcha](#docker-compose-gotchas).
+
+For the sake of prosperity, I still include the existing `docker-compose.yml` file in the root directory for anyone who would like to build upon it.
+
+If you'd like to try using the `docker-compose.yml` file, you can do so by running the following command from the CLI:
+
+```shell
+docker-compose up
+```
+
+Two things to note:
+1. I have not yet added every single subproject to the `docker-compose.yml` file. This would be rather tedious, very repetitive, and essentially unecessary for the time being. The `Makefile` and each individual `Dockerfile` do the job just fine.
+2. Since the YAML keys cannot be interpolated with environment variables, I had to hardcode the network name which bothers me in an OCD kind of way. It's obviously not a huge deal, but it irks me just a smidge.
+
+See also: [Build args gotcha](#docker-compose-gotchas).
+
 ### Overview of Commands
 
 #### Docker
@@ -379,6 +404,23 @@ Does NOT work (`exec form`): `ENTRYPOINT ["dotnet", "aspnetapp.dll", "--urls", $
 DOES work (`shell form`): `ENTRYPOINT dotnet aspnetapp.dll --urls $URL`
 
 Refer to: https://stackoverflow.com/questions/37904682/how-do-i-use-docker-environment-variable-in-entrypoint-array
+
+### Docker Compose Gotchas
+
+#### Dynamic Build Args
+
+Wow, just wow.
+
+After hours of trial and error and revisiting the docs and various StackOverflow discussions, it turns out there's really no way to dynamically populate build args from a file.
+
+This is incredibly disappointing, as the only work arounds are either:
+1. Passing the build args in manually via the CLI, which of course would be utterly redundant with respect to the `Makefile` protocol I'm already using.
+2. Writing some kind of script to generate the `docker-compose.yml` file, which, again, would simply be completely redundant.
+3. Hardcoding the values in the `docker-compose.yml` file, which I'm just plain not a fan of.
+
+So I'm pretty much abandoning the Docker compose route here.
+
+For prosperity's sake, I'm going to include the `docker-compose.yml` file that I had started on, even though it won't work unless you use one of the three mechanisms I just mentioned for injecting the build args, which I just refuse to do on principle. But feel free to give it a go if you're up for it.
 
 ### Make Gotchas
 
