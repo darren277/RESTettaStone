@@ -1,4 +1,15 @@
 include .env
 
 chalice-deploy:
-	cd other/chaliceapp && ../../venv/Scripts/chalice deploy
+	cd other/chaliceapp && ../../venv/Scripts/chalice deploy --profile $(AWS_PROFILE)
+
+chalice-test:
+	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/api/users
+
+dynamodb-create:
+	aws dynamodb create-table --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --attribute-definitions AttributeName=ID,AttributeType=S --key-schema AttributeName=ID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
+dynamodb-add-test-users:
+	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "1"}, "email": {"S": "user1@mail.com"}}'
+	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "2"}, "email": {"S": "user2@mail.com"}}'
+	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "3"}, "email": {"S": "user3@mail.com"}}'
