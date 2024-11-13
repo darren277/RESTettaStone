@@ -94,6 +94,10 @@ upstream fatfreeapp {
     server ${FATFREEAPP_IP}:${FATFREEAPP_PORT};
 }
 
+upstream clojureapp {
+    server ${CLOJUREAPP_IP}:${CLOJUREAPP_PORT};
+}
+
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
