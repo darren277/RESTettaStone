@@ -179,6 +179,13 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/app.php/users
 
 
+clojureapp-build:
+	cd backend/clojureapp && docker build --build-arg CLOJUREAPP_PORT=$(CLOJUREAPP_PORT) $(PG_VARS_BUILD) -t clojure_app:1 .
+
+clojureapp-run:
+	cd backend/clojureapp && docker run -d -it --rm --name clojure_app_container --env CLOJUREAPP_PORT=$(CLOJUREAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CLOJUREAPP_IP) -p $(CLOJUREAPP_PORT):$(CLOJUREAPP_PORT) clojure_app:1
+
+
 firebaseapp-build:
 	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
