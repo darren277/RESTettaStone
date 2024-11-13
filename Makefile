@@ -78,6 +78,10 @@ ngrok:
 	docker run --net=host -it -e NGROK_AUTHTOKEN=$(NGROK_AUTHTOKEN) ngrok/ngrok:latest http --log=stdout --url=$(NGROK_URL) http://127.0.0.1:$(NGROK_PORT)
 
 
+prometheus:
+	cd other/monitoring/prometheus && GF_SECURITY_ADMIN_PASSWORD=$(GF_SECURITY_ADMIN_PASSWORD) docker-compose up
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend
