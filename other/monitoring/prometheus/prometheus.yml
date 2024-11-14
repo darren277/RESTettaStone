@@ -59,3 +59,7 @@ scrape_configs:
         replacement: "blackbox_exporter:9115"  # Blackbox exporter.
       - target_label: region
         replacement: "local"
+
+  - job_name: 'flaskapp'
+    static_configs:
+      - targets: ['172.18.0.30:3008']
