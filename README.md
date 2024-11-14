@@ -24,6 +24,8 @@
   * [Using Docker Compose](#using-docker-compose)
   * [Debugger / Tester](#debugger---tester)
   * [Performance Testing with Locust](#performance-testing-with-locust)
+  * [Monitoring](#monitoring)
+    + [Prometheus and Grafana](#prometheus-and-grafana)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -155,10 +157,11 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 ### Other
 
 |                                                                                             | Dockerized | Backend Integration | Full CRUD |
-|---------------------------------------------------------------------------------------------|------------|---------------------|-----------|
-| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A        | Y                   |           |
-| [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A        | Y                   |           |
-| [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A        | N/A                 |           |
+|---------------------------------------------------------------------------------------------|-----------|---------------------|-----------|
+| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A       | Y                   |           |
+| [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A       | Y                   |           |
+| [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A       | N/A                 |           |
+| [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | Y         | Y                   |           |
 
 ### Servers
 
@@ -375,6 +378,22 @@ locust-run-flask:
 I may add a separate `Makefile` in the future that is defined to calling all the different performance testing configurations.
 
 In the meantime, however, I will leave that as an exercise for the reader.
+
+## Monitoring
+
+### Prometheus and Grafana
+
+There is a `docker-compose.yml` file in the `other/monitoring` directory that can be used to start a Prometheus monitoring and alerting system with Grafana configured for some very simple dashboard visuals.
+
+To access the Prometheus dashboard, navigate to `http://localhost:9090`.
+
+To access the Grafana dashboard, navigate to `http://localhost:3050`.
+
+The username is `admin`, and the password is set as an environment variable in the root `.env` file as `GF_SECURITY_ADMIN_PASSWORD`.
+
+It is currently connected to the `flaskapp` Flask back end. I will leave connecting it to other sub projects as an exercise for the reader.
+
+Note: Unlike the root project and it's `Makefile` configurations, the ports and other configuration values are currently hardcoded, which I don't particularly like, but I'll likely revisit that later. Also be aware that, currently, the volume mount for the Prometheus container is the same as the source folder, so it currently modifies the source `prometheus.yml` file each time it's run. This is not ideal, but it's another thing I'm leaving for another day.
 
 # Lessons
 

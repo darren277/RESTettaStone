@@ -6,6 +6,8 @@ from flask_sqlalchemy import *
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import DeferredReflection, declarative_base
 
+from prometheus_flask_exporter import PrometheusMetrics
+
 
 PORT = os.environ.get('PORT', 5000)
 
@@ -47,6 +49,9 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 
 cors = CORS(app)
+
+metrics = PrometheusMetrics(app)
+
 
 
 app.config['CORS_HEADERS'] = 'Content-Type'
