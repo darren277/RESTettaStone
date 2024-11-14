@@ -27,6 +27,8 @@ services:
     restart: always
     deploy:
       mode: global
+    networks:
+      - restetta
 
   node-exporter:
     image: prom/node-exporter
@@ -44,6 +46,8 @@ services:
     restart: always
     deploy:
       mode: global
+    networks:
+      - restetta
 
   alertmanager:
     image: prom/alertmanager:v0.12.0
@@ -57,6 +61,8 @@ services:
       - '-storage.path=/alertmanager'
     deploy:
       mode: global
+    networks:
+      - restetta
 
   cadvisor:
     image: google/cadvisor
@@ -70,6 +76,8 @@ services:
     restart: always
     deploy:
       mode: global
+    networks:
+      - restetta
 
   grafana:
     image: grafana/grafana:5.4.2
@@ -83,6 +91,8 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    networks:
+      - restetta
 
   blackbox_exporter:
     image: prom/blackbox-exporter:v0.10.0
@@ -93,3 +103,13 @@ services:
     command:
       - '--config.file=/etc/blackboxexporter/config.yml'
     restart: always
+    networks:
+      - restetta
+
+networks:
+    restetta:
+        name: restetta
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.0/16
