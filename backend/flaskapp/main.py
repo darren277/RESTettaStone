@@ -6,6 +6,8 @@ from flask_sqlalchemy import *
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import DeferredReflection, declarative_base
 
+from prometheus_flask_exporter import PrometheusMetrics
+
 
 PORT = os.environ.get('PORT', 5000)
 
@@ -42,7 +44,17 @@ class User(Reflected, Base):
 db = SQLAlchemy()
 
 from flask import Flask
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
+
+cors = CORS(app)
+
+metrics = PrometheusMetrics(app)
+
+
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{PG_USER}:{PG_PASS}@{PG_HOST}:{PG_PORT}/{PG_DB}'
 
@@ -62,10 +74,16 @@ def hello_world():
 
 
 @app.route('/users')
+@cross_origin()
 def users():
     users = User.query.all()
     data = {'users': [user.json() for user in users]}
     response = app.response_class(response=json.dumps(data['users']), status=200, mimetype='application/json')
+    return response
+
+@app.after_request
+def after_request(response):
+    print("Response Headers:", response.headers)
     return response
 
 

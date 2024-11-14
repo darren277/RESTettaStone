@@ -1,0 +1,85 @@
+x-pg-build-args: &pg-build-args
+  PG_HOST: $PG_HOST
+  PG_PORT: $PG_PORT
+  PG_DB: $PG_DB
+  PG_USER: $PG_USER
+  PG_PASS: $PG_PASS
+
+x-reusables: &reusables
+  #env_file: '.env'
+  depends_on:
+      - postgres
+      - nginx
+
+
+services:
+  railsapp:
+    <<: *reusables
+    build:
+      context: ./backend/railsapp
+      args:
+        <<: *pg-build-args
+        RAILSAPP_PORT: ${RAILSAPP_PORT}
+    ports:
+      - "${RAILSAPP_PORT}:${RAILSAPP_PORT}"
+    networks:
+      restetta:
+        ipv4_address: ${RAILSAPP_IP}
+  flaskapp:
+    <<: *reusables
+    build:
+      context: ./backend/flaskapp
+      args:
+        <<: *pg-build-args
+        FLASKAPP_PORT: ${FLASKAPP_PORT}
+    ports:
+      - "${FLASKAPP_PORT}:${FLASKAPP_PORT}"
+    networks:
+      restetta:
+        ipv4_address: ${FLASKAPP_IP}
+  reactapp:
+    build:
+      context: ./frontend/reactapp
+      args:
+        REACTAPP_PORT: ${REACTAPP_PORT}
+    env_file:
+      - '.env'
+    ports:
+      - "${REACTAPP_PORT}:${REACTAPP_PORT}"
+    networks:
+      restetta:
+        ipv4_address: ${REACTAPP_IP}
+    depends_on:
+      - railsapp
+      - flaskapp
+  postgres:
+    image: postgres
+    ports:
+      - "${PG_PORT}:${PG_PORT}"
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+    networks:
+      restetta:
+        ipv4_address: ${PG_IP}
+  nginx:
+    build:
+      context: ./server/nginx
+    ports:
+      - "${NGINX_PORT}:${NGINX_PORT}"
+    env_file:
+      - '.env'
+    networks:
+      restetta:
+        ipv4_address: ${NGINX_IP}
+volumes:
+  postgres_data:
+
+networks:
+    restetta:
+        name: ${SUBNET_NAME}
+        ipam:
+            driver: default
+            config:
+                - subnet: ${SUBNET_CIDR}

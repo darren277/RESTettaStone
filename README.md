@@ -21,8 +21,11 @@
   * [Using the Makefile](#using-the-makefile)
     + [Overview of Commands](#overview-of-commands)
       - [Docker](#docker)
+  * [Using Docker Compose](#using-docker-compose)
   * [Debugger / Tester](#debugger---tester)
   * [Performance Testing with Locust](#performance-testing-with-locust)
+  * [Monitoring](#monitoring)
+    + [Prometheus and Grafana](#prometheus-and-grafana)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -30,6 +33,8 @@
     + [Docker Gotchas](#docker-gotchas)
       - [ARGS and Multi Stage Builds](#args-and-multi-stage-builds)
       - [Exec Form vs Shell Form for ENTRYPOINT:](#exec-form-vs-shell-form-for-entrypoint-)
+    + [Docker Compose Gotchas](#docker-compose-gotchas)
+      - [Dynamic Build Args](#dynamic-build-args)
     + [Make Gotchas](#make-gotchas)
       - [Tabs vs Spaces](#tabs-vs-spaces)
   * [Language and Framework Gotchas](#language-and-framework-gotchas)
@@ -42,6 +47,24 @@
       - [Project Structure](#project-structure)
       - [URL Routing](#url-routing)
       - [Django REST Framework](#django-rest-framework)
+  * [Comparisons](#comparisons)
+    + [Projects by Language](#projects-by-language)
+      - [Classic](#classic)
+      - [Performant](#performant)
+      - [Procedural](#procedural)
+      - [Object Oriented](#object-oriented)
+      - [Functional](#functional)
+      - [Multi-Paradigm](#multi-paradigm)
+      - [Versatile or Other](#versatile-or-other)
+      - [JavaScript](#javascript)
+    + [Metrics](#metrics)
+      - [Qualitative](#qualitative)
+        - [Simplicity](#simplicity)
+      - [Quantitative](#quantitative)
+        - [Performance](#performance)
+      - [Both Qualitative and Quantitative](#both-qualitative-and-quantitative)
+        - [Security](#security)
+        - [Safety](#safety)
 
 # About
 
@@ -95,7 +118,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Cobol                                                                                             | '*         | '              |                      |           | Language        |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp)              | Y          | Y              | Y                    |           |                 |
 | [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp)       | Y          | Y              | Y                    |           |                 |
-| Firebase (JS)                                                                                     | '          | '              | N/A                  |           |                 |
+| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/fatfreeapp)       | Y          | Y              | Y                    |           |                 |
+| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp)       | Y          | Y              | N/A                  |           |                 |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp)         | Y          | Y              | Y                    |           |                 |
 | Fortran                                                                                           |            |                |                      |           | Language        |
 | [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp)                    | Y          | Y              | Y                    |           | ~~Language~~    |
@@ -107,6 +131,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp)               | Y          | Y              | Y                    |           |                 |
 | Pascal                                                                                            | '          | '              | '                    |           |                 |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp)                    | Y          | Y              | Y                    |           |                 |
+| [PHP](https://github.com/darren277/RESTettaStone/tree/master/backend/phpapp)                      | Y          | Y              | Y                    |           |                 |
 | [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp)            | Y          | Y              | Y                    |           |                 |
 | [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp)                | Y          | Y              | Y                    |           | ~~Language~~    |
 | [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp)           | Y          | Y              | Y                    |           |                 |
@@ -114,6 +139,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp) | Y          | Y              | Y                    |           |                 |
 | [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp)                  | Y          | Y              | Y                    |           |                 |
 | [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp)        | Y          | Y              | Y                    |           |                 |
+| [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp)         | Y          | Y              | Y                    |           |                 |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp)                | Y          | Y              | Y                    |           | ~~Networking~~  |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp)                      | Y          | Y              | Y                    |           | ~~Build~~       |
 
@@ -130,10 +156,19 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 ### Other
 
-|                                                                                      | Dockerized | Backend Integration | Full CRUD |
-|--------------------------------------------------------------------------------------|------------|---------------------|-----------|
-| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp) | N/A        | Y                   |           |
-| Chalice                                                                              |            |                     |           |
+|                                                                                             | Dockerized | Backend Integration | Full CRUD |
+|---------------------------------------------------------------------------------------------|-----------|---------------------|-----------|
+| [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A       | Y                   |           |
+| [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A       | Y                   |           |
+| [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A       | N/A                 |           |
+| [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | Y         | Y                   |           |
+
+### Servers
+
+|                                                                                      | Dockerized | Backend Integration | Frontend Integration |
+|--------------------------------------------------------------------------------------|------------|---------------------|----------------------|
+| [Nginx](https://github.com/darren277/RESTettaStone/tree/master/server/nginx)         | Y          | Y                   | Y                    |
+| [Apache Httpd](https://github.com/darren277/RESTettaStone/tree/master/server/apache) | Y          | Y                   | Y                    |
 
 ## Standing on the Shoulders of Giants
 
@@ -233,6 +268,28 @@ This will, of course, become rather long and cumbersome over time, so I will lik
 
 The Makefile, which requires installation of `make` if you do not already have it, is provided to fascilitate the execution of many of the commands needed to run the different pieces of this project.
 
+## Using Docker Compose
+
+**NOTE**: I've abandoned this route as I absolutely refuse to hardcode the build args directly inside of the `docker-compose.yml` file.
+
+For a project of this size, with dozens of subprojects each with their own `Docker` container specifications, it just doesn't make sense if Docker Compose won't accomodate dynamic build arg interpolation.
+
+See also: [The build arg gotcha](#docker-compose-gotchas).
+
+For the sake of prosperity, I still include the existing `docker-compose.yml` file in the root directory for anyone who would like to build upon it.
+
+If you'd like to try using the `docker-compose.yml` file, you can do so by running the following command from the CLI:
+
+```shell
+docker-compose up
+```
+
+Two things to note:
+1. I have not yet added every single subproject to the `docker-compose.yml` file. This would be rather tedious, very repetitive, and essentially unecessary for the time being. The `Makefile` and each individual `Dockerfile` do the job just fine.
+2. Since the YAML keys cannot be interpolated with environment variables, I had to hardcode the network name which bothers me in an OCD kind of way. It's obviously not a huge deal, but it irks me just a smidge.
+
+See also: [Build args gotcha](#docker-compose-gotchas).
+
 ### Overview of Commands
 
 #### Docker
@@ -322,6 +379,22 @@ I may add a separate `Makefile` in the future that is defined to calling all the
 
 In the meantime, however, I will leave that as an exercise for the reader.
 
+## Monitoring
+
+### Prometheus and Grafana
+
+There is a `docker-compose.yml` file in the `other/monitoring` directory that can be used to start a Prometheus monitoring and alerting system with Grafana configured for some very simple dashboard visuals.
+
+To access the Prometheus dashboard, navigate to `http://localhost:9090`.
+
+To access the Grafana dashboard, navigate to `http://localhost:3050`.
+
+The username is `admin`, and the password is set as an environment variable in the root `.env` file as `GF_SECURITY_ADMIN_PASSWORD`.
+
+It is currently connected to the `flaskapp` Flask back end. I will leave connecting it to other sub projects as an exercise for the reader.
+
+Note: Unlike the root project and it's `Makefile` configurations, the ports and other configuration values are currently hardcoded, which I don't particularly like, but I'll likely revisit that later. Also be aware that, currently, the volume mount for the Prometheus container is the same as the source folder, so it currently modifies the source `prometheus.yml` file each time it's run. This is not ideal, but it's another thing I'm leaving for another day.
+
 # Lessons
 
 ## DevOps Gotchas
@@ -350,6 +423,23 @@ Does NOT work (`exec form`): `ENTRYPOINT ["dotnet", "aspnetapp.dll", "--urls", $
 DOES work (`shell form`): `ENTRYPOINT dotnet aspnetapp.dll --urls $URL`
 
 Refer to: https://stackoverflow.com/questions/37904682/how-do-i-use-docker-environment-variable-in-entrypoint-array
+
+### Docker Compose Gotchas
+
+#### Dynamic Build Args
+
+Wow, just wow.
+
+After hours of trial and error and revisiting the docs and various StackOverflow discussions, it turns out there's really no way to dynamically populate build args from a file.
+
+This is incredibly disappointing, as the only work arounds are either:
+1. Passing the build args in manually via the CLI, which of course would be utterly redundant with respect to the `Makefile` protocol I'm already using.
+2. Writing some kind of script to generate the `docker-compose.yml` file, which, again, would simply be completely redundant.
+3. Hardcoding the values in the `docker-compose.yml` file, which I'm just plain not a fan of.
+
+So I'm pretty much abandoning the Docker compose route here.
+
+For prosperity's sake, I'm going to include the `docker-compose.yml` file that I had started on, even though it won't work unless you use one of the three mechanisms I just mentioned for injecting the build args, which I just refuse to do on principle. But feel free to give it a go if you're up for it.
 
 ### Make Gotchas
 
@@ -481,3 +571,150 @@ It is pretty clear that Django proper is meant to be server HTML files (in the f
 For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
 
 In fact, I may add such a subproject to the ever growing collection here.
+
+## Comparisons
+
+### Projects by Language
+
+Please note that some of these categorizations are a bit arbitrary and open to debate. I simply wanted to cluster them for readability sake (refer to the concept of ["chunking"](https://en.wikipedia.org/wiki/Chunking_(psychology)) in cognitive psychology research into working memory).
+
+#### Classic
+
+See also: [Performant](#performant)
+
+* **C**: See [Series of Tubes repo](https://github.com/darren277/series-of-tubes).
+* **C++**:
+  * [Crow](https://github.com/darren277/RESTettaStone/tree/master/backend/crowapp).
+
+#### Performant
+
+See also: [C and C++](#classic)
+
+These are the languages frequently used for compiled system level applications, where memory management and type safety are of critical concern.
+
+* **Rust**:
+  * [Actix](https://github.com/darren277/RESTettaStone/tree/master/backend/actixapp).
+  * [Rocket](https://github.com/darren277/RESTettaStone/tree/master/backend/rocketapp).
+  * See also: [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+  * Yew (Front end framework): See [Wasm-FRP repo](https://github.com/darren277/wasm-frp).
+* **Zig**:
+  * [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zigapp).
+* **Go**:
+  * [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/goapp).
+* **D**:
+  * [Vibe](https://github.com/darren277/RESTettaStone/tree/master/backend/vibeapp).
+
+#### Object Oriented
+
+This category is pretty straight forward. These are the primarily object oriented languages.
+
+(PS: As a personal aside, these are by far my least favorite languages to work with. I frequently refer to them as the boilerplate languages as it takes so many lines of code to write the equivalent to other languages. And it's not even that I dislike object oriented programming. Python, JavaScript, and Ruby also allow for OOP without all the excessive boilerplate. See also: The [discussion regarding language simplicity](#simplicity))
+
+* **C#**:
+  * [Asp.Net](https://github.com/darren277/RESTettaStone/tree/master/backend/aspnetapp).
+* **Java**:
+  * [SpringBoot](https://github.com/darren277/RESTettaStone/tree/master/backend/springbootapp).
+  * [Tomcat](https://github.com/darren277/RESTettaStone/tree/master/backend/tomcatapp).
+
+#### Procedural
+
+* **Fortran**:
+  * (Still incoming) [Fortran](https://github.com/darren277/RESTettaStone/tree/master/backend/fortranapp).
+* **Pascal**:
+  * (Still incoming) [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascalapp).
+* **COBOL**:
+  * (Still incoming) [COBOL](https://github.com/darren277/RESTettaStone/tree/master/backend/cobolapp).
+
+#### Functional
+
+These languages are the prototypical functional programming languages.
+
+* **Lisp**:
+  * (Still incoming) [Lisp](https://github.com/darren277/RESTettaStone/tree/master/backend/lispapp).
+* **Haskell**:
+  * (Still incoming) [Haskell](https://github.com/darren277/RESTettaStone/tree/master/backend/haskellapp).
+  * (Still incoming) [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/spockapp).
+
+#### Multi-Paradigm
+
+With these languages, you get to have the best of both worlds. You can write object oriented code or you can write functional code. Or you can mix the two.
+
+* **Scala**:
+  * [Play](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp).
+* **Swift**:
+  * [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swiftapp).
+* **F#**:
+  * [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharpapp).
+
+#### Versatile or Other
+
+This category is almost a catch all of sorts. These are languages that can be written with different paradigms in mind, perhaps have loose typing, and are generally more flexible. While I created a dedicated section for Scala, Swift, and F# as the "multi-paradigm" languages, they could just as easily fit into this cluster. However, [as mentioned above](#projects-by-language), I am categorizing these mostly for the sake of readability.
+
+Some of these languages are frequently categorized as "scripting languages." I'm a not a big fan of that particular characterization as it gives the impression that they are less capable than the others, when in fact, their versatility makes them that much more powerful. They are all Turing complete languages, so if you find them particularly limiting, that's just a skill issue.
+
+And then there's Prolog. Prolog is a truly unique language as it falls under the rare category of logic programming.
+
+Note that I consider [JavaScript](#javascript) to fall into this category as well, but it gets its own section because there are so many frameworks built for it.
+
+* **Lua**:
+  * [Lua](https://github.com/darren277/RESTettaStone/tree/master/backend/luaapp).
+* **Perl**:
+  * [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perlapp).
+* **PHP**:
+  * [Fat Free](https://github.com/darren277/RESTettaStone/tree/master/backend/fatfreeapp).
+  * [Laravel](https://github.com/darren277/RESTettaStone/tree/master/backend/laravelapp).
+  * [Symfony](https://github.com/darren277/RESTettaStone/tree/master/backend/symfonyapp).
+* **Python**:
+  * [Django](https://github.com/darren277/RESTettaStone/tree/master/backend/djangoapp).
+  * [Flask](https://github.com/darren277/RESTettaStone/tree/master/backend/flaskapp).
+  * (Still incoming) [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp).
+* **Ruby**:
+  * [Rails](https://github.com/darren277/RESTettaStone/tree/master/backend/railsapp).
+* **Prolog**:
+  * [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prologapp).
+
+#### JavaScript
+
+This language gets its own category simply because it is so frequently used in front end frameworks.
+
+* **Back End JS**:
+  * [Bun](https://github.com/darren277/RESTettaStone/tree/master/backend/bunapp).
+  * [Firebase](https://github.com/darren277/RESTettaStone/tree/master/backend/firebaseapp).
+  * [Node](https://github.com/darren277/RESTettaStone/tree/master/backend/nodeapp).
+* **Front End JS**:
+  * [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp).
+  * [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp).
+  * [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp).
+  * [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp).
+  * [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp).
+  * [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp).
+  * [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp).
+  * [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp).
+
+### Metrics
+
+**NOTE**: **This section is a work in progress.**
+
+This is where I will discuss the various trade offs between the different languages and frameworks.
+
+#### Qualitative
+
+##### Simplicity
+
+This is where I will discuss the trade off between simplicity and complexity of code (from a human readability standpoint, not in terms of, say, cyclic complexity, which is a more quantitative measure). This includes factors such as intuitiveness, ease of use, and the number of lines of code needed to accomplish a given task.
+
+#### Quantitative
+
+##### Performance
+
+TBD...
+
+#### Both Qualitative and Quantitative
+
+##### Security
+
+TBD...
+
+##### Safety
+
+Type safety, memory safety, etc.

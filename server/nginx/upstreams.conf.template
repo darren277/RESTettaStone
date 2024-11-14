@@ -1,6 +1,6 @@
 upstream crowapp {
-        server ${CROWAPP_IP}:${CROWAPP_PORT};
-    }
+    server ${CROWAPP_IP}:${CROWAPP_PORT};
+}
 
 upstream aspnetapp {
     server ${ASPNETAPP_IP}:${ASPNETAPP_PORT};
@@ -80,4 +80,20 @@ upstream laravelapp {
 
 upstream djangoapp {
     server ${DJANGOAPP_IP}:${DJANGOAPP_PORT};
+}
+
+upstream firebaseapp {
+    server ${FIREBASEAPP_IP}:${FIREBASEAPP_PORT};
+}
+
+upstream tomcatapp {
+    server ${TOMCATAPP_IP}:${TOMCATAPP_PORT};
+}
+
+upstream fatfreeapp {
+    server ${FATFREEAPP_IP}:${FATFREEAPP_PORT};
+}
+
+upstream phpapp {
+    server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
