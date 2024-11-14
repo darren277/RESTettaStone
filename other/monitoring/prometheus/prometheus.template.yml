@@ -62,4 +62,4 @@ scrape_configs:
 
   - job_name: 'flaskapp'
     static_configs:
-      - targets: ['${FLASKAPP_HOST}:${FLASKAPP_PORT}']
+      - targets: ['__FLASKAPP_IP__:__FLASKAPP_PORT__']
