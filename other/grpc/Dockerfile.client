@@ -2,6 +2,12 @@ FROM golang:latest
 
 ENV GOFLAGS="-mod=vendor"
 
+ARG GRPCSERVER_IP
+ARG GRPCSERVER_PORT
+
+ENV GRPCSERVER_IP=${GRPCSERVER_IP}
+ENV GRPCSERVER_PORT=${GRPCSERVER_PORT}
+
 WORKDIR /app
 
 RUN go mod init example.com/mygrpcapp-client

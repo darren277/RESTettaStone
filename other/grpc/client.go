@@ -1,6 +1,7 @@
 package main
 
 import (
+    "os"
     "context"
     "log"
     "time"
@@ -10,7 +11,10 @@ import (
 )
 
 func main() {
-    conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+    server_ip := os.Getenv("GRPCSERVER_IP")
+    server_port := os.Getenv("GRPCSERVER_PORT")
+    server_address := server_ip + ":" + server_port
+    conn, err := grpc.Dial(server_address, grpc.WithInsecure())
     if err != nil {
         log.Fatalf("Failed to connect: %v", err)
     }
