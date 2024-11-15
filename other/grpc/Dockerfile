@@ -1,5 +1,7 @@
 FROM golang:latest
 
+ENV PROTOBUF_VERSION 1.47.1
+
 ARG GRPCSERVER_IP
 ARG GRPCSERVER_PORT
 
@@ -7,8 +9,8 @@ ENV GRPCSERVER_IP=${GRPCSERVER_IP}
 ENV GRPCSERVER_PORT=${GRPCSERVER_PORT}
 
 RUN apt-get update && apt-get install -y protobuf-compiler libprotobuf-dev curl \
-    && curl -sSL https://github.com/bufbuild/buf/releases/download/v1.46.0/buf-Linux-x86_64 -o /usr/local/bin/buf \
-    && chmod +x /usr/local/bin/buf \
+    && curl -sSL https://github.com/bufbuild/buf/releases/download/v${PROTOBUF_VERSION}/buf-Linux-x86_64 -o /usr/local/bin/buf \
+    && chmod +x /usr/local/bin/buf
     #&& go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 WORKDIR /app
@@ -34,5 +36,5 @@ WORKDIR /app/server
 
 RUN go build -o /go/bin/grpc2 main.go
 
-CMD tail -f /dev/null
-#CMD ["/go/bin/grpc2"]
+#CMD tail -f /dev/null
+CMD ["/go/bin/grpc2"]
