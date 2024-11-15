@@ -3,6 +3,7 @@
 package main
 
 import (
+    "os"
 	"context"
 	"log"
 	"net"
@@ -30,7 +31,10 @@ func (u *userService) GetUser(_ context.Context, req *userpb.GetUserRequest) (*u
 }
 
 func main() {
-	lis, err := net.Listen("tcp", "localhost:9879")
+    server_ip := "0.0.0.0"
+    server_port := os.Getenv("GRPCSERVER_PORT")
+    server_address := server_ip + ":" + server_port
+	lis, err := net.Listen("tcp", server_address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

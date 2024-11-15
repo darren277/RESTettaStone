@@ -1,5 +1,11 @@
 FROM golang:latest
 
+ARG GRPCSERVER_IP
+ARG GRPCSERVER_PORT
+
+ENV GRPCSERVER_IP=${GRPCSERVER_IP}
+ENV GRPCSERVER_PORT=${GRPCSERVER_PORT}
+
 RUN apt-get update && apt-get install -y protobuf-compiler libprotobuf-dev curl \
     && curl -sSL https://github.com/bufbuild/buf/releases/download/v1.46.0/buf-Linux-x86_64 -o /usr/local/bin/buf \
     && chmod +x /usr/local/bin/buf \
