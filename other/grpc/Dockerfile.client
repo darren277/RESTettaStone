@@ -1,0 +1,28 @@
+FROM golang:latest
+
+ENV GOFLAGS="-mod=vendor"
+
+ARG GRPCSERVER_IP
+ARG GRPCSERVER_PORT
+
+ENV GRPCSERVER_IP=${GRPCSERVER_IP}
+ENV GRPCSERVER_PORT=${GRPCSERVER_PORT}
+
+WORKDIR /app
+
+RUN go mod init example.com/mygrpcapp-client
+
+RUN go get -u google.golang.org/grpc
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
+
+COPY client.go .
+
+COPY ./entrypoint-client.sh /app/entrypoint-client.sh
+RUN chmod +x entrypoint-client.sh
+
+CMD tail -f /dev/null
+#CMD ["./grpc-client"]
+
+# NOTE: Works perfectly fine, but since the client is currently just a CLI command to test the server endpoint, you have to manually run the following commands from inside the container:
+# 1. ./entrypoint-client.sh
+# 2. ./grpc-client
