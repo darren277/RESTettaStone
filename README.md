@@ -26,6 +26,16 @@
   * [Performance Testing with Locust](#performance-testing-with-locust)
   * [Monitoring](#monitoring)
     + [Prometheus and Grafana](#prometheus-and-grafana)
+  * [Cloud Deployment](#cloud-deployment)
+    + [AWS](#aws)
+      - [EC2](#ec2)
+        * [Some Docker Notes](#some-docker-notes)
+          + [Docker Permissions](#docker-permissions)
+          + [Testing Endpoint with Curl](#testing-endpoint-with-curl)
+        * [Some Notes About Make and SSH Commands](#some-notes-about-make-and-ssh-commands)
+        * [SSH Keys](#ssh-keys)
+          + [Key File Permissions](#key-file-permissions)
+          + [Key Format](#key-format)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -395,6 +405,153 @@ The username is `admin`, and the password is set as an environment variable in t
 It is currently connected to the `flaskapp` Flask back end. I will leave connecting it to other sub projects as an exercise for the reader.
 
 Note: Unlike the root project and it's `Makefile` configurations, the ports and other configuration values are currently hardcoded, which I don't particularly like, but I'll likely revisit that later. Also be aware that, currently, the volume mount for the Prometheus container is the same as the source folder, so it currently modifies the source `prometheus.yml` file each time it's run. This is not ideal, but it's another thing I'm leaving for another day.
+
+## Cloud Deployment
+
+### AWS
+
+#### EC2
+
+This procedure is going to be making a lot of assumptions regarding preparatory work on the part of the reader. There are lots of resources out there on how to do these things, so I won't add to the noise out there with my own take on an oft repeated process.
+1. Sign up for an AWS account.
+2. Provision an EC2 instance that is within your budget.
+3. Install and configure Docker on this EC2 instance.
+4. Add all required environment variables to your `.env` file (see `Makefile` for reference).
+5. Install the `aws` CLI tool locally.
+6. Configure the `aws` CLI tool with your AWS credentials.
+7. Install and configure the necessary SSH tools on your local machine.
+8. Obtain the right private key file for your EC2 instance security group and point to it using `PEM_KEY_PATH` in the `.env` file.
+9. Ensure that Postgres is installed and running on the EC2 instance `sudo apt install postgresql`.
+10. Ensure that you have Python installed on the EC2 instance `sudo apt install python3`.
+11. And also ensure you have the `python3-dev` package installed `sudo apt install python3-all-dev`.
+12. And yet another prerequisite for Postgres is `sudo apt install libpq-dev`.
+
+An alternative to the last four steps would be to slightly modify the `populate_pg_db.py` script to run locally while connecting to the remote Dockerized Postgres database. I'll leave this as an exercise for the reader for the time being.
+
+##### Some Docker Notes
+
+###### Docker Permissions
+
+If you face any Docker permissions issues right from the get go, there are a few ways to go about resolving that.
+
+The method I went with was: `sudo chown $USER /var/run/docker.sock`.
+
+Be warned that this particular method carries some degree of security risk.
+
+To test: `docker run hello-world`.
+
+It may require a `reboot`, but if `reboot` is not ideal, you can restart the Docker service with `sudo systemctl restart docker`, or if that doesn't work, use `sudo systemctl list-units --type=service` to list the services and find the Docker service name. In my case, it was `snap.docker.dockerd.service` so I had to run `sudo systemctl restart snap.docker.dockerd.service`.
+
+See also: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+
+###### Testing Endpoint with Curl
+
+This step also has a couple of prerequisites:
+1. You must of course have `curl` installed locally.
+2. You must have the IP address or hostname of your EC2 instance stored in your `.env` file as `EC2_HOST`.
+3. You must also have the desired port number allowed access via the security group settings for that EC2 instance (configured via AWS Console, or from the CLI if you're familiar with the process).
+
+##### Some Notes About Make and SSH Commands
+
+There are likely better equipped tools out there for accomplishing a lot of what I am doing with a `Makefile` and a few SSH related commands.
+
+Ansible, although my experience with it is limited so far, sounds like it might be a good fit for this kind of thing. I'll be exploring that in a future iteration.
+
+##### SSH Keys
+
+###### Key File Permissions
+
+If you happen to encounter something like the following:
+```
+The authenticity of host 'ec2-X-X-X-X.compute-1.amazonaws.com (X.X.X.X)' can't be established.
+ED25519 key fingerprint is SHA256:rZEy5qUlf9lEj3pDN6b2mWx9XEzilKDkeykF/tpuZKL.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+Warning: Permanently added 'ec2-X-X-X-X.compute-1.amazonaws.com' (ED25519) to the list of known hosts.
+Bad permissions. Try removing permissions for user: NT AUTHORITY\\Authenticated Users (S-1-5-11) on file C:/Users/Darren/.ssh/my_key.ppk.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'C:/Users/Darren/.ssh/my_key.ppk' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "C:/Users/Darren/.ssh/publicwebsite.ppk": bad permissions
+ubuntu@ec2-X-X-X-X.compute-1.amazonaws.com: Permission denied (publickey).
+C:\Windows\System32\OpenSSH\scp.exe: Connection closed
+```
+
+You may have to modify the permissions for the file to be more exclusive to a particular user.
+
+There is a discussion with some suggestions and guidance on how to do that here: https://stackoverflow.com/questions/49926386/openssh-windows-bad-owner-or-permissions
+
+Just keep in mind the usual caveats when it comes to fiddling with file permissions.
+
+###### Key Format
+
+The key format needed for the `Makefile` commands that use SSH from the command line need to be in the following format:
+```shell
+-----BEGIN RSA PRIVATE KEY-----
+UAixppRe3O2ib7z7R9bsYFAjnMG+hMJ4qxTSZUcNaa0rzPnEtmNeCdprl6Ta2f/2t8+l3TYRthXyI
++TBwFYZ0l/Bo5dJ1J9uZ5wXy94ce0TdCZIlPClYP7xXvGnf23OsNgsV2aZf3sr1llgLTepAbRjuXU
+K5tyzRaAYH+O4S3+D9t3guGyFMZlF8mZNux4LrcRYMn0czmA3gjS23Fj7IFhZtaBO95jw2Mh3cRYl
+qiiqGtt/+j1lsqDvztwpxdrE/jWMnXLDMptWq/BCyVYp1uzIBm0gRwGvXsv+yj+OFhJ9l84P2vKCM
+du5HW3mdIlX5ivpdepPWENvi3ubzrW80fzcs3idHMqoXVguf+go/nS2FwFaJLUhm55IDr0EmB8hZB
+b8JGRlX8zSnkOXUQb7vlmk4PpoAINbEzedKVEct06Gt7vGbNRNnyha3h0sW6N3FXYyQjeANwHHxNU
+1z1yWWkWUlnne8h5N3B52mNjBZgXI6JhWNxgTvUWM5GmsxPHeciqS7sXYyyNUA+Nlad2fDiBOEirC
+z7bpU9hVgEVNXnYBzzhgMHe44lTV8rwRXK28JCsdmO00wunxrDvkGKfznwqqCWFHEBCUEzsXYDetx
+t+iQsvG0kY7dAgkwvR/b+FiW03OVbap4IK3UWkYJgwwiy1Qu3iPGBTFE3KzM6HSPRTEfH2K5GKjD1
+TuCK4SU/H75c4imbFExawWa1w2o69PdxOU8Gv3f4nwfEwN4bNgkpNajBmLyII2pq4j8I9G+vLQUso
+EnL7XrQzkQse99YYf8FGQsZG/umgRc7Ggxzjfsj34GWehnupE4Q3b5hJNh0qC6F919Q9NJqJ9y3hh
+XEOMsmAeGC3XxMxoByn2cG+G/7UQnCamN7vzru9qKo37vwcPhOu45CIpml88bZ9CUa4AKpjLXuEym
+aXU5bC8mlK0ZcCSTN/WvcuM1bXo/uMx8O8RIzf6ilbtQ6nzMiNVx0tTh4YFGRX2CtrKIzxQIRqrLp
+zz/uPGvR1w7YbRFaUSmqSTqBdbetpvszo6qld/7dK2rT/LAF4oUAzD130wvD8TnxbY5U4kkFgo51y
+ZUoeKrlXdRZgFa26EQjV5GYVjsciVb9kjcbjAYRaIN/ErcEycliFvFblEL7D2WSUKMybJh8y7ZuxG
+6G8UE8X3DPbWDqZ7WBlz8GHgnRATID24GpCYZlW3sTuBiHfRasvhijA8w/5tjN+71cdrF977gmEyD
+3MRlDEXT9ZxT9SHEjsWD/AlPf7UGyvzAP0M5r70WMeQROXV1oI8Ilk5yqVKGmAvbrgBiVOvy6zerh
+1d9bZVNsim0IrsdqtgG5DTH5gXDZ+aNOKIKCYAvFIuSQoDufxNr4j88XaO6D21D0dSsaHCug1a3pm
+QOAgxGEsvTh6nlXYK72ZNXkYYCiZiYM3+ukhdDSPGnpXkY6tmh9pNbYvmM4kAYvyfh8dfClImG/HA
+sii3ECAGfZE3rNddvuyhUdR6FyOduKMHyp7MvMF5u2QO9h0oG/nBKw5HgYCDl3g8WLlhqq50Lq9iy
+Ic5iLbk1/Bon5VKG8LOs/MJyIFA8TnpEgUZ2afd38ZwpPpckXitTmXtFFtgze26LGqOpiKB=
+-----END RSA PRIVATE KEY-----
+```
+
+Not this format:
+```shell
+PuTTY-User-Key-File-2: ssh-rsa
+Encryption: none
+Comment: imported-openssh-key
+Public-Lines: 6
+7FQOxsna4r3cvUluR3IlvYYmcblZcO06deS0auu3j5xTBr2G3+JrFpxsPPVLWR6lJ
+jUhAcjsfJuUeToeCIubdrVWX4kbFvfjLm0ZylkJw6lnC1tsugPE6KnjUv4TnOMNZJ
+mxPXoQUr/X22gHuQgcycG65jgwZ9NS000YW4F22DcUHvgibiwytPYThberPczi8zo
+QSKi0HSQ6OgoDfzy5o7Lj8HB5cyS4HIQ8t6ckiPv9EXQMoqGbvEjHJJqBOJYX1uO8
+NG6MWBrZEy5qUlf9lEj3pDNCLGK6b2mWx9XEzilKDkekvyykFL/tpuZKLfAPDUtF5
+yJLAUpcGEj96/RUdYvCvqONzDSllTOq5iRPBIVIpqTqfeqU8f+vx
+Private-Lines: 14
+cOwOdky2eprrY5HmskdNERB0Q3G8AFb+fAwCnv8ijUddw/PtLrpthFflaxoSWfubT
+70NzZ5Q85He6o/b4ciEMVVor5+P+NrzBMYap3MigAykBEkW9eN/v//WnZ8C/YaNhs
+Xwq8dCJA4uWVnWYPRuPjI+n56IPYw+0Yf/eWQsES+2CO8Ut9A9gn+i09ziZrRzFOT
+79rdwTVjY77KBqxbL/yjHZ/nEBzXWUT9EI2aXWHdDcPrKGP9K1NpTAef8KKQ4S/0j
+pO0Sh9j2BKIDdvMn0xvkXCuxcbp0Hb9IpVQMmjF+Hnp+3EA5MUvGJZMMgCr/Fvhqn
+W/FrFtbYrqdItJMb6aXbBCPQhATPNSu4B0w9QSGvmvJEEtu0Uv2nnKZX2tupVL7tq
+KYLMo/iB/Qcq4y36ANEVfw/t7js47kFCNe5ERPVnR4/vXkhzmRZ7DiuHr6+Y1xWw4
+1G1CVKNJwQZchuQy+cdX2YfFVk6pUCIcsl928zzV/7BSEBfnfRB/0X1iJbkLLoWpc
+dP2v6wI4Ey9eTCFKs7iSvqwhI2DxL0WjwNo9SLZxip8joEQoLUWGaMwTxQ52TjfQB
+0QQ1CtRYYgPt8TZD6wSdnBrm5s1SsZr4L4DDRPDONbbbTCDvpaarS24AqDd++iOS0
+ifV4OXD1nzMlSxh6o9zUeF/sXvlHdH+g99K4nyQJnRIG1VkTIYMeghNO2GZkRwVUI
+bxXiJsM6iwXnvtlDLmNyIw7RdLCQQgt1yL72VZzwcATjPy6D8E7cpvXZctLoSDqjV
+ZPWzm0TNfBWqbg/t379hgSsU0cI2QnN8684Z6gLOvm4xTUx6LQOsrWQrF0irQCWPD
+oyx6vgyLpS37kVhrRnnx093cXzFYzhfSl8RN5zSur/JY/LD=
+Private-MAC: f6624c2b7933e85f536d0020fe519821074a415c
+```
+
+There are conversion tools out there. I believe [PuTTYgen](https://www.puttygen.com) does the trick.
+
+By the way, do not share your private keys in public places. The above two examples are not actual key files of mine, but rather generated with a script to look nearly identical to actual key files of each type.
+
+And why would I go to the trouble of writing a script to do such a thing?
+
+Well, [why not](https://github.com/darren277/RESTettaStone/tree/master/other/utils/just_for_fun/keygen.py)?
 
 # Lessons
 
