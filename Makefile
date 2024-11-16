@@ -82,6 +82,20 @@ prometheus:
 	cd other/monitoring/prometheus && GF_SECURITY_ADMIN_PASSWORD=$(GF_SECURITY_ADMIN_PASSWORD) docker-compose up
 
 
+pentest-build:
+	docker pull kalilinux/kali-rolling
+	docker pull tleemcjr/metasploitable2
+
+pentest-kali:
+	docker run -it --name kali --net $(SUBNET_NAME) kalilinux/kali-rolling
+
+pentest-meta:
+	docker run -it --name metasploitable2 --net $(SUBNET_NAME) tleemcjr/metasploitable2
+
+pentest-meta-nmap:
+	docker exec -it metasploitable2 nmap -sP 172.18.0.0/16
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend
