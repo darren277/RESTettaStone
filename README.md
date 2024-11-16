@@ -277,17 +277,17 @@ This will, of course, become rather long and cumbersome over time, so I will lik
 
 ## Using the Makefile
 
-The Makefile, which requires installation of `make` if you do not already have it, is provided to fascilitate the execution of many of the commands needed to run the different pieces of this project.
+The Makefile, which requires installation of `make` if you do not already have it, is provided to facilitate the execution of many of the commands needed to run the different pieces of this project.
 
 ## Using Docker Compose
 
 **NOTE**: I've abandoned this route as I absolutely refuse to hardcode the build args directly inside of the `docker-compose.yml` file.
 
-For a project of this size, with dozens of subprojects each with their own `Docker` container specifications, it just doesn't make sense if Docker Compose won't accomodate dynamic build arg interpolation.
+For a project of this size, with dozens of subprojects each with their own `Docker` container specifications, it just doesn't make sense if Docker Compose won't accommodate dynamic build arg interpolation.
 
 See also: [The build arg gotcha](#docker-compose-gotchas).
 
-For the sake of prosperity, I still include the existing `docker-compose.yml` file in the root directory for anyone who would like to build upon it.
+For the sake of posterity, I still include the existing `docker-compose.yml` file in the root directory for anyone who would like to build upon it.
 
 If you'd like to try using the `docker-compose.yml` file, you can do so by running the following command from the CLI:
 
@@ -296,7 +296,7 @@ docker-compose up
 ```
 
 Two things to note:
-1. I have not yet added every single subproject to the `docker-compose.yml` file. This would be rather tedious, very repetitive, and essentially unecessary for the time being. The `Makefile` and each individual `Dockerfile` do the job just fine.
+1. I have not yet added every single subproject to the `docker-compose.yml` file. This would be rather tedious, very repetitive, and essentially unnecessary for the time being. The `Makefile` and each individual `Dockerfile` do the job just fine.
 2. Since the YAML keys cannot be interpolated with environment variables, I had to hardcode the network name which bothers me in an OCD kind of way. It's obviously not a huge deal, but it irks me just a smidge.
 
 See also: [Build args gotcha](#docker-compose-gotchas).
@@ -590,14 +590,14 @@ Wow, just wow.
 
 After hours of trial and error and revisiting the docs and various StackOverflow discussions, it turns out there's really no way to dynamically populate build args from a file.
 
-This is incredibly disappointing, as the only work arounds are either:
+This is incredibly disappointing, as the only workarounds are either:
 1. Passing the build args in manually via the CLI, which of course would be utterly redundant with respect to the `Makefile` protocol I'm already using.
 2. Writing some kind of script to generate the `docker-compose.yml` file, which, again, would simply be completely redundant.
 3. Hardcoding the values in the `docker-compose.yml` file, which I'm just plain not a fan of.
 
 So I'm pretty much abandoning the Docker compose route here.
 
-For prosperity's sake, I'm going to include the `docker-compose.yml` file that I had started on, even though it won't work unless you use one of the three mechanisms I just mentioned for injecting the build args, which I just refuse to do on principle. But feel free to give it a go if you're up for it.
+For posterity's sake, I'm going to include the `docker-compose.yml` file that I had started on, even though it won't work unless you use one of the three mechanisms I just mentioned for injecting the build args, which I just refuse to do on principle. But feel free to give it a go if you're up for it.
 
 ### Make Gotchas
 
@@ -728,7 +728,7 @@ It is pretty clear that Django proper is meant to be server HTML files (in the f
 
 For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
 
-In fact, I may add such a subproject to the ever growing collection here.
+In fact, I may add such a subproject to the ever-growing collection here.
 
 ## Comparisons
 
@@ -764,7 +764,7 @@ These are the languages frequently used for compiled system level applications, 
 
 #### Object Oriented
 
-This category is pretty straight forward. These are the primarily object oriented languages.
+This category is pretty straight forward. These are the primarily object-oriented languages.
 
 (PS: As a personal aside, these are by far my least favorite languages to work with. I frequently refer to them as the boilerplate languages as it takes so many lines of code to write the equivalent to other languages. And it's not even that I dislike object oriented programming. Python, JavaScript, and Ruby also allow for OOP without all the excessive boilerplate. See also: The [discussion regarding language simplicity](#simplicity))
 
@@ -795,7 +795,7 @@ These languages are the prototypical functional programming languages.
 
 #### Multi-Paradigm
 
-With these languages, you get to have the best of both worlds. You can write object oriented code or you can write functional code. Or you can mix the two.
+With these languages, you get to have the best of both worlds. You can write object-oriented code, or you can write functional code. Or you can mix the two.
 
 * **Scala**:
   * [Play](https://github.com/darren277/RESTettaStone/tree/master/backend/playapp).
@@ -859,7 +859,7 @@ This is where I will discuss the various trade offs between the different langua
 
 ##### Simplicity
 
-This is where I will discuss the trade off between simplicity and complexity of code (from a human readability standpoint, not in terms of, say, cyclic complexity, which is a more quantitative measure). This includes factors such as intuitiveness, ease of use, and the number of lines of code needed to accomplish a given task.
+This is where I will discuss the trade-off between simplicity and complexity of code (from a human readability standpoint, not in terms of, say, cyclic complexity, which is a more quantitative measure). This includes factors such as intuitiveness, ease of use, and the number of lines of code needed to accomplish a given task.
 
 #### Quantitative
 
