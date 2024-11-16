@@ -1,5 +1,14 @@
 include .env
 
+LB = (
+RB = )
+DS = \$
+
+PG_VARS=--env PG_USER=$(PG_USER) --env PG_PASS=$(PG_PASS) --env PG_DB=$(PG_DB) --env PG_HOST=$(PG_IP) --env PG_PORT=$(PG_PORT)
+PG_VARS_BUILD=--build-arg PG_USER=$(PG_USER) --build-arg PG_PASS=$(PG_PASS) --build-arg PG_DB=$(PG_DB) --build-arg PG_HOST=$(PG_IP) --build-arg PG_PORT=$(PG_PORT)
+FIREBASE_VARS_BUILD=--build-arg FIREBASE_API_KEY=$(FIREBASE_API_KEY) --build-arg FIREBASE_AUTH_DOMAIN=$(FIREBASE_AUTH_DOMAIN) --build-arg FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID) --build-arg FIREBASE_STORAGE_BUCKET=$(FIREBASE_STORAGE_BUCKET) --build-arg FIREBASE_MESSAGING_SENDER_ID=$(FIREBASE_MESSAGING_SENDER_ID) --build-arg FIREBASE_APP_ID=$(FIREBASE_APP_ID) --build-arg FIREBASE_MEASUREMENT_ID=$(FIREBASE_MEASUREMENT_ID)
+
+
 chalice-deploy:
 	cd other/chaliceapp && ../../venv/Scripts/chalice deploy --profile $(AWS_PROFILE)
 
@@ -13,3 +22,74 @@ dynamodb-add-test-users:
 	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "1"}, "email": {"S": "user1@mail.com"}}'
 	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "2"}, "email": {"S": "user2@mail.com"}}'
 	aws dynamodb put-item --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --item '{"ID": {"S": "3"}, "email": {"S": "user3@mail.com"}}'
+
+
+# aws ssm send-command --instance-ids "i-02ae********" --region "us-east-2" --document-name "AWS-RunShellScript" --parameters commands="git clone https://myrepo.git" --output text
+# aws ssm send-command --instance-ids "$(EC2_INSTANCE_ID)" --region "$(AWS_REGION)" --document-name "AWS-RunShellScript" --parameters commands="$(COMMAND)" --output json
+
+# check status...
+# aws ssm list-command-invocations --command-id "command-id" --details --query "CommandInvocations[*].Status"
+
+docker-subnet:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "docker network create --subnet=$(SUBNET_CIDR) $(SUBNET_NAME)"
+
+docker-psql:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "docker run --name postgresql -e POSTGRES_USER=$(PG_USER) -e POSTGRES_PASSWORD=$(PG_PASS) --net $(SUBNET_NAME) --ip $(PG_IP) -p $(PG_PORT):$(PG_PORT) -v /data:/var/lib/postgresql/data -d postgres"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "docker start postgresql"
+
+
+ec2-ps:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "docker ps -a"
+
+ec2-image:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "docker image ls"
+
+
+ec2-env:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME) && mkdir -p other"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_HOST=$(PG_HOST)' > /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_PORT=$(PG_PORT)' >> /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_USER=$(PG_USER)' >> /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_PASS=$(PG_PASS)' >> /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_DB=$(PG_DB)' >> /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'ENV_TEST=TESTERINO' >> /home/$(EC2_USERNAME)/other/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo '#!/bin/sh' > /home/$(EC2_USERNAME)/other/env_vars.sh"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'export $(DS)$(LB)cat .env | xargs$(RB)' > /home/$(EC2_USERNAME)/other/env_vars.sh"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/other/ && export $(DS)$(LB)cat .env | xargs$(RB)"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/other/ && source env_vars.sh && echo $(DS)ENV_TEST"
+
+
+populate-db:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME) && mkdir -p other"
+	scp -i "$(PEM_KEY_PATH)" other/populate_pg_db.py $(EC2_USERNAME)@$(EC2_HOST):/home/$(EC2_USERNAME)/other/populate_pg_db.py
+	scp -i "$(PEM_KEY_PATH)" other/pg_data.json $(EC2_USERNAME)@$(EC2_HOST):/home/$(EC2_USERNAME)/other/pg_data.json
+	scp -i "$(PEM_KEY_PATH)" requirements.txt $(EC2_USERNAME)@$(EC2_HOST):/home/$(EC2_USERNAME)/other/requirements.txt
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/other && python3 -m venv venv"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/other && source venv/bin/activate && pip3 install -r requirements.txt"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/other && source venv/bin/activate && python populate_pg_db.py"
+
+
+ec2-flaskapp-env:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'FLASKAPP_PORT=$(FLASKAPP_PORT)' > /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_HOST=$(PG_HOST)' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_PORT=$(PG_PORT)' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_USER=$(PG_USER)' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_PASS=$(PG_PASS)' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'PG_DB=$(PG_DB)' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'ENV_TEST=TESTERINO' >> /home/$(EC2_USERNAME)/flaskapp/.env"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo '#!/bin/sh' > /home/$(EC2_USERNAME)/flaskapp/env_vars.sh"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "echo 'export $(DS)$(LB)cat .env | xargs$(RB)' > /home/$(EC2_USERNAME)/flaskapp/env_vars.sh"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/flaskapp/ && export $(DS)$(LB)cat .env | xargs$(RB)"
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/flaskapp/ && source env_vars.sh && echo $(DS)ENV_TEST"
+
+
+ec2-flaskapp-build:
+	scp -i "$(PEM_KEY_PATH)" -r backend/flaskapp $(EC2_USERNAME)@$(EC2_HOST):/home/$(EC2_USERNAME)/flaskapp
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/flaskapp && docker build --build-arg FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS_BUILD) -t flask_app:1 ."
+
+ec2-flaskapp-curl-test:
+	curl -X GET http://$(EC2_HOST):$(FLASKAPP_PORT)/users
+
+ec2-flaskapp-run:
+	ssh -i "$(PEM_KEY_PATH)" $(EC2_USERNAME)@$(EC2_HOST) "cd /home/$(EC2_USERNAME)/flaskapp && source env_vars.sh && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1"
+
