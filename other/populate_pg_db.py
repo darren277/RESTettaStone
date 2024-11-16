@@ -40,12 +40,24 @@ try:
     create_table('users')
 except Exception as e:
     print(e)
+    if 'psycopg2.errors.DuplicateTable' in str(e):
+        print('Table already exists... Dropping...')
+        drop_table('users')
+        create_table('users')
 
 def add_user(name: str, email: str):
     insert_data('users', name, email)
 
 def add_users():
-    pg_data = json.loads(open('other/pg_data.json').read())
+    try:
+        pg_data = json.loads(open('other/pg_data.json').read())
+    except FileNotFoundError:
+        print('No file found... Trying root directory...')
+        try:
+            pg_data = json.loads(open('pg_data.json').read())
+        except:
+            print('No file found in root directory either... Exiting...')
+            return
     for user in pg_data:
         add_user(user['name'], user['email'])
 
