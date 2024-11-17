@@ -36,6 +36,7 @@
         * [SSH Keys](#ssh-keys)
           + [Key File Permissions](#key-file-permissions)
           + [Key Format](#key-format)
+  * [RabbitMQ](#rabbitmq)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -173,6 +174,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A       | N/A                 |           |
 | [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | Y         | Y                   |           |
 | [gRPC](https://github.com/darren277/RESTettaStone/tree/master/other/grpc)                   | Y         | N/A                 |           |
+| [RabbitMQ](#rabbitmq)                                                                       | Y         | N/A                 |           |
 
 ### Servers
 
@@ -552,6 +554,28 @@ By the way, do not share your private keys in public places. The above two examp
 And why would I go to the trouble of writing a script to do such a thing?
 
 Well, [why not](https://github.com/darren277/RESTettaStone/tree/master/other/utils/just_for_fun/keygen.py)?
+
+## RabbitMQ
+
+In a browser, navigate to http://localhost:8080 and enter `guest` for both the username and password.
+
+There are some `Makefile` commands for RabbitMQ as well.
+
+To build and run the RabbitMQ container, you can use the following commands:
+```shell
+make mq run
+```
+
+To test the container, run the following command:
+```shell
+make mq test
+```
+
+To interact with the RabbitMQ container, there are quite a few commands in the `Makefile`, such as:
+```shell
+make mq create-queue queue=my_queue
+make mq publish-message queue=my_queue msg="Hello, World!"
+```
 
 # Lessons
 

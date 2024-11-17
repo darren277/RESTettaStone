@@ -1,7 +1,7 @@
 include .env
 PYTHON_BIN=venv/Scripts/
 
-.PHONY: b f aws grpc
+.PHONY: b f aws grpc mq
 
 
 docker-subnet:
@@ -98,6 +98,9 @@ aws:
 
 grpc:
 	@$(MAKE) -s -C . -f Makefile.grpc $(filter-out $@,$(MAKECMDGOALS))
+
+mq:
+	@$(MAKE) -s -C . -f Makefile.mq $(filter-out $@,$(MAKECMDGOALS))
 
 
 # This is to avoid "No rule to make target" errors.
