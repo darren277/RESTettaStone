@@ -4,6 +4,9 @@ include .env
 run:
 	docker run -d --hostname rmq --name rabbitmq -p 8080:15672 -p $(RABBITMQ_PORT):$(RABBITMQ_PORT) rabbitmq:3-management
 
+test:
+	source $(PYTHON_BIN)activate && $(PYTHON_BIN)python other/tests/rmq.py
+
 
 list-queues:
 	docker exec -it rabbitmq rabbitmqctl list_queues
