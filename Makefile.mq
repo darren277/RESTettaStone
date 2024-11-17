@@ -1,0 +1,46 @@
+include .env
+
+
+run:
+	docker run -d --hostname rmq --name rabbitmq -p 8080:15672 -p $(RABBITMQ_PORT):$(RABBITMQ_PORT) rabbitmq:3-management
+
+
+list-queues:
+	docker exec -it rabbitmq rabbitmqctl list_queues
+
+list-channels:
+	docker exec -it rabbitmq rabbitmqctl list_channels
+
+list-connections:
+	docker exec -it rabbitmq rabbitmqctl list_connections
+
+
+create-queue:
+	docker exec -it rabbitmq rabbitmqadmin declare queue name=$(name) durable=false
+
+delete-queue:
+	docker exec -it rabbitmq rabbitmqadmin delete queue name=$(name)
+
+
+publish-message:
+	@if [ -z "$(msg)" ]; then \
+		echo "msg is not set"; \
+		exit 1; \
+	fi; \
+	if [ -z "$(queue)" ]; then \
+		if [ -z "$(exchange)" ]; then \
+			docker exec -it rabbitmq rabbitmqadmin publish exchange=amq.default routing_key="inbox" payload="$(msg)"; \
+		else \
+			docker exec -it rabbitmq rabbitmqadmin publish exchange="$(exchange)" routing_key="inbox" payload="$(msg)"; \
+		fi; \
+	else \
+		if [ -z "$(exchange)" ]; then \
+			docker exec -it rabbitmq rabbitmqadmin publish exchange=amq.default routing_key="$(queue)" payload="$(msg)"; \
+		else \
+			docker exec -it rabbitmq rabbitmqadmin publish exchange="$(exchange)" routing_key="$(queue)" payload="$(msg)"; \
+		fi; \
+	fi
+
+
+consume-message:
+	docker exec -it rabbitmq rabbitmqadmin get queue=$(queue)
