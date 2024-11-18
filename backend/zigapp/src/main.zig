@@ -47,7 +47,7 @@ fn queryUsers() ![]const u8 {
     // Allocator to handle JSON buffer
     var json_buf = std.ArrayList(u8).init(std.heap.page_allocator);
     defer json_buf.deinit();
-    try json_buf.appendSlice("{\"users\":[");
+    try json_buf.appendSlice("[");
 
     var first = true;
 
@@ -76,7 +76,7 @@ fn queryUsers() ![]const u8 {
         try json_buf.appendSlice("\"}");
     }
 
-    try json_buf.appendSlice("]}");
+    try json_buf.appendSlice("]");
 
     return json_buf.toOwnedSlice();
 }
