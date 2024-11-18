@@ -58,4 +58,4 @@ ENV DATABASE_URL="postgresql://${PG_USER}:${PG_PASS}@${PG_HOST}:${PG_PORT}/${PG_
 
 # NOTE: Due to a very bizarre constraint with the Symfony CLI, this 5 second delay is required to keep it from exiting immediately.
 #ENTRYPOINT symfony serve --port=$PORT
-ENTRYPOINT bash -c "sleep 5 && symfony serve --port=${PORT}"
+ENTRYPOINT bash -c "sleep 5 && symfony serve --port=${PORT} --listen-ip=0.0.0.0"
