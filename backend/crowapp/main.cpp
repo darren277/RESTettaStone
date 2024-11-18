@@ -23,6 +23,10 @@ int get_users(std::list<userobj> &lst_user)
 	std::string selectsql = "SELECT * FROM users";
 	int nrow = -1;
 	//write_to_log("about to select * from user table");
+
+	// TODO: somewhat arbitrary, I'd like to fix this somehow...
+	int email_index = 2;
+
 	try {
             pqxx::nontransaction work(*dbconn);
             try {
@@ -31,7 +35,7 @@ int get_users(std::list<userobj> &lst_user)
                     for (pqxx::result::const_iterator c = res.begin(); c != res.end(); ++c) {
                         userobj user1;
                         user1.id = c[0].as<int>();
-                        user1.email = c[1].as<std::string>();
+                        user1.email = c[email_index].as<std::string>();
                         lst_user.push_back(user1);
                     }
 		            nrow = res.size();
