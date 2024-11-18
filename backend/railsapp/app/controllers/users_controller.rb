@@ -1,5 +1,4 @@
-module Api
-    class UsersController < ApplicationController
+class UsersController < ApplicationController
       rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
       def index
@@ -55,5 +54,4 @@ module Api
       def record_not_found
         render json: { errors: ["Couldn't find user {id: #{id}}"] }, status: 500
       end
-    end
-  end
+end
