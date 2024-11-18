@@ -22,7 +22,9 @@
     + [Overview of Commands](#overview-of-commands)
       - [Docker](#docker)
   * [Using Docker Compose](#using-docker-compose)
-  * [Debugger / Tester](#debugger---tester)
+  * [Testing](#testing)
+    + [Simple Endpoint Testing with `Make`](#simple-endpoint-testing-with-make)
+    + [Using Python Script for More Advanced Testing](#using-python-script-for-more-advanced-testing)
   * [Performance Testing with Locust](#performance-testing-with-locust)
   * [Monitoring](#monitoring)
     + [Prometheus and Grafana](#prometheus-and-grafana)
@@ -76,6 +78,10 @@
       - [Both Qualitative and Quantitative](#both-qualitative-and-quantitative)
         - [Security](#security)
         - [Safety](#safety)
+- [Optimization](#optimization)
+  * [Docker Image Size](#docker-image-size)
+    + [Table Sorted Alphabetically](#table-sorted-alphabetically)
+    + [Table Sorted by Image Size](#table-sorted-by-image-size)
 
 # About
 
@@ -340,19 +346,30 @@ Note that the `b` is a shorthand I created to simplify referencing the `Makefile
 
 Don't forget to define your environment variables in a `.env` file, as they are used by these `Makefile` commands. See above section on environment variables for details.
 
-## Debugger / Tester
+## Testing
+
+### Simple Endpoint Testing with `Make`
 
 I created a Dockerfile for a new container that can be used for testing endpoints.
 
 I've also included one example usage:
 ```shell
 crowapp-test:
-	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/api/users
+	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/users
 ```
 
 The next thing I'd like to add to this generalized debugger container is a logging system that can create logs either on the host machine or at least be very easily accessible via another `Make` command.
 
 Or, better yet, perhaps create some kind of visual user interface for viewing these logs (or leveraging something like `Kibana` or `Grafana`).
+
+### Using Python Script for More Advanced Testing
+
+I've also included a [Python script](https://github.com/darren277/RESTettaStone/blob/master/other/tests/main.py) that can be used to define some more advanced test cases, including testing for specifics about the returned content.
+
+This script also allows you to test every container with the same command:
+```shell
+make run-tests
+```
 
 ## Performance Testing with Locust
 
@@ -900,3 +917,116 @@ TBD...
 ##### Safety
 
 Type safety, memory safety, etc.
+
+# Optimization
+
+## Latency
+
+TBD...
+
+## Docker Image Size
+
+### Table Sorted Alphabetically
+
+| App | Image Size  |
+|-----------|-------------|
+|	actix_app	| 	1.88 GB	   |
+|	angular_app	| 	1.88 GB	   |
+|	aspnet_app	| 	223.67 MB	 |
+|	bun_app	| 	226.27 MB	 |
+|	clojure_app	| 	623.15 MB	 |
+|	cobol_app	| 	243.88 MB	 |
+|	crow_app	| 	932.74 MB	 |
+|	debugger	| 	11.05 MB	  |
+|	django_app	| 	1.07 GB	   |
+|	fatfree_app	| 	618.25 MB	 |
+|	firebase_app	| 	1.84 GB	   |
+|	flask_app	| 1.03 GB	    |
+|	fortran_app	| 	508.85 MB	 |
+|	fsharp_app	| 	1.12 GB	   |
+|	gatsby_app	| 	1.59 GB	   |
+|	go_app	| 	852.56 MB	 |
+|	grpc_client	| 	1.07 GB	   |
+|	grpc_server	| 	1.4 GB	    |
+|	haskell_app	| 	8.12 GB	   |
+|	laravel_app	| 	707.13 MB	 |
+|	lisp_app	| 	1.26 GB	   |
+|	lua_app	| 	413.29 MB	 |
+|	next_app	| 	888.96 MB	 |
+|	nginx	| 	405.53 MB	 |
+|	node_app	| 	1.13 GB	   |
+|	pascal_app	| 	1.72 GB	   |
+|	perl_app	| 	1.86 GB	   |
+|	php_app	| 	649.19 MB	 |
+|	play_app	| 	288.35 MB	 |
+|	postgres	| 	377.36 MB	 |
+|	postgres	| 	373.13 MB	 |
+|	postgres	| 	212.85 MB	 |
+|	prolog_app	| 	577.73 MB	 |
+|	rails_app	| 	1.16 GB	   |
+|	react_app	| 	541.67 MB	 |
+|	reactfiber_app	| 	1.85 GB	   |
+|	rocket_app	| 	2.37 GB	   |
+|	spock_app	| 	5.83 GB	   |
+|	springboot_app	| 	809.8 MB	  |
+|	swift_app	| 	345.7 MB	  |
+|	symfony_app	| 	4.65 GB	   |
+|	tomcat_app	| 	681.22 MB	 |
+|	vibe_app	| 	1.49 GB	   |
+|	vue_app	| 	577.67 MB	 |
+|	zig_app	| 	567.78 MB	 |
+
+### Table Sorted by Image Size
+
+| App | Image Size  |
+|-----------|-------------|
+|	haskell_app	| 	8.12 GB	   |
+|	spock_app	| 	5.83 GB	   |
+|	symfony_app	| 	4.65 GB	   |
+|	rocket_app	| 	2.37 GB	   |
+|	actix_app	| 	1.88 GB	   |
+|	angular_app	| 	1.88 GB	   |
+|	perl_app	| 	1.86 GB	   |
+|	reactfiber_app	| 	1.85 GB	   |
+|	firebase_app	| 	1.84 GB	   |
+|	pascal_app	| 	1.72 GB	   |
+|	gatsby_app	| 	1.59 GB	   |
+|	vibe_app	| 	1.49 GB	   |
+|	grpc_server	| 	1.4 GB	    |
+|	lisp_app	| 	1.26 GB	   |
+|	rails_app	| 	1.16 GB	   |
+|	node_app	| 	1.13 GB	   |
+|	fsharp_app	| 	1.12 GB	   |
+|	grpc_client	| 	1.07 GB	   |
+|	django_app	| 	1.07 GB	   |
+|	flask_app	| 1.03 GB	    |
+|	clojure_app	| 	623.15 MB	 |
+|	crow_app	| 	932.74 MB	 |
+|	next_app	| 	888.96 MB	 |
+|	go_app	| 	852.56 MB	 |
+|	springboot_app	| 	809.8 MB	  |
+|	laravel_app	| 	707.13 MB	 |
+|	tomcat_app	| 	681.22 MB	 |
+|	php_app	| 	649.19 MB	 |
+|	fatfree_app	| 	618.25 MB	 |
+|	prolog_app	| 	577.73 MB	 |
+|	react_app	| 	541.67 MB	 |
+|	vue_app	| 	577.67 MB	 |
+|	zig_app	| 	567.78 MB	 |
+|	fortran_app	| 	508.85 MB	 |
+|	lua_app	| 	413.29 MB	 |
+|	nginx	| 	405.53 MB	 |
+|	postgres	| 	377.36 MB	 |
+|	postgres	| 	373.13 MB	 |
+|	swift_app	| 	345.7 MB	  |
+|	play_app	| 	288.35 MB	 |
+|	cobol_app	| 	243.88 MB	 |
+|	bun_app	| 	226.27 MB	 |
+|	aspnet_app	| 	223.67 MB	 |
+|	postgres	| 	212.85 MB	 |
+
+### Some Potential Solutions
+
+#### Multi-Stage Builds
+
+TBD...

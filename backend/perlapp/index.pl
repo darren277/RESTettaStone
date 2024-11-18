@@ -79,7 +79,7 @@ sub resp_users {
     my $sth = $dbh->prepare("SELECT * FROM users");
     $sth->execute();
     my $users = $sth->fetchall_arrayref({});
-    print "{ \"users\": ", to_json($users), " }";
+    print to_json($users);
 }
 }
 

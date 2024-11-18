@@ -2,7 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const firebase_thing = require('firebase');
+const { initializeApp } = require('firebase/app');
+const { getFirestore, collection, query, where, getDocs } = require('firebase/firestore');
+
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -17,14 +19,13 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-const firebase = firebase_thing.initializeApp(firebaseConfig);
-
+const firebase = initializeApp(firebaseConfig);
 
 // const googleLogin = () => {const provider = new firebase.auth.GoogleAuthProvider(); firebase.auth().signInWithPopup(provider).then((result) => {const user = result.user; document.write(`Hello ${user.displayName}`); console.log(user);});};
 // const auth = getAuth();
 // signInAnonymously(auth).then(() => {const user = result.user; document.write(`Hello ${user.displayName}`); console.log(user);}).catch((error) => {const errorCode = error.code; const errorMessage = error.message;});
 
-const firestore = firebase.firestore();
+const firestore = getFirestore(firebase);
 
 
 class User {
@@ -47,8 +48,9 @@ const addUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
     try {
-        const users = await firestore.collection('users');
-        const data = await users.get();
+        const users = await collection(firestore, 'users');
+        const q = query(users);
+        const data = await getDocs(q);
         const usersArray = [];
         if(data.empty) {
             res.status(404).send('No user record found');
@@ -67,8 +69,9 @@ const getAllUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const user = await firestore.collection('users').doc(id);
-        const data = await user.get();
+        const user = collection(firestore, 'users', id);
+        const q = query(user);
+        const data = await getDocs(q);
         if(!data.exists) {
             res.status(404).send('User with the given ID not found');
         }else {
@@ -117,7 +120,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api', router);
+app.use('/', router);
 
 const port = process.env.PORT || 3000;
 

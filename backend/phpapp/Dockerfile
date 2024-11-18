@@ -27,4 +27,4 @@ COPY ./ /var/www/html/
 
 EXPOSE $PORT
 
-CMD php -S 0.0.0.0:9000 -t /var/www/html
+CMD php -S 0.0.0.0:$PORT -t /var/www/html

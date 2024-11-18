@@ -75,5 +75,5 @@ async fn init_db() -> Result<tokio_postgres::Client, Error> {
 #[launch]
 async fn rocket() -> _ {
     // .catch(errors![not_found])
-    rocket::build().mount("/", routes![index]).mount("/api", routes![users]).manage(PgConfig{db_connect:init_db().await.unwrap()})
+    rocket::build().mount("/", routes![index]).mount("/", routes![users]).manage(PgConfig{db_connect:init_db().await.unwrap()})
 }

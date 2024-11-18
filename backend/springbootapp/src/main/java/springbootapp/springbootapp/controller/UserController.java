@@ -13,7 +13,7 @@ import springbootapp.springbootapp.repository.UserRepository;
 
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/")
 public class UserController {
 
     @Autowired

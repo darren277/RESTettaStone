@@ -5,8 +5,8 @@ namespace aspnetapp.Models
     [Table("users")]
     public class User {
         [Column("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
         [Column("email")]
-        public string? Email { get; set; }
+        public string? email { get; set; }
     }
 }

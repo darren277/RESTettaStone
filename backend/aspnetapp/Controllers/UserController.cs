@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 
 namespace aspnetapp.Controllers
 {
+    [Route("users")]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -25,6 +26,7 @@ namespace aspnetapp.Controllers
         [Produces("application/json")]
         public IActionResult Index()
         {
+            // var users = _userRepository.GetUsers();
             Response.Clear();
             Response.ContentType = "application/json";
             var users = from user in _userRepository.GetUsers() select user;
