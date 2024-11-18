@@ -22,7 +22,9 @@
     + [Overview of Commands](#overview-of-commands)
       - [Docker](#docker)
   * [Using Docker Compose](#using-docker-compose)
-  * [Debugger / Tester](#debugger---tester)
+  * [Testing](#testing)
+    + [Simple Endpoint Testing with `Make`](#simple-endpoint-testing-with-make)
+    + [Using Python Script for More Advanced Testing](#using-python-script-for-more-advanced-testing)
   * [Performance Testing with Locust](#performance-testing-with-locust)
   * [Monitoring](#monitoring)
     + [Prometheus and Grafana](#prometheus-and-grafana)
@@ -340,19 +342,30 @@ Note that the `b` is a shorthand I created to simplify referencing the `Makefile
 
 Don't forget to define your environment variables in a `.env` file, as they are used by these `Makefile` commands. See above section on environment variables for details.
 
-## Debugger / Tester
+## Testing
+
+### Simple Endpoint Testing with `Make`
 
 I created a Dockerfile for a new container that can be used for testing endpoints.
 
 I've also included one example usage:
 ```shell
 crowapp-test:
-	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/api/users
+	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/users
 ```
 
 The next thing I'd like to add to this generalized debugger container is a logging system that can create logs either on the host machine or at least be very easily accessible via another `Make` command.
 
 Or, better yet, perhaps create some kind of visual user interface for viewing these logs (or leveraging something like `Kibana` or `Grafana`).
+
+### Using Python Script for More Advanced Testing
+
+I've also included a [Python script](https://github.com/darren277/RESTettaStone/blob/master/other/tests/main.py) that can be used to define some more advanced test cases, including testing for specifics about the returned content.
+
+This script also allows you to test every container with the same command:
+```shell
+make run-tests
+```
 
 ## Performance Testing with Locust
 
