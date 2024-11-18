@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:latest
 
 ARG NODEAPP_PORT
 ARG PG_HOST
