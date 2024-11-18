@@ -72,7 +72,7 @@ int main()
         return x;
     });
 
-    CROW_ROUTE(app, "/api/users").methods("POST"_method, "GET"_method)
+    CROW_ROUTE(app, "/users").methods("POST"_method, "GET"_method)
 	([](const crow::request &req){
 	    //write_to_log("about to process request");
 	    //write_to_log("request method: " + req.method);
