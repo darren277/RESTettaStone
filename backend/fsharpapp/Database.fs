@@ -58,8 +58,7 @@ let getUsers () =
           Id = read.int "id"
           Email = read.text "email"
         })
-        |> Ok
     with
     | ex ->
         printfn "Database error: \n%A" ex.Message
-        Error ()
+        []

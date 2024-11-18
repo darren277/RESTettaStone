@@ -21,7 +21,9 @@ let routeHandlers : HttpHandler =
         | Error _ -> setStatusCode 500
     )
 
-    GET >=> route "/users" >=> json (Database.getUsers())
+    GET >=> route "/users" >=> fun next ctx ->
+        let users = Database.getUsers()
+        json users next ctx
 
     setStatusCode 404 >=> text "not found"
   ]
