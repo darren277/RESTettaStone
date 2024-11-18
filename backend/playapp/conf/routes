@@ -1,1 +1,1 @@
-->         /v1/users               v1.user.UserRouter
+->         /users               v1.user.UserRouter
