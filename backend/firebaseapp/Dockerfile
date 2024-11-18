@@ -27,7 +27,7 @@ ARG FIREBASE_MEASUREMENT_ID
 ENV FIREBASE_MEASUREMENT_ID=$FIREBASE_MEASUREMENT_ID
 
 
-RUN yarn global add firebase firebase-tools eslint babel-cli
+RUN yarn global add firebase firebase-tools eslint babel-cli --ignore-engines
 
 COPY ./package.json /app
 
