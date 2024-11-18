@@ -10,7 +10,7 @@ use actix_web::{web, HttpResponse, Result};
 // GET api/users
 pub async fn find_all(pool: web::Data<Pool>) -> Result<HttpResponse> {
     match user_service::find_all(&pool) {
-        Ok(users) => Ok(HttpResponse::Ok().json(ResponseBody::new("constants::MESSAGE_OK", users))),
+        Ok(users) => Ok(HttpResponse::Ok().json(users)),
         Err(err) => Ok(err.response()),
     }
 }
