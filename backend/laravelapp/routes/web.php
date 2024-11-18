@@ -11,7 +11,7 @@ Route::get('/', function () {return view('welcome');});
 
 Route::get('/users', function () {
     //return response()->json(['name' => 'Abigail', 'state' => 'CA']);
-    return response()->json(['users' => User::all()]);
+    return response()->json(User::all());
 });
 
 
