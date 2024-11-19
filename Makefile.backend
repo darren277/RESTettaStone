@@ -6,250 +6,250 @@ FIREBASE_VARS_BUILD=--build-arg FIREBASE_API_KEY=$(FIREBASE_API_KEY) --build-arg
 
 
 crowapp-build:
-	cd backend/crowapp && docker build --build-arg CROWAPP_PORT=$(CROWAPP_PORT) -t crow_app:1 .
+	cd backend/cpp/crowapp && docker build --build-arg CROWAPP_PORT=$(CROWAPP_PORT) -t crow_app:1 .
 
 crowapp-run:
-	cd backend/crowapp && docker run -d -it --rm --name crow_app_container --env CROWAPP_PORT=$(CROWAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CROWAPP_IP) -p $(CROWAPP_PORT):$(CROWAPP_PORT) crow_app:1
+	cd backend/cpp/crowapp && docker run -d -it --rm --name crow_app_container --env CROWAPP_PORT=$(CROWAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(CROWAPP_IP) -p $(CROWAPP_PORT):$(CROWAPP_PORT) crow_app:1
 
 crowapp-test:
 	docker exec -it debugger curl http://$(CROWAPP_IP):$(CROWAPP_PORT)/users
 
 
 aspnetapp-build:
-	cd backend/aspnetapp && docker build --no-cache --build-arg ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS_BUILD) -t aspnet_app:1 .
+	cd backend/csharp/aspnetapp && docker build --no-cache --build-arg ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS_BUILD) -t aspnet_app:1 .
 
 aspnetapp-run:
-	cd backend/aspnetapp && docker run -d -it --rm --name aspnet_app_container --env ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ASPNETAPP_IP) -p $(ASPNETAPP_PORT):$(ASPNETAPP_PORT) aspnet_app:1
+	cd backend/csharp/aspnetapp && docker run -d -it --rm --name aspnet_app_container --env ASPNETAPP_PORT=$(ASPNETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ASPNETAPP_IP) -p $(ASPNETAPP_PORT):$(ASPNETAPP_PORT) aspnet_app:1
 
 aspnetapp-test:
 	docker exec -it debugger curl http://$(ASPNETAPP_IP):$(ASPNETAPP_PORT)/users
 
 
 springbootapp-build:
-	cd backend/springbootapp && docker build --build-arg SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS_BUILD) -t springboot_app:1 .
+	cd backend/java/springbootapp && docker build --build-arg SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS_BUILD) -t springboot_app:1 .
 
 springbootapp-run:
-	cd backend/springbootapp && docker run -d -it --rm --name springboot_app_container --env SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPRINGBOOTAPP_IP) -p $(SPRINGBOOTAPP_PORT):$(SPRINGBOOTAPP_PORT) springboot_app:1
+	cd backend/java/springbootapp && docker run -d -it --rm --name springboot_app_container --env SPRINGBOOTAPP_PORT=$(SPRINGBOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPRINGBOOTAPP_IP) -p $(SPRINGBOOTAPP_PORT):$(SPRINGBOOTAPP_PORT) springboot_app:1
 
 springbootapp-test:
 	docker exec -it debugger curl http://$(SPRINGBOOTAPP_IP):$(SPRINGBOOTAPP_PORT)/users
 
 
 railsapp-build:
-	cd backend/railsapp && docker build --build-arg RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS_BUILD) -t rails_app:1 .
+	cd backend/ruby/railsapp && docker build --build-arg RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS_BUILD) -t rails_app:1 .
 
 railsapp-run:
-	cd backend/railsapp && docker run -d -it --rm --name rails_app_container --env RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(RAILSAPP_IP) -p $(RAILSAPP_PORT):$(RAILSAPP_PORT) rails_app:1
+	cd backend/ruby/railsapp && docker run -d -it --rm --name rails_app_container --env RAILSAPP_PORT=$(RAILSAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(RAILSAPP_IP) -p $(RAILSAPP_PORT):$(RAILSAPP_PORT) rails_app:1
 
 railsapp-test:
 	docker exec -it debugger curl http://$(RAILSAPP_IP):$(RAILSAPP_PORT)/users
 
 
 perlapp-build:
-	cd backend/perlapp && docker build --build-arg PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS_BUILD) -t perl_app:1 .
+	cd backend/perl/perlapp && docker build --build-arg PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS_BUILD) -t perl_app:1 .
 
 perlapp-run:
-	cd backend/perlapp && docker run -d -it --rm --name perl_app_container --env PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PERLAPP_IP) -p $(PERLAPP_PORT):$(PERLAPP_PORT) perl_app:1
+	cd backend/perl/perlapp && docker run -d -it --rm --name perl_app_container --env PERLAPP_PORT=$(PERLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PERLAPP_IP) -p $(PERLAPP_PORT):$(PERLAPP_PORT) perl_app:1
 
 perlapp-test:
 	docker exec -it debugger curl http://$(PERLAPP_IP):$(PERLAPP_PORT)/users
 
 
 actixapp-build:
-	cd backend/actixapp && docker build --build-arg ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS_BUILD) -t actix_app:1 .
+	cd backend/rust/actixapp && docker build --build-arg ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS_BUILD) -t actix_app:1 .
 
 actixapp-run:
-	cd backend/actixapp && docker run -d -it --rm --name actix_app_container --env ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ACTIXAPP_IP) -p $(ACTIXAPP_PORT):$(ACTIXAPP_PORT) actix_app:1
+	cd backend/rust/actixapp && docker run -d -it --rm --name actix_app_container --env ACTIXAPP_PORT=$(ACTIXAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ACTIXAPP_IP) -p $(ACTIXAPP_PORT):$(ACTIXAPP_PORT) actix_app:1
 
 actixapp-test:
 	docker exec -it debugger curl http://$(ACTIXAPP_IP):$(ACTIXAPP_PORT)/users
 
 
 swiftapp-build:
-	cd backend/swiftapp && docker build --build-arg SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS_BUILD) -t swift_app:1 .
+	cd backend/swift/swiftapp && docker build --build-arg SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS_BUILD) -t swift_app:1 .
 
 swiftapp-run:
-	cd backend/swiftapp && docker run -d -it --rm --name swift_app_container --env SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SWIFTAPP_IP) -p $(SWIFTAPP_PORT):$(SWIFTAPP_PORT) swift_app:1
+	cd backend/swift/swiftapp && docker run -d -it --rm --name swift_app_container --env SWIFTAPP_PORT=$(SWIFTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SWIFTAPP_IP) -p $(SWIFTAPP_PORT):$(SWIFTAPP_PORT) swift_app:1
 
 swiftapp-test:
 	docker exec -it debugger curl http://$(SWIFTAPP_IP):$(SWIFTAPP_PORT)/users
 
 
 goapp-build:
-	cd backend/goapp && docker build --build-arg GOAPP_PORT=$(GOAPP_PORT) $(PG_VARS_BUILD) -t go_app:1 .
+	cd backend/go/goapp && docker build --build-arg GOAPP_PORT=$(GOAPP_PORT) $(PG_VARS_BUILD) -t go_app:1 .
 
 goapp-run:
-	cd backend/goapp && docker run -d -it --rm --name go_app_container --env GOAPP_PORT=$(GOAPP_PORT) --net $(SUBNET_NAME) --ip $(GOAPP_IP) -p $(GOAPP_PORT):$(GOAPP_PORT) $(PG_VARS) go_app:1
+	cd backend/go/goapp && docker run -d -it --rm --name go_app_container --env GOAPP_PORT=$(GOAPP_PORT) --net $(SUBNET_NAME) --ip $(GOAPP_IP) -p $(GOAPP_PORT):$(GOAPP_PORT) $(PG_VARS) go_app:1
 
 goapp-test:
 	docker exec -it debugger curl http://$(GOAPP_IP):$(GOAPP_PORT)/users
 
 
 bunapp-build:
-	cd backend/bunapp && docker build --build-arg BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS_BUILD) -t bun_app:1 .
+	cd backend/javascript/bunapp && docker build --build-arg BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS_BUILD) -t bun_app:1 .
 
 bunapp-run:
-	cd backend/bunapp && docker run -d -it --rm --name bun_app_container --env BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(BUNAPP_IP) -p $(BUNAPP_PORT):$(BUNAPP_PORT) bun_app:1
+	cd backend/javascript/bunapp && docker run -d -it --rm --name bun_app_container --env BUNAPP_PORT=$(BUNAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(BUNAPP_IP) -p $(BUNAPP_PORT):$(BUNAPP_PORT) bun_app:1
 
 bunapp-test:
 	docker exec -it debugger curl http://$(BUNAPP_IP):$(BUNAPP_PORT)/users
 
 
 zigapp-build:
-	cd backend/zigapp && docker build --build-arg ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS_BUILD) -t zig_app:1 .
+	cd backend/zig/zigapp && docker build --build-arg ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS_BUILD) -t zig_app:1 .
 
 zigapp-run:
-	cd backend/zigapp && docker run -d -it --rm --name zig_app_container --env ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ZIGAPP_IP) -p $(ZIGAPP_PORT):$(ZIGAPP_PORT) zig_app:1
+	cd backend/zig/zigapp && docker run -d -it --rm --name zig_app_container --env ZIGAPP_PORT=$(ZIGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ZIGAPP_IP) -p $(ZIGAPP_PORT):$(ZIGAPP_PORT) zig_app:1
 
 zigapp-test:
 	docker exec -it debugger curl http://$(ZIGAPP_IP):$(ZIGAPP_PORT)/users
 
 
 vibeapp-build:
-	cd backend/vibeapp && docker build --build-arg VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS_BUILD) -t vibe_app:1 .
+	cd backend/vibe/vibeapp && docker build --build-arg VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS_BUILD) -t vibe_app:1 .
 
 vibeapp-run:
-	cd backend/vibeapp && docker run -d -it --rm --name vibe_app_container --env VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(VIBEAPP_IP) -p $(VIBEAPP_PORT):$(VIBEAPP_PORT) vibe_app:1
+	cd backend/vibe/vibeapp && docker run -d -it --rm --name vibe_app_container --env VIBEAPP_PORT=$(VIBEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(VIBEAPP_IP) -p $(VIBEAPP_PORT):$(VIBEAPP_PORT) vibe_app:1
 
 vibeapp-test:
 	docker exec -it debugger curl http://$(VIBEAPP_IP):$(VIBEAPP_PORT)/users
 
 
 fsharpapp-build:
-	cd backend/fsharpapp && docker build --build-arg FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS_BUILD) -t fsharp_app:1 .
+	cd backend/fsharp/fsharpapp && docker build --build-arg FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS_BUILD) -t fsharp_app:1 .
 
 fsharpapp-run:
-	cd backend/fsharpapp && docker run -d -it --rm --name fsharp_app_container --env FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FSHARPAPP_IP) -p $(FSHARPAPP_PORT):$(FSHARPAPP_PORT) fsharp_app:1
+	cd backend/fsharp/fsharpapp && docker run -d -it --rm --name fsharp_app_container --env FSHARPAPP_PORT=$(FSHARPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FSHARPAPP_IP) -p $(FSHARPAPP_PORT):$(FSHARPAPP_PORT) fsharp_app:1
 
 fsharpapp-test:
 	docker exec -it debugger curl http://$(FSHARPAPP_IP):$(FSHARPAPP_PORT)/users
 
 
 prologapp-build:
-	cd backend/prologapp && docker build --build-arg PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS_BUILD) -t prolog_app:1 .
+	cd backend/prolog/prologapp && docker build --build-arg PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS_BUILD) -t prolog_app:1 .
 
 prologapp-run:
-	cd backend/prologapp && docker run -d -it --rm --name prolog_app_container --env PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PROLOGAPP_IP) -p $(PROLOGAPP_PORT):$(PROLOGAPP_PORT) prolog_app:1
+	cd backend/prolog/prologapp && docker run -d -it --rm --name prolog_app_container --env PROLOGAPP_PORT=$(PROLOGAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PROLOGAPP_IP) -p $(PROLOGAPP_PORT):$(PROLOGAPP_PORT) prolog_app:1
 
 prologapp-test:
 	docker exec -it debugger curl http://$(PROLOGAPP_IP):$(PROLOGAPP_PORT)/users
 
 
 symfonyapp-build:
-	cd backend/symfonyapp && docker build --build-arg SYMFONYAPP_PORT=$(SYMFONYAPP_PORT) $(PG_VARS_BUILD) -t symfony_app:1 .
+	cd backend/php/symfonyapp && docker build --build-arg SYMFONYAPP_PORT=$(SYMFONYAPP_PORT) $(PG_VARS_BUILD) -t symfony_app:1 .
 
 symfonyapp-run:
-	cd backend/symfonyapp && docker run -d -it --rm --name symfony_app_container --env SYMFONYAPP_PORT=$(SYMFONYAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SYMFONYAPP_IP) -p $(SYMFONYAPP_PORT):$(SYMFONYAPP_PORT) symfony_app:1
+	cd backend/php/symfonyapp && docker run -d -it --rm --name symfony_app_container --env SYMFONYAPP_PORT=$(SYMFONYAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SYMFONYAPP_IP) -p $(SYMFONYAPP_PORT):$(SYMFONYAPP_PORT) symfony_app:1
 
 symfonyapp-test:
 	docker exec -it debugger curl http://$(SYMFONYAPP_IP):$(SYMFONYAPP_PORT)/users
 
 
 rocketapp-build:
-	cd backend/rocketapp && docker build --build-arg ROCKETAPP_IP=$(ROCKETAPP_IP) --build-arg ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS_BUILD) -t rocket_app:1 .
+	cd backend/rust/rocketapp && docker build --build-arg ROCKETAPP_IP=$(ROCKETAPP_IP) --build-arg ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS_BUILD) -t rocket_app:1 .
 
 rocketapp-run:
-	cd backend/rocketapp && docker run -d -it --rm --name rocket_app_container --env ROCKETAPP_IP=$(ROCKETAPP_IP) --env ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ROCKETAPP_IP) -p $(ROCKETAPP_PORT):$(ROCKETAPP_PORT) rocket_app:1
+	cd backend/rust/rocketapp && docker run -d -it --rm --name rocket_app_container --env ROCKETAPP_IP=$(ROCKETAPP_IP) --env ROCKETAPP_PORT=$(ROCKETAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(ROCKETAPP_IP) -p $(ROCKETAPP_PORT):$(ROCKETAPP_PORT) rocket_app:1
 
 rocketapp-test:
 	docker exec -it debugger curl http://$(ROCKETAPP_IP):$(ROCKETAPP_PORT)/users
 
 
 nodeapp-build:
-	cd backend/nodeapp && docker build --build-arg NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS_BUILD) -t node_app:1 .
+	cd backend/javascript/nodeapp && docker build --build-arg NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS_BUILD) -t node_app:1 .
 
 nodeapp-run:
-	cd backend/nodeapp && docker run -d -it --rm --name node_app_container --env NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(NODEAPP_IP) -p $(NODEAPP_PORT):$(NODEAPP_PORT) node_app:1
+	cd backend/javascript/nodeapp && docker run -d -it --rm --name node_app_container --env NODEAPP_PORT=$(NODEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(NODEAPP_IP) -p $(NODEAPP_PORT):$(NODEAPP_PORT) node_app:1
 
 nodeapp-test:
 	docker exec -it debugger curl http://$(NODEAPP_IP):$(NODEAPP_PORT)/users
 
 
 luaapp-build:
-	cd backend/luaapp && docker build --build-arg LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS_BUILD) -t lua_app:1 .
+	cd backend/lua/luaapp && docker build --build-arg LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS_BUILD) -t lua_app:1 .
 
 luaapp-run:
-	cd backend/luaapp && docker run -d -it --rm --name lua_app_container --env LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(LUAAPP_IP) -p $(LUAAPP_PORT):$(LUAAPP_PORT) lua_app:1
+	cd backend/lua/luaapp && docker run -d -it --rm --name lua_app_container --env LUAAPP_PORT=$(LUAAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(LUAAPP_IP) -p $(LUAAPP_PORT):$(LUAAPP_PORT) lua_app:1
 
 luapp-test:
 	docker exec -it debugger curl http://$(LUAAPP_IP):$(LUAAPP_PORT)/users
 
 
 playapp-build:
-	cd backend/playapp && docker build --build-arg PLAYAPP_PORT=$(PLAYAPP_PORT) --build-arg SECRET_KEY=$(SECRET_KEY) $(PG_VARS_BUILD) -t play_app:1 .
+	cd backend/scala/playapp && docker build --build-arg PLAYAPP_PORT=$(PLAYAPP_PORT) --build-arg SECRET_KEY=$(SECRET_KEY) $(PG_VARS_BUILD) -t play_app:1 .
 
 playapp-run:
-	cd backend/playapp && docker run -d -it --rm --name play_app_container --env PLAYAPP_PORT=$(PLAYAPP_PORT) --env SECRET_KEY=$(SECRET_KEY) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PLAYAPP_IP) -p $(PLAYAPP_PORT):$(PLAYAPP_PORT) play_app:1
+	cd backend/scala/playapp && docker run -d -it --rm --name play_app_container --env PLAYAPP_PORT=$(PLAYAPP_PORT) --env SECRET_KEY=$(SECRET_KEY) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PLAYAPP_IP) -p $(PLAYAPP_PORT):$(PLAYAPP_PORT) play_app:1
 
 playapp-test:
 	docker exec -it debugger curl http://$(PLAYAPP_IP):$(PLAYAPP_PORT)/users
 
 
 flaskapp-build:
-	cd backend/flaskapp && docker build --build-arg FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS_BUILD) -t flask_app:1 .
+	cd backend/python/flaskapp && docker build --build-arg FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS_BUILD) -t flask_app:1 .
 
 flaskapp-run:
-	cd backend/flaskapp && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1
+	cd backend/python/flaskapp && docker run -d -it --rm --name flask_app_container --env FLASKAPP_PORT=$(FLASKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FLASKAPP_IP) -p $(FLASKAPP_PORT):$(FLASKAPP_PORT) flask_app:1
 
 flaskapp-test:
 	docker exec -it debugger curl http://$(FLASKAPP_IP):$(FLASKAPP_PORT)/users
 
 
 laravelapp-build:
-	cd backend/laravelapp && docker build --build-arg LARAVELAPP_PORT=$(LARAVELAPP_PORT) --build-arg SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS_BUILD) -t laravel_app:1 .
+	cd backend/php/laravelapp && docker build --build-arg LARAVELAPP_PORT=$(LARAVELAPP_PORT) --build-arg SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS_BUILD) -t laravel_app:1 .
 
 laravelapp-run:
-	cd backend/laravelapp && docker run -d -it --rm --name laravel_app_container --env LARAVELAPP_PORT=$(LARAVELAPP_PORT) --env SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS) --net $(SUBNET_NAME) --ip $(LARAVELAPP_IP) -p $(LARAVELAPP_PORT):$(LARAVELAPP_PORT) laravel_app:1
+	cd backend/php/laravelapp && docker run -d -it --rm --name laravel_app_container --env LARAVELAPP_PORT=$(LARAVELAPP_PORT) --env SECRET_KEY="$(LARAVEL_APP_KEY)" $(PG_VARS) --net $(SUBNET_NAME) --ip $(LARAVELAPP_IP) -p $(LARAVELAPP_PORT):$(LARAVELAPP_PORT) laravel_app:1
 
 laravelapp-test:
 	docker exec -it debugger curl http://$(LARAVELAPP_IP):$(LARAVELAPP_PORT)/users
 
 
 djangoapp-build:
-	cd backend/djangoapp && docker build --build-arg DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS_BUILD) -t django_app:1 .
+	cd backend/python/djangoapp && docker build --build-arg DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS_BUILD) -t django_app:1 .
 
 djangoapp-run:
-	cd backend/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
+	cd backend/python/djangoapp && docker run -d -it --rm --name django_app_container --env DJANGOAPP_PORT=$(DJANGOAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(DJANGOAPP_IP) -p $(DJANGOAPP_PORT):$(DJANGOAPP_PORT) django_app:1
 
 djangoapp-test:
 	docker exec -it debugger curl http://$(DJANGOAPP_IP):$(DJANGOAPP_PORT)/users
 
 
 tomcatapp-build:
-	cd backend/tomcatapp && docker build --build-arg TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS_BUILD) -t tomcat_app:1 .
+	cd backend/java/tomcatapp && docker build --build-arg TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS_BUILD) -t tomcat_app:1 .
 
 tomcatapp-run:
-	cd backend/tomcatapp && docker run -d -it --rm --name tomcat_app_container --env TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(TOMCATAPP_IP) -p $(TOMCATAPP_PORT):$(TOMCATAPP_PORT) tomcat_app:1
+	cd backend/java/tomcatapp && docker run -d -it --rm --name tomcat_app_container --env TOMCATAPP_PORT=$(TOMCATAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(TOMCATAPP_IP) -p $(TOMCATAPP_PORT):$(TOMCATAPP_PORT) tomcat_app:1
 
 tomcatapp-test:
 	docker exec -it debugger curl http://$(TOMCATAPP_IP):$(TOMCATAPP_PORT)/users
 
 
 fatfreeapp-build:
-	cd backend/fatfreeapp && docker build --build-arg FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS_BUILD) -t fatfree_app:1 .
+	cd backend/php/fatfreeapp && docker build --build-arg FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS_BUILD) -t fatfree_app:1 .
 
 fatfreeapp-run:
-	cd backend/fatfreeapp && docker run -d -it --rm --name fatfree_app_container --env FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FATFREEAPP_IP) -p $(FATFREEAPP_PORT):$(FATFREEAPP_PORT) fatfree_app:1
+	cd backend/php/fatfreeapp && docker run -d -it --rm --name fatfree_app_container --env FATFREEAPP_PORT=$(FATFREEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FATFREEAPP_IP) -p $(FATFREEAPP_PORT):$(FATFREEAPP_PORT) fatfree_app:1
 
 fatfreeapp-test:
 	docker exec -it debugger curl http://$(FATFREEAPP_IP):$(FATFREEAPP_PORT)/users
 
 
 phpapp-build:
-	cd backend/phpapp && docker build --build-arg PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS_BUILD) -t php_app:1 .
+	cd backend/php/phpapp && docker build --build-arg PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS_BUILD) -t php_app:1 .
 
 phpapp-run:
-	cd backend/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
+	cd backend/php/phpapp && docker run -d -it --rm --name php_app_container --env PHPAPP_PORT=$(PHPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHPAPP_IP) -p $(PHPAPP_PORT):$(PHPAPP_PORT) php_app:1
 
 phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
 firebaseapp-build:
-	cd backend/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
+	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
 firebaseapp-run:
-	cd backend/firebaseapp && docker run -d -it --rm --name firebase_app_container --env FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) --net $(SUBNET_NAME) --ip $(FIREBASEAPP_IP) -p $(FIREBASEAPP_PORT):$(FIREBASEAPP_PORT) firebase_app:1
+	cd backend/javascript/firebaseapp && docker run -d -it --rm --name firebase_app_container --env FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) --net $(SUBNET_NAME) --ip $(FIREBASEAPP_IP) -p $(FIREBASEAPP_PORT):$(FIREBASEAPP_PORT) firebase_app:1
 
 firebaseapp-test-create-user:
 	docker exec -it debugger curl -X POST -H "Content-Type: application/json" -d '{"id":1, "email":"test_email1@testing.com"}' http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/user
