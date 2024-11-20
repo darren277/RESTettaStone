@@ -1,0 +1,32 @@
+pipeline {
+    agent {
+        docker { image 'python:3.9' }
+    }
+
+    environment {
+        DOCKER_IMAGE = "your_dockerhub_username/flask-app:${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${DOCKER_IMAGE} .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+                    sh 'echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin'
+                    sh 'docker push ${DOCKER_IMAGE}'
+                }
+            }
+        }
+    }
+}
