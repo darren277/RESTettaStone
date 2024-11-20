@@ -1,0 +1,11 @@
+- name: Join Worker Nodes
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Retrieve join command from master
+      shell: kubeadm token create --print-join-command
+      delegate_to: master
+      register: kubeadm_join_command
+
+    - name: Join the cluster
+      shell: "{{ kubeadm_join_command.stdout }}"
