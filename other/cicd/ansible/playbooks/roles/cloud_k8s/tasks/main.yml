@@ -1,0 +1,8 @@
+- include_tasks: aws.yml
+  when: cloud_provider == 'aws'
+
+- include_tasks: azure.yml
+  when: cloud_provider == 'azure'
+
+- include_tasks: gcp.yml
+  when: cloud_provider == 'gcp'

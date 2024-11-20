@@ -1,0 +1,3 @@
+- name: Deploy application using kubectl
+  shell: kubectl apply -f /path/to/your/app/deployment.yml
+  delegate_to: localhost

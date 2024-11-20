@@ -1,0 +1,12 @@
+- name: Kubernetes Deployment
+  hosts: all
+  roles:
+    - role: common
+    - role: minikube
+      when: deployment_type == 'local'
+    - role: kind
+      when: deployment_type == 'docker'
+    - role: cloud_k8s
+      when: deployment_type == 'cloud'
+    - role: app_deployment
+      when: deployment_type in ['local', 'docker', 'cloud']

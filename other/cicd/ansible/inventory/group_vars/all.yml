@@ -1,0 +1,1 @@
+deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
