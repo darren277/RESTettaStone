@@ -1,0 +1,14 @@
+- name: Install KinD
+  become: yes
+  shell: |
+    curl -Lo ./kind https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64
+    chmod +x ./kind
+    mv ./kind /usr/local/bin/kind
+  args:
+    creates: /usr/local/bin/kind
+
+- name: Create KinD cluster
+  become: yes
+  shell: kind create cluster
+  args:
+    creates: $HOME/.kube/config

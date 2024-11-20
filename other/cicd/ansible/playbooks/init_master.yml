@@ -1,0 +1,22 @@
+- name: Initialize Kubernetes Master
+  hosts: masters
+  become: yes
+  tasks:
+    - name: Initialize kubeadm
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16
+      args:
+        creates: /etc/kubernetes/admin.conf
+
+    - name: Configure kubectl for the ubuntu user
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ubuntu/.kube/config
+        remote_src: yes
+      become_user: ubuntu
+      mode: 0644
+
+    - name: Install Calico network plugin
+      shell: |
+        kubectl apply -f https://docs.projectcalico.org/v3.24/manifests/calico.yaml
+      args:
+        executable: /bin/bash

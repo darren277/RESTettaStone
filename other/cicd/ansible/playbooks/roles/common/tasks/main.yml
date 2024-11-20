@@ -1,0 +1,13 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install common packages
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+      - software-properties-common
+    state: present
+  when: ansible_os_family == 'Debian'

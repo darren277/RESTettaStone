@@ -1,0 +1,11 @@
+- name: Validate Kubernetes Cluster
+  hosts: masters
+  become: yes
+  tasks:
+    - name: Get cluster nodes
+      shell: kubectl get nodes
+      register: cluster_nodes
+
+    - name: Display cluster nodes
+      debug:
+        msg: "{{ cluster_nodes.stdout_lines }}"
