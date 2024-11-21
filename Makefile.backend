@@ -245,6 +245,13 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
+lispapp-build:
+	cd backend/lispapp && docker build --build-arg LISPAPP_PORT=$(LISPAPP_PORT) $(PG_VARS_BUILD) -t lisp_app:1 .
+
+lispapp-run:
+	cd backend/lispapp && docker run -d -it --rm --name lisp_app_container --env LISPAPP_PORT=$(LISPAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(LISPAPP_IP) -p $(LISPAPP_PORT):$(LISPAPP_PORT) lisp_app:1
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 

@@ -97,3 +97,7 @@ upstream fatfreeapp {
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
+
+upstream lispapp {
+    server ${LISPAPP_IP}:${LISPAPP_PORT};
+}
