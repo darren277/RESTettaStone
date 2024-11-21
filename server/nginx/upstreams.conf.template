@@ -97,3 +97,7 @@ upstream fatfreeapp {
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
+
+upstream fortranapp {
+    server ${FORTRANAPP_IP}:${FORTRANAPP_PORT};
+}

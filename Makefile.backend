@@ -245,6 +245,13 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
+fortranapp-build:
+	cd backend/fortranapp && docker build --build-arg FORTRANAPP_PORT=$(FORTRANAPP_PORT) $(PG_VARS_BUILD) -t fortran_app:1 .
+
+fortranapp-run:
+	cd backend/fortranapp && docker run -d -it --rm --name fortran_app_container --env FORTRANAPP_PORT=$(FORTRANAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(FORTRANAPP_IP) -p $(FORTRANAPP_PORT):$(FORTRANAPP_PORT) fortran_app:1
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
