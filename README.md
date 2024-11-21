@@ -129,34 +129,34 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 |                                                                                                        | Dockerized | REST Responses | Postgres Interaction | Full CRUD | Current Barrier |
 |--------------------------------------------------------------------------------------------------------|------------|----------------|----------------------|-----------|-----------------|
-| [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/actixapp)           | Y          | Y              | Y                    |           | ~~Language~~    |
-| [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)        | Y          | Y              | Y                    |           |                 |
-| [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/bunapp)           | Y          | Y              | Y                    |           | ~~Libraries~~   |
 | Cobol                                                                                                  | '*         | '              |                      |           | Language        |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)               | Y          | Y              | Y                    |           |                 |
-| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)     | Y          | Y              | Y                    |           |                 |
-| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/fatfreeapp)        | Y          | Y              | Y                    |           |                 |
-| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  |           |                 |
-| [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)       | Y          | Y              | Y                    |           |                 |
+| [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)        | Y          | Y              | Y                    |           |                 |
 | Fortran                                                                                                |            |                |                      |           | Language        |
 | [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharp/fsharpapp)                  | Y          | Y              | Y                    |           | ~~Language~~    |
 | [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/go/goapp)                          | Y          | Y              | Y                    |           |                 |
 | Haskell                                                                                                |            |                |                      |           | Language        |
-| [Laravel (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/laravelapp)         | Y          | Y              | Y                    |           |                 |
+| [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    |           |                 |
+| [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/tomcatapp)         | Y          | Y              | Y                    |           |                 |
+| [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/bunapp)           | Y          | Y              | Y                    |           | ~~Libraries~~   |
+| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  |           |                 |
+| [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/nodeapp)         | Y          | Y              | Y                    |           |                 |
 | Lisp                                                                                                   |            |                |                      |           | Language        |
 | [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)           | Y          | Y              | Y                    |           |                 |
-| [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/nodeapp)         | Y          | Y              | Y                    |           |                 |
 | Pascal                                                                                                 | '          | '              | '                    |           |                 |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                    | Y          | Y              | Y                    |           |                 |
+| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/fatfreeapp)        | Y          | Y              | Y                    |           |                 |
+| [Laravel (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/laravelapp)         | Y          | Y              | Y                    |           |                 |
 | [PHP](https://github.com/darren277/RESTettaStone/tree/master/backend/php/phpapp)                       | Y          | Y              | Y                    |           |                 |
-| [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    |           |                 |
-| [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)              | Y          | Y              | Y                    |           | ~~Language~~    |
-| [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)           | Y          | Y              | Y                    |           |                 |
-| [Rocket (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/rocketapp)         | Y          | Y              | Y                    |           | ~~Networking~~  |
-| [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    |           |                 |
-| [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                 | Y          | Y              | Y                    |           |                 |
 | [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/symfonyapp)         | Y          | Y              | Y                    |           |                 |
-| [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/tomcatapp)         | Y          | Y              | Y                    |           |                 |
+| [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)              | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)     | Y          | Y              | Y                    |           |                 |
+| [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)       | Y          | Y              | Y                    |           |                 |
+| [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)           | Y          | Y              | Y                    |           |                 |
+| [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/actixapp)           | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Rocket (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/rocketapp)         | Y          | Y              | Y                    |           | ~~Networking~~  |
+| [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    |           |                 |
+| [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                 | Y          | Y              | Y                    |           |                 |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibe/vibeapp)                | Y          | Y              | Y                    |           | ~~Networking~~  |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                       | Y          | Y              | Y                    |           | ~~Build~~       |
 
