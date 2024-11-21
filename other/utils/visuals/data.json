@@ -1,0 +1,32 @@
+{
+  "backend": [
+    { "id": "NodeApp", "label": "NodeApp", "group": "backend" },
+    { "id": "FlaskApp", "label": "FlaskApp", "group": "backend" },
+    { "id": "SpringBootApp", "label": "SpringBootApp", "group": "backend" }
+  ],
+  "frontend": [
+    { "id": "ReactApp", "label": "ReactApp", "group": "frontend" },
+    { "id": "VueApp", "label": "VueApp", "group": "frontend" },
+    { "id": "AngularApp", "label": "AngularApp", "group": "frontend" }
+  ],
+  "other": [
+    { "id": "Nginx", "label": "Nginx", "group": "middle" },
+    { "id": "Apache", "label": "Apache", "group": "middle" },
+    { "id": "Postgres", "label": "Postgres", "group": "right" }
+  ],
+  "edges": [
+    { "source": "NodeApp", "target": "VueApp" },
+    { "source": "FlaskApp", "target": "ReactApp" },
+    { "source": "SpringBootApp", "target": "AngularApp" },
+    { "source": "NodeApp", "target": "ReactApp" },
+    { "source": "FlaskApp", "target": "VueApp" },
+    { "source": "SpringBootApp", "target": "AngularApp" },
+    { "source": "NodeApp", "target": "AngularApp" },
+    { "source": "FlaskApp", "target": "ReactApp" },
+    { "source": "SpringBootApp", "target": "VueApp" },
+
+    { "source": "NodeApp", "target": "Postgres" },
+    { "source": "FlaskApp", "target": "Postgres" },
+    { "source": "SpringBootApp", "target": "Postgres" }
+  ]
+}

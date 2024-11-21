@@ -86,6 +86,10 @@ run-tests:
 	source $(PYTHON_BIN)activate && $(PYTHON_BIN)python other/tests/main.py $(NGINX_HOST) $(NGINX_PORT)
 
 
+visuals:
+	source $(PYTHON_BIN)activate && $(PYTHON_BIN)python other/utils/visuals/app.py
+
+
 # Note: "-s -C ." are to suppress the "Entering directory" and "Leaving directory" messages.
 
 # Backend: Runs commands in Makefile.backend
