@@ -4,6 +4,8 @@ import enum
 import time
 import requests
 
+from other.populate_pg_db import create_table, drop_table
+
 
 class HTTP(enum.Enum):
     GET = 'GET'
@@ -142,7 +144,15 @@ def run_tests():
             'vibeapp',
             'zigapp'
         ]:
+        print("\x1b[32;20m"+f"Testing {app}..."+'\x1b[0m')
+        print("\x1b[32;20m"+"Dropping table (users)"+'\x1b[0m')
+        drop_table('users')
+        print("\x1b[32;20m"+"Creating table (users)"+'\x1b[0m')
+        create_table('users')
+
         for test in tests:
+            print("\x1b[32;20m"+f"Testing {test.endpoint} ({test.method})..."+'\x1b[0m')
+
             time.sleep(DELAY_TIME)
             test.name = app
             try:
