@@ -60,6 +60,9 @@
       - [Project Structure](#project-structure)
       - [URL Routing](#url-routing)
       - [Django REST Framework](#django-rest-framework)
+  * [Database Gotchas](#database-gotchas)
+    + [Postgres](#postgres)
+      - [pg_stat_activity Locks](#pg_stat_activity-locks)
   * [Comparisons](#comparisons)
     + [Projects by Language](#projects-by-language)
       - [Classic](#classic)
@@ -791,6 +794,44 @@ It is pretty clear that Django proper is meant to be server HTML files (in the f
 For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
 
 In fact, I may add such a subproject to the ever-growing collection here.
+
+## Database Gotchas
+
+### Postgres
+
+#### pg_stat_activity Locks
+
+I encountered my first case of unfinished processes locking my Postgres database.
+
+In order to determine which processes are causing the locks, you can run the following query:
+```sql
+SELECT * FROM pg_stat_activity;
+```
+
+And then to remove the locks, you can run the following query:
+```sql
+REVOKE CONNECT ON DATABASE postgres FROM PUBLIC, myusername;
+
+SELECT 
+    pg_terminate_backend(pid) 
+FROM 
+    pg_stat_activity 
+WHERE 
+    -- don't kill my own connection!
+    pid <> pg_backend_pid()
+    -- don't kill the connections to other databases
+    AND datname = 'postgres'
+    ;
+```
+
+For some additional background:
+* https://stackoverflow.com/questions/48783188/postgres-table-queries-not-responding
+* https://stackoverflow.com/questions/17654033/how-to-use-pg-stat-activity
+* https://stackoverflow.com/questions/5108876/kill-a-postgresql-session-connection
+
+As for what specifically kept causing the locks in the first place, I have a few theories, but I did not test any of them out directly (there were over 20 different locks by the time I noticed they were causing problems).
+
+They did occur when I started adding database interaction during the running of the [full scale CRUD testing suites](#using-python-script-for-more-advanced-testing).
 
 ## Comparisons
 
