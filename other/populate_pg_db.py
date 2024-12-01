@@ -36,19 +36,19 @@ def drop_table(table_name: str):
         connection.execute(text(f"DROP TABLE IF EXISTS {table_name}"))
         connection.commit()
 
-try:
-    create_table('users')
-except Exception as e:
-    print(e)
-    if 'psycopg2.errors.DuplicateTable' in str(e):
-        print('Table already exists... Dropping...')
-        drop_table('users')
-        create_table('users')
 
 def add_user(name: str, email: str):
     insert_data('users', name, email)
 
 def add_users():
+    try:
+        create_table('users')
+    except Exception as e:
+        print(e)
+        if 'psycopg2.errors.DuplicateTable' in str(e):
+            print('Table already exists... Dropping...')
+            drop_table('users')
+            create_table('users')
     try:
         pg_data = json.loads(open('other/pg_data.json').read())
     except FileNotFoundError:
@@ -61,4 +61,6 @@ def add_users():
     for user in pg_data:
         add_user(user['name'], user['email'])
 
-add_users()
+if __name__ == '__main__':
+    print("ADDING USERS")
+    add_users()

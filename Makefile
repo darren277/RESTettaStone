@@ -83,7 +83,7 @@ prometheus:
 
 
 run-tests:
-	source $(PYTHON_BIN)activate && $(PYTHON_BIN)python other/tests/main.py $(NGINX_HOST) $(NGINX_PORT)
+	source $(PYTHON_BIN)activate && $(PYTHON_BIN)python main.py tests $(NGINX_HOST) $(NGINX_PORT)
 
 
 visuals:

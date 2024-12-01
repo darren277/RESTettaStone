@@ -46,12 +46,14 @@ def run_tests():
 
     args = sys.argv
 
-    if len(args) != 3:
+    if len(args) != 4:
         print("\x1b[31;1m"+"Please provide the host and port of the nginx server."+"\x1b[0m")
         return
 
-    nginx_host = args[1]
-    nginx_port = int(args[2])
+    nginx_host = args[2]
+    nginx_port = int(args[3])
+
+    print("\x1b[32;20m"+"Running tests..."+f"Nginx host: {nginx_host}. Nginx port: {nginx_port}."+"\x1b[0m")
 
     _id = 1
 
