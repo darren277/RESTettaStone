@@ -1,6 +1,7 @@
 """"""
 import sys
 import enum
+import time
 import requests
 
 
@@ -41,6 +42,8 @@ class Tester:
 
 
 def run_tests():
+    DELAY_TIME = 0.1
+
     args = sys.argv
 
     if len(args) != 3:
@@ -138,8 +141,7 @@ def run_tests():
             'zigapp'
         ]:
         for test in tests:
-            import time
-            time.sleep(5)
+            time.sleep(DELAY_TIME)
             test.name = app
             try:
                 assert test.test()
