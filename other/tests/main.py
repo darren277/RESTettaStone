@@ -111,12 +111,31 @@ def run_tests():
     ]
 
     for app in [
-            #'actixapp', 'aspnetapp', 'bunapp', 'crowapp', 'djangoapp',
-            #'fatfreeapp', 'firebaseapp', 'flaskapp', 'fsharpapp', 'goapp',
-            #'laravelapp', 'luaapp', 'nodeapp', 'perlapp', 'phpapp', 'playapp',
-            #'prologapp', 'railsapp', 'rocketapp', 'springbootapp', 'swiftapp',
-            #'symfonyapp', 'tomcatapp', 'vibeapp', 'zigapp'
-            'flaskapp'
+            'actixapp',
+            'aspnetapp',
+            'bunapp',
+            'crowapp',
+            'djangoapp',
+            'fatfreeapp',
+            'firebaseapp',
+            'flaskapp',
+            'fsharpapp',
+            'goapp',
+            'laravelapp',
+            'luaapp',
+            'nodeapp',
+            'perlapp',
+            'phpapp',
+            'playapp',
+            'prologapp',
+            'railsapp',
+            'rocketapp',
+            'springbootapp',
+            'swiftapp',
+            'symfonyapp',
+            'tomcatapp',
+            'vibeapp',
+            'zigapp'
         ]:
         for test in tests:
             import time
