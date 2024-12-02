@@ -97,3 +97,7 @@ upstream fatfreeapp {
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
+
+upstream cobolapp {
+    server ${COBOLAPP_IP}:${COBOLAPP_PORT};
+}
