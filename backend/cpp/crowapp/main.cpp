@@ -91,6 +91,99 @@ int get_users(std::list<userobj> &lst_user)
 	return (nrow > 0) ? 200 : 404;
 }
 
+int add_user(userobj &user1)
+{
+    auto instance = pq_conn_pool::instance();
+    auto dbconn = instance->burrow();
+    std::string insertsql = "INSERT INTO users (email) VALUES ($1) RETURNING id";
+    int nrow = -1;
+
+    try {
+        pqxx::nontransaction work(*dbconn);
+        try {
+            // Use exec_params instead of exec
+            pqxx::result res(work.exec_params(insertsql, user1.email));
+            try {
+                user1.id = res[0][0].as<int>();
+                nrow = res.size();
+            }
+            catch (const std::exception &ex) {
+                nrow = -1;
+                std::cout << "Insert failed: " << ex.what() << std::endl;
+            }
+        } catch (const std::exception &ex) {
+            std::cout << "Something in the middle failed: " << ex.what() << std::endl;
+        }
+    }
+    catch (const std::exception &ex) {
+        std::cout << "Connection failed: " << ex.what() << std::endl;
+    }
+    instance->unburrow(dbconn);
+    return (nrow > 0) ? 200 : 404;
+}
+
+int update_user(const userobj &user1)
+{
+    auto instance = pq_conn_pool::instance();
+    auto dbconn = instance->burrow();
+    std::string updatesql = "UPDATE users SET email = $1 WHERE id = $2";
+    int nrow = -1;
+
+    try {
+        pqxx::nontransaction work(*dbconn);
+        try {
+            // Use exec_params to execute the parameterized query
+            pqxx::result res = work.exec_params(updatesql, user1.email, user1.id);
+            nrow = res.affected_rows();
+
+            if (nrow == 0) {
+                std::cout << "No rows were updated. User ID may not exist." << std::endl;
+            }
+        }
+        catch (const std::exception &ex) {
+            nrow = -1;
+            std::cout << "Update failed: " << ex.what() << std::endl;
+        }
+    }
+    catch (const std::exception &ex) {
+        std::cout << "Connection failed: " << ex.what() << std::endl;
+    }
+
+    instance->unburrow(dbconn);
+    return (nrow > 0) ? 200 : 404;
+}
+
+int delete_user(int user_id)
+{
+    auto instance = pq_conn_pool::instance();
+    auto dbconn = instance->burrow();
+    std::string deletesql = "DELETE FROM users WHERE id = $1";
+    int nrow = -1;
+
+    try {
+        pqxx::nontransaction work(*dbconn);
+        try {
+            // Use exec_params to execute the parameterized query
+            pqxx::result res = work.exec_params(deletesql, user_id);
+            nrow = res.affected_rows();
+
+            if (nrow == 0) {
+                std::cout << "No rows were deleted. User ID may not exist." << std::endl;
+            }
+        }
+        catch (const std::exception &ex) {
+            nrow = -1;
+            std::cout << "Delete failed: " << ex.what() << std::endl;
+        }
+    }
+    catch (const std::exception &ex) {
+        std::cout << "Connection failed: " << ex.what() << std::endl;
+    }
+
+    instance->unburrow(dbconn);
+    return (nrow > 0) ? 200 : 404;
+}
+
 int main()
 {
     std::string PORT_STRING = getEnvVar("CROWAPP_PORT");
