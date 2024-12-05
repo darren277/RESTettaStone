@@ -238,5 +238,29 @@ int main()
 		return crow::response(400);
 	});
 
+	CROW_ROUTE(app, "/users/<int>").methods("GET"_method, "PUT"_method, "DELETE"_method)
+	([](const crow::request &req, int id){
+	    if(req.method == "GET"_method) {
+            userobj user1;
+            if(!get_user_by_id(id, user1)) return crow::response(404);
+            crow::json::wvalue result;
+            result["id"] = user1.id;
+            result["email"] = user1.email;
+            return crow::response(200, result);
+        } else if(req.method == "PUT"_method) {
+            auto msg = crow::json::load(req.body);
+            if(!msg) return crow::response(400);
+            userobj user1 = {id, msg["email"].s()};
+            int response = update_user(user1);
+            if(response != 200) return crow::response(response);
+            return crow::response(response);
+        } else if(req.method == "DELETE"_method) {
+            int response = delete_user(id);
+            if(response != 200) return crow::response(response);
+            return crow::response(response);
+        }
+        return crow::response(400);
+    });
+
     app.port(PORT).multithreaded().run();
 }
