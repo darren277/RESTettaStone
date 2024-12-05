@@ -215,9 +215,9 @@ int main()
 			auto msg = crow::json::load(req.body);
 			if(!msg) return crow::response(400);
 			userobj user11 = {-1, msg["email"].s()};
-			//int response = add_user(user11);
-			int response = 201;
-			if(response != 201) return crow::response(response);
+			int response = add_user(user11);
+			//int response = 200;
+			if(response != 200) return crow::response(response);
 			crow::json::wvalue result = msg;
 			result["id"] = user11.id;
 			auto res = crow::response(response, result);
