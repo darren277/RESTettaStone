@@ -16,6 +16,39 @@ int write_to_log(const std::string& msg)
     return 0;
 };
 
+bool get_user_by_id(int user_id, userobj &user1)
+{
+    auto instance = pq_conn_pool::instance();
+    auto dbconn = instance->burrow();
+    std::string selectsql = "SELECT id, email FROM users WHERE id = $1";
+
+    try {
+        pqxx::nontransaction work(*dbconn);
+        try {
+            pqxx::result res = work.exec_params(selectsql, user_id);
+
+            if (res.empty()) {
+                std::cout << "No user found with the given ID." << std::endl;
+                return false;
+            }
+
+            user1.id = res[0][0].as<int>();
+            user1.email = res[0][1].as<std::string>();
+
+            return true;
+        }
+        catch (const std::exception &ex) {
+            std::cout << "Query failed: " << ex.what() << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception &ex) {
+        std::cout << "Connection failed: " << ex.what() << std::endl;
+        return false;
+    }
+    instance->unburrow(dbconn);
+}
+
 int get_users(std::list<userobj> &lst_user)
 {
 	auto instance = pq_conn_pool::instance();
