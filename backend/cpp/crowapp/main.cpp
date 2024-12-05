@@ -1,4 +1,4 @@
-// ADAPTED FROM: https://github.com/CarolCheng/lobby
+// INSPIRED BY: https://github.com/CarolCheng/lobby
 
 #include "crow.h"
 #include "pq_conn_pool.h"
