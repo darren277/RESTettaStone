@@ -135,7 +135,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **COBOL**                                                                                              |            |                |                      |           |                 |
 | Cobol                                                                                                  | '*         | '              |                      |           | Language        |
 | **C++**                                                                                                |            |                |                      |           |                 |
-| [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)               | Y          | Y              | Y                    |           |                 |
+| [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)               | Y          | Y              | Y                    | Y         |                 |
 | **C#**                                                                                                 |            |                |                      |           |                 |
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)        | Y          | Y              | Y                    |           |                 |
 | **FORTRAN**                                                                                            |            |                |                      |           |                 |
