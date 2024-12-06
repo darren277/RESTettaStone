@@ -62,6 +62,10 @@ def run_tests():
 
     nginx_host = args[2]
     nginx_port = int(args[3])
+    try:
+        debug = bool(args[4])
+    except:
+        debug = False
 
     print("\x1b[32;20m"+"Running tests..."+f"Nginx host: {nginx_host}. Nginx port: {nginx_port}."+"\x1b[0m")
 
@@ -72,42 +76,42 @@ def run_tests():
     assertions = [lambda r: r.status_code == 200, lambda r: r.json()[0].get('email') == 'test_email1@testing.com']
     data = None
 
-    test_get_many = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_get_many = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = '/users'
     method = HTTP.GET
     assertions = [lambda r: r.status_code == 200, lambda r: r.json()[0].get('email') == 'test_email1@testing.com']
     data = None
 
-    test_get_one = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_get_one = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = '/users'
     method = HTTP.POST
     assertions = [lambda r: r.status_code == 200]
     data = {'email': 'test_email1@testing.com'}
 
-    test_post = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_post = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = f'/users/{_id}'
     method = HTTP.PUT
     assertions = [lambda r: r.status_code == 200]
     data = {'email': 'test_email1b@testing.com'}
 
-    test_update = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_update = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = f'/users/{_id}'
     method = HTTP.PUT
     assertions = [lambda r: r.status_code == 404]
     data = {'email': 'test_email1b@testing.com'}
 
-    test_update_not_found = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_update_not_found = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = f'/users/{_id}'
     method = HTTP.DELETE
     assertions = [lambda r: r.status_code == 200]
     data = None
 
-    test_delete = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_delete = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     tests = [
         # This order is logical for the above tests...
