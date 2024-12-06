@@ -35,18 +35,18 @@ class Tester:
 
     def test(self):
         url = f'http://{self.host}:{self.port}/{self.name}{self.endpoint}'
-        if self.debug: print(f"Testing {url} with method {self.method} and data {self.data}...")
+        if self.debug: print(f"---- Testing {url} with method {self.method} and data {self.data}...")
         if self.data:
             r = requests.request(self.method, url, json=self.data)
         else:
             r = requests.request(self.method, url)
         if self.debug:
             try:
-                print(f"Response ({r.status_code}): {r.json()}")
+                print(f"---- Response ({r.status_code}): {r.json()}")
             except:
-                print(f"Response ({r.status_code}): {r.text}")
+                print(f"---- Response ({r.status_code}): {r.text}")
         for assertion in self.assertions:
-            if self.debug: print(f"Running assertion {assertion}...")
+            if self.debug: print(f"---- Running assertion {assertion}...")
             if not assertion(r): return False
         return True
 
