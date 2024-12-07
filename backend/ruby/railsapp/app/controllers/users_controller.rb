@@ -1,57 +1,49 @@
 class UsersController < ApplicationController
-      rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  before_action :set_user, only: [:show, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-      def index
-        users = User.all
+  def index
+    users = User.all
+    render json: users
+  end
 
-        render json: users
-      end
+  def show
+    render json: { user: @user }
+  end
 
-      def show
-        render json: { user: user }
-      end
+  def create
+    new_user = User.new(user_params)
+    if new_user.save
+      render json: { user: new_user }, status: :created
+    else
+      render json: { errors: new_user.errors }, status: 422
+    end
+  end
 
-      def create
-        new_user = User.new(user_params)
+  def update
+    if @user.update(user_params)
+      render json: { user: @user }
+    else
+      render json: { errors: @user.errors }, status: 422
+    end
+  end
 
-        if new_user.save
-          render json: { user: new_user }
-        else
-          render json: { errors: new_user.errors }, status: 500
-        end
-      end
+  def destroy
+    @user.destroy
+    head :no_content
+  end
 
-      def update
-        if user.update_attributes(user_params)
-          render json: { user: user }
-        else
-          render json: { errors: user.errors }, status: 500
-        end
-      end
+  private
 
-      def destroy
-        if user.destroy!
-          render json: { user: user }
-        else
-          render json: { errors: user.errors }, status: 500
-        end
-      end
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-      private
+  def user_params
+    params.permit(:email)
+  end
 
-      def user_params
-        params.require(:user).permit(:email)
-      end
-
-      def user
-        @user ||= User.find_by!(id: id)
-      end
-
-      def id
-        params.require(:id)
-      end
-
-      def record_not_found
-        render json: { errors: ["Couldn't find user {id: #{id}}"] }, status: 500
-      end
+  def record_not_found
+    render json: { errors: ["Couldn't find user with id: #{params[:id]}"] }, status: 404
+  end
 end
