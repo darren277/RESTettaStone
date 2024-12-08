@@ -156,7 +156,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **LISP**                                                                                               |            |                |                      |           |                 |
 | Lisp                                                                                                   |            |                |                      |           | Language        |
 | **LUA**                                                                                                |            |                |                      |           |                 |
-| [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)           | Y          | Y              | Y                    |           |                 |
+| [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)           | Y          | Y              | Y                    | Y         |                 |
 | **PASCAL**                                                                                             |            |                |                      |           |                 |
 | Pascal                                                                                                 | '          | '              | '                    |           |                 |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                    | Y          | Y              | Y                    |           |                 |
