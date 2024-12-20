@@ -143,7 +143,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **F#**                                                                                                 |            |                |                      |           |                 |
 | [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharp/fsharpapp)                  | Y          | Y              | Y                    | Y         | ~~Language~~    |
 | **GO**                                                                                                 |            |                |                      |           |                 |
-| [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/go/goapp)                          | Y          | Y              | Y                    |           |                 |
+| [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/go/goapp)                          | Y          | Y              | Y                    | Y         |                 |
 | **HASKELL**                                                                                            |            |                |                      |           |                 |
 | Haskell                                                                                                |            |                |                      |           | Language        |
 | **JAVA**                                                                                               |            |                |                      |           |                 |
