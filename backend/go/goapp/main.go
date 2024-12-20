@@ -56,12 +56,93 @@ func getAllUsers(c echo.Context) error {
     return c.JSON(http.StatusOK, users)
 }
 
+func getUserById(c echo.Context) error {
+    db := getDBInstance()
+    var user User
+    id := c.Param("id")
+
+    if err := db.First(&user, id).Error; err != nil {
+        log.Printf("Error fetching user: %v", err)
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to fetch user"})
+    }
+
+    return c.JSON(http.StatusOK, user)
+}
+
+func addUser(c echo.Context) error {
+    db := getDBInstance()
+    var user User
+
+    if err := c.Bind(&user); err != nil {
+        log.Printf("Error binding user: %v", err)
+        return c.JSON(http.StatusBadRequest, map[string]string{"error": "failed to bind user"})
+    }
+
+    if err := db.Create(&user).Error; err != nil {
+        log.Printf("Error creating user: %v", err)
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to create user"})
+    }
+
+    return c.JSON(http.StatusOK, user)
+}
+
+func updateUser(c echo.Context) error {
+    db := getDBInstance()
+    var user User
+    id := c.Param("id")
+
+    if err := db.First(&user, id).Error; err != nil {
+        log.Printf("Error fetching user: %v", err)
+        if err == gorm.ErrRecordNotFound {
+            return c.JSON(http.StatusNotFound, map[string]string{"error": "user not found"})
+        }
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to fetch user"})
+    }
+
+    if err := c.Bind(&user); err != nil {
+        log.Printf("Error binding user: %v", err)
+        return c.JSON(http.StatusBadRequest, map[string]string{"error": "failed to bind user"})
+    }
+
+    if err := db.Save(&user).Error; err != nil {
+        log.Printf("Error updating user: %v", err)
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to update user"})
+    }
+
+    return c.JSON(http.StatusOK, user)
+}
+
+func deleteUser(c echo.Context) error {
+    db := getDBInstance()
+    var user User
+    id := c.Param("id")
+
+    if err := db.First(&user, id).Error; err != nil {
+        log.Printf("Error fetching user: %v", err)
+        if err == gorm.ErrRecordNotFound {
+            return c.JSON(http.StatusNotFound, map[string]string{"error": "user not found"})
+        }
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to fetch user"})
+    }
+
+    if err := db.Delete(&user).Error; err != nil {
+        log.Printf("Error deleting user: %v", err)
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to delete user"})
+    }
+
+    return c.JSON(http.StatusOK, map[string]string{"message": "user deleted"})
+}
+
 func main() {
     PORT := os.Getenv("PORT")
 
     e := echo.New()
 
     e.GET("/users", getAllUsers)
+    e.GET("/users/:id", getUserById)
+    e.POST("/users", addUser)
+    e.PUT("/users/:id", updateUser)
+    e.DELETE("/users/:id", deleteUser)
 
     e.Start(":" + PORT)
 }
