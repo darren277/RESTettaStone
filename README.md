@@ -173,7 +173,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **RUBY**                                                                                               |            |                |                      |           |                 |
 | [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)           | Y          | Y              | Y                    | Y         |                 |
 | **RUST**                                                                                               |            |                |                      |           |                 |
-| [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/actixapp)           | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/actixapp)           | Y          | Y              | Y                    | Y         | ~~Language~~    |
 | [Rocket (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/rocketapp)         | Y          | Y              | Y                    |           | ~~Networking~~  |
 | **SCALA**                                                                                              |            |                |                      |           |                 |
 | [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    |           |                 |
