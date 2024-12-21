@@ -32,6 +32,10 @@ shared static this() {
 
     auto router = new URLRouter();
     router.get("/users", &fetchUsers);
+    router.get("/users/:id", &getUserById);
+    router.post("/users", &addUser);
+    router.put("/users/:id", &updateUser);
+    router.delete("/users/:id", &deleteUser);
 
     listenHTTP(settings, router);
 
