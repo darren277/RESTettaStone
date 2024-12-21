@@ -50,7 +50,7 @@ app.route('/users/:id')
                 return res.status(500).json("Error getting user");
             }
             if (results && results.rows.length > 0) {
-                return res.status(200).json(results.rows);
+                return res.status(200).json(results.rows[0]);
             } else {
                 return res.status(404).json("No user found");
             }

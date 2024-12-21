@@ -39,16 +39,23 @@ let connection =
 
 let getUser id =
     try
-        connection
-        |> Sql.connectFromConfig
-        |> Sql.query "SELECT * FROM users WHERE id = @id"
-        |> Sql.parameters [ "@id", Sql.int id ]
-        |> Sql.execute (fun read ->
-        {
-          id = Some (read.int "id")
-          email = read.text "email"
-        })
-        |> Ok
+        let result =
+            connection
+            |> Sql.connectFromConfig
+            |> Sql.query "SELECT * FROM users WHERE id = @id"
+            |> Sql.parameters [ "@id", Sql.int id ]
+            |> Sql.execute (fun read ->
+                {
+                    id = Some (read.int "id")
+                    email = read.text "email"
+                })
+
+        match result with
+        | [user] -> Ok user
+        | [] -> Error NotFound
+        | _ ->
+            Error (DatabaseError "Unexpected result: multiple users found")
+
     with
     | ex ->
         printfn "Database error: \n%A" ex.Message

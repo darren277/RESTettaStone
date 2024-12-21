@@ -78,9 +78,9 @@ def run_tests():
 
     test_get_many = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
-    endpoint = '/users'
+    endpoint = f'/users/{_id}'
     method = HTTP.GET
-    assertions = [lambda r: r.status_code == 200, lambda r: r.json()[0].get('email') == 'test_email1@testing.com']
+    assertions = [lambda r: r.status_code == 200, lambda r: r.json().get('email') == 'test_email1@testing.com']
     data = None
 
     test_get_one = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
