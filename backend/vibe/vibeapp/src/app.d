@@ -42,6 +42,11 @@ shared static this() {
     logInfo("Serving on http://%s:%s", host, port);
 }
 
+Json parseRequestBody(HTTPServerRequest req) {
+    auto body = req.bodyReader.readAllUTF8();
+    return parseJSON(body);
+}
+
 void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
     string query = "SELECT id, email FROM users";
     auto result = conn.exec(query);
