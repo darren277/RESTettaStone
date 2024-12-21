@@ -48,8 +48,8 @@ fn splitPath(path: []const u8, delim: u8) ![]const []const u8 {
     return list.toOwnedSlice();
 }
 
-fn tryParseId(r: zap.Request, id_str: []const u8) ?i64 {
-    return std.fmt.parseInt(i64, id_str, 10) catch |err| {
+fn tryParseId(r: zap.Request, id_str: []const u8) ?i32 {
+    return std.fmt.parseInt(i32, id_str, 10) catch |err| {
         // Handle invalid ID here
         std.debug.print("Failed to parse ID: {}\n", .{err});
         r.setStatusNumeric(400);
@@ -196,7 +196,7 @@ fn handleGetAllUsers(r: zap.Request) void {
     r.sendBody(users_json) catch return;
 }
 
-fn handleGetUserById(r: zap.Request, id: i64) void {
+fn handleGetUserById(r: zap.Request, id: i32) void {
     const user_json = queryUserById(id) catch |err| {
         std.debug.print("Error fetching user by ID: {}\n", .{err});
         if (err == error.UserNotFound) {
@@ -214,7 +214,7 @@ fn handleGetUserById(r: zap.Request, id: i64) void {
     };
 }
 
-fn handleUpdateUser(r: zap.Request, id: i64) void {
+fn handleUpdateUser(r: zap.Request, id: i32) void {
     const body = r.body orelse {
         r.setStatusNumeric(400);
         _ = r.sendBody("{\"error\": \"Request body is required\"}") catch {};
@@ -237,7 +237,7 @@ fn handleUpdateUser(r: zap.Request, id: i64) void {
     };
 }
 
-fn handleDeleteUser(r: zap.Request, id: i64) void {
+fn handleDeleteUser(r: zap.Request, id: i32) void {
     const result = deleteUser(id) catch |err| {
         if (err == error.UserNotFound) {
             r.setStatusNumeric(404);
@@ -328,7 +328,7 @@ fn queryUsers() ![]const u8 {
     return json_buf.toOwnedSlice();
 }
 
-fn queryUserById(id: i64) ![]const u8 {
+fn queryUserById(id: i32) ![]const u8 {
     if (pool == null) {
         return error.PoolNotInitialized;
     }
@@ -412,7 +412,7 @@ fn createUser(body: []const u8) ![]const u8 {
     }
 
     const row = maybe_row.?; // Unwrap the row
-    const id = row.get(i64, 0); // Column 0 is `id`
+    const id = row.get(i32, 0); // Column 0 is `id`
     const user_email = row.get([]const u8, 1); // Column 1 is `email`
 
     // Construct JSON response
@@ -430,7 +430,7 @@ fn createUser(body: []const u8) ![]const u8 {
     return json_buf.toOwnedSlice(); // Return JSON response
 }
 
-fn updateUser(id: i64, body: []const u8) ![]const u8 {
+fn updateUser(id: i32, body: []const u8) ![]const u8 {
     if (pool == null) {
         return error.PoolNotInitialized;
     }
@@ -486,7 +486,7 @@ fn updateUser(id: i64, body: []const u8) ![]const u8 {
     return json_buf.toOwnedSlice(); // Return JSON response
 }
 
-fn deleteUser(id: i64) !i64 {
+fn deleteUser(id: i32) !i32 {
     if (pool == null) {
         return error.PoolNotInitialized;
     }
@@ -503,7 +503,8 @@ fn deleteUser(id: i64) !i64 {
         return error.UserNotFound; // No rows were deleted
     }
 
-    return affected_rows.?;
+    const unwrapped_rows: i64 = affected_rows.?;
+    return @as(i32, @truncate(unwrapped_rows));
 }
 
 pub fn main() !void {
