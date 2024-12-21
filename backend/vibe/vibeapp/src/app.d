@@ -5,6 +5,12 @@ import std.stdio : writeln;
 import std.process : environment;
 import vibe.data.json;
 import std.array : array;
+import vibe.data.json : parseJson;
+import dpq2.args;
+import std.variant : Variant;
+import dpq2.args : QueryParams;
+import dpq2.value : Value;
+import dpq2.oids : OidType;
 
 struct User {
     string id;
@@ -42,9 +48,10 @@ shared static this() {
     logInfo("Serving on http://%s:%s", host, port);
 }
 
+// This is a JSON function, not dpq2's 'Value' object
 Json parseRequestBody(HTTPServerRequest req) {
     auto body = req.bodyReader.readAllUTF8();
-    return parseJSON(body);
+    return parseJson(body);
 }
 
 void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
@@ -66,8 +73,12 @@ void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
 
 void getUserById(HTTPServerRequest req, HTTPServerResponse res) {
     auto id = req.params["id"]; // Correctly get path parameter
-    string query = "SELECT id, email FROM users WHERE id = $1";
-    auto result = conn.execParams(query, id);
+
+    QueryParams params;
+    params.sqlCommand = "SELECT id, email FROM users WHERE id = $1";
+    params.argsFromArray = [id];
+
+    auto result = conn.execParams(p);
 
     Json userJson = Json.emptyObject;
 
@@ -80,14 +91,23 @@ void getUserById(HTTPServerRequest req, HTTPServerResponse res) {
 }
 
 void addUser(HTTPServerRequest req, HTTPServerResponse res) {
-    auto user = parseRequestBody(req); // Parse JSON request body
-    string query = "INSERT INTO users (email) VALUES ($1) RETURNING id, email";
-    auto result = conn.execParams(query, user["email"].as!string);
+    // 1. Parse the incoming JSON body (vibe.d style):
+    auto user = parseRequestBody(req);
+    string email = user["email"].get!string;
 
+    // 2. Construct QueryParams
+    QueryParams params;
+    params.sqlCommand = "INSERT INTO users (email) VALUES ($1) RETURNING id, email";
+    // Each parameter is a dpq2.value.Value
+    params.argsFromArray = [email];
+
+    // 3. Execute
+    auto result = conn.execParams(params);
+
+    // 4. Build JSON response
     Json userJson = Json.emptyObject;
-
     foreach (row; rangify(result)) {
-        userJson["id"] = row["id"].as!PGtext;
+        userJson["id"]    = row["id"].as!PGtext;
         userJson["email"] = row["email"].as!PGtext;
     }
 
@@ -95,15 +115,21 @@ void addUser(HTTPServerRequest req, HTTPServerResponse res) {
 }
 
 void updateUser(HTTPServerRequest req, HTTPServerResponse res) {
-    auto id = req.params["id"]; // Correctly get path parameter
-    auto user = parseRequestBody(req); // Parse JSON request body
-    string query = "UPDATE users SET email = $1 WHERE id = $2 RETURNING id, email";
-    auto result = conn.execParams(query, user["email"].as!string, id);
+    // parse route param
+    auto id = req.params["id"];
+    // parse JSON body
+    auto user = parseRequestBody(req);
+    string email = user["email"].get!string;
+
+    QueryParams params;
+    params.sqlCommand = "UPDATE users SET email = $1 WHERE id = $2 RETURNING id, email";
+    params.argsVariadic(email, id);
+
+    auto result = conn.execParams(params);
 
     Json userJson = Json.emptyObject;
-
     foreach (row; rangify(result)) {
-        userJson["id"] = row["id"].as!PGtext;
+        userJson["id"]    = row["id"].as!PGtext;
         userJson["email"] = row["email"].as!PGtext;
     }
 
@@ -112,8 +138,12 @@ void updateUser(HTTPServerRequest req, HTTPServerResponse res) {
 
 void deleteUser(HTTPServerRequest req, HTTPServerResponse res) {
     auto id = req.params["id"]; // Correctly get path parameter
-    string query = "DELETE FROM users WHERE id = $1 RETURNING id, email";
-    auto result = conn.execParams(query, id);
+
+    QueryParams params;
+    params.sqlCommand = "DELETE FROM users WHERE id = $1 RETURNING id, email";
+    params.argsFromArray = [id];
+
+    auto result = conn.execParams(params);
 
     Json userJson = Json.emptyObject;
 
