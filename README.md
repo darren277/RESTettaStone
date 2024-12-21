@@ -60,6 +60,8 @@
       - [Project Structure](#project-structure)
       - [URL Routing](#url-routing)
       - [Django REST Framework](#django-rest-framework)
+    + [Zig](#zig)
+      - [Postgres Connection Pool Inconsistency Problem](#postgres-connection-pool-inconsistency-problem)
   * [Database Gotchas](#database-gotchas)
     + [Postgres](#postgres)
       - [pg_stat_activity Locks](#pg_stat_activity-locks)
@@ -794,6 +796,14 @@ It is pretty clear that Django proper is meant to be server HTML files (in the f
 For these reasons, I'd likely go with the official Django REST framework over traditional Django for such use cases.
 
 In fact, I may add such a subproject to the ever-growing collection here.
+
+### Zig
+
+#### Postgres Connection Pool Inconsistency Problem
+
+Full CRUD works, however, there is a problem with it behaving inconsistently and sometimes throwing errors about the database being closed.
+
+I'm leaving this as a problem to solve in the future.
 
 ## Database Gotchas
 
