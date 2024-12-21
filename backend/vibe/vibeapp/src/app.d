@@ -63,7 +63,7 @@ void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (row; rangify(result)) {
         Json userJson = Json.emptyObject;
         // Use .as!PGtext to convert the PostgreSQL value
-        userJson["id"] = row["id"].as!PGtext;
+        userJson["id"] = row["id"].as!int;
         userJson["email"] = row["email"].as!PGtext;
         usersJson ~= userJson;
     }
@@ -83,7 +83,7 @@ void getUserById(HTTPServerRequest req, HTTPServerResponse res) {
     Json userJson = Json.emptyObject;
 
     foreach (row; rangify(result)) {
-        userJson["id"] = row["id"].as!PGtext;
+        userJson["id"] = row["id"].as!int;
         userJson["email"] = row["email"].as!PGtext;
     }
 
@@ -107,7 +107,7 @@ void addUser(HTTPServerRequest req, HTTPServerResponse res) {
     // 4. Build JSON response
     Json userJson = Json.emptyObject;
     foreach (row; rangify(result)) {
-        userJson["id"]    = row["id"].as!PGtext;
+        userJson["id"]    = row["id"].as!int;
         userJson["email"] = row["email"].as!PGtext;
     }
 
@@ -129,7 +129,7 @@ void updateUser(HTTPServerRequest req, HTTPServerResponse res) {
 
     Json userJson = Json.emptyObject;
     foreach (row; rangify(result)) {
-        userJson["id"]    = row["id"].as!PGtext;
+        userJson["id"]    = row["id"].as!int;
         userJson["email"] = row["email"].as!PGtext;
     }
 
@@ -148,7 +148,7 @@ void deleteUser(HTTPServerRequest req, HTTPServerResponse res) {
     Json userJson = Json.emptyObject;
 
     foreach (row; rangify(result)) {
-        userJson["id"] = row["id"].as!PGtext;
+        userJson["id"] = row["id"].as!int;
         userJson["email"] = row["email"].as!PGtext;
     }
 
