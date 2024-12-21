@@ -355,7 +355,7 @@ fn queryUserById(id: i32) ![]const u8 {
 
     // Extract the email from the row
     const row = maybe_row.?; // Unwrap the optional
-    const email_row_index = 1; // Assuming the email is at index 1
+    const email_row_index = 2;
     const email = row.get([]const u8, email_row_index);
 
     // Build the JSON response
