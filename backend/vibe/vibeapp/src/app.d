@@ -55,17 +55,28 @@ Json parseRequestBody(HTTPServerRequest req) {
 }
 
 void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
-    string query = "SELECT id, email FROM users";
-    auto result = conn.exec(query);
+    QueryParams params;
+    params.sqlCommand = "SELECT id, email FROM users";
+    params.resultFormat = ValueFormat.BINARY; // Attempt binary format
+
+    auto result = conn.execParams(params);
 
     Json usersJson = Json.emptyArray;
 
     foreach (row; rangify(result)) {
-        Json userJson = Json.emptyObject;
-        // Use .as!PGtext to convert the PostgreSQL value
-        userJson["id"] = row["id"].as!int;
-        userJson["email"] = row["email"].as!PGtext;
-        usersJson ~= userJson;
+        try {
+            Json userJson = Json.emptyObject;
+            userJson["id"] = row["id"].as!int; // Int4 mapping
+            userJson["email"] = row["email"].as!PGtext;
+            usersJson ~= userJson;
+        } catch (dpq2.value.ValueConvException e) {
+            // Fallback: Parse as string
+            writeln("Fallback to text parsing for a column...");
+            Json userJson = Json.emptyObject;
+            userJson["id"] = row["id"].as!string.to!int;
+            userJson["email"] = row["email"].as!string;
+            usersJson ~= userJson;
+        }
     }
 
     res.writeBody(usersJson.toString(), "application/json");
@@ -75,10 +86,16 @@ void getUserById(HTTPServerRequest req, HTTPServerResponse res) {
     auto id = req.params["id"]; // Correctly get path parameter
 
     QueryParams params;
-    params.sqlCommand = "SELECT id, email FROM users WHERE id = $1";
-    params.argsFromArray = [id];
+    params.sqlCommand = "SELECT id, email FROM users WHERE id = $1::integer";
+    params.argsVariadic(id);
 
-    auto result = conn.execParams(p);
+    auto result = conn.execParams(params);
+
+    if (result.length == 0) {
+        res.statusCode = 404;
+        res.writeBody("{}", "application/json");
+        return;
+    }
 
     Json userJson = Json.emptyObject;
 
@@ -122,10 +139,16 @@ void updateUser(HTTPServerRequest req, HTTPServerResponse res) {
     string email = user["email"].get!string;
 
     QueryParams params;
-    params.sqlCommand = "UPDATE users SET email = $1 WHERE id = $2 RETURNING id, email";
+    params.sqlCommand = "UPDATE users SET email = $1 WHERE id = $2::integer RETURNING id, email";
     params.argsVariadic(email, id);
 
     auto result = conn.execParams(params);
+
+    if (result.length == 0) {
+        res.statusCode = 404;
+        res.writeBody("{}", "application/json");
+        return;
+    }
 
     Json userJson = Json.emptyObject;
     foreach (row; rangify(result)) {
@@ -140,10 +163,16 @@ void deleteUser(HTTPServerRequest req, HTTPServerResponse res) {
     auto id = req.params["id"]; // Correctly get path parameter
 
     QueryParams params;
-    params.sqlCommand = "DELETE FROM users WHERE id = $1 RETURNING id, email";
+    params.sqlCommand = "DELETE FROM users WHERE id = $1::integer RETURNING id, email";
     params.argsFromArray = [id];
 
     auto result = conn.execParams(params);
+
+    if (result.length == 0) {
+        res.statusCode = 404;
+        res.writeBody("{}", "application/json");
+        return;
+    }
 
     Json userJson = Json.emptyObject;
 
