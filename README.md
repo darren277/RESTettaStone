@@ -147,8 +147,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **HASKELL**                                                                                            |            |                |                      |           |                 |
 | Haskell                                                                                                |            |                |                      |           | Language        |
 | **JAVA**                                                                                               |            |                |                      |           |                 |
-| [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    |           |                 |
 | [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/tomcatapp)         | Y          | Y              | Y                    | Y         |                 |
+| [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    | Y         |                 |
 | **JAVASCRIPT**                                                                                         |            |                |                      |           |                 |
 | [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/bunapp)           | Y          | Y              | Y                    |           | ~~Libraries~~   |
 | [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  |           |                 |
