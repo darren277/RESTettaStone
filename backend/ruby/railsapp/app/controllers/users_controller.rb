@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    render json: { user: @user }
+    render json: @user
   end
 
   def create
