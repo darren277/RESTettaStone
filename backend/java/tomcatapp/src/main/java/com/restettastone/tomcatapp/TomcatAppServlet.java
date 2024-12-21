@@ -16,6 +16,17 @@ public class TomcatAppServlet extends HttpServlet {
 
     private static final String FILE_PATH = System.getenv("FILE_PATH") != null ? System.getenv("FILE_PATH") : "/tmp/file.txt";
 
+    private String readRequestBody(HttpServletRequest request) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader reader = request.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
