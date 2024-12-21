@@ -175,6 +175,12 @@ fn handleCreateUser(r: zap.Request) void {
         } else if (err == error.UserNotCreated) {
             r.setStatusNumeric(500);
             _ = r.sendBody("{\"error\": \"Failed to create user\"}") catch {};
+        } else if (err == error.Closed) {
+            // Handle connection closed error
+            r.setStatusNumeric(500);
+            r.sendBody("{\"error\": \"Database connection closed\"}") catch |send_err| {
+                std.debug.print("Error sending response: {}\n", .{send_err});
+            };
         } else {
             r.setStatusNumeric(500);
             _ = r.sendBody("{\"error\": \"Internal server error\"}") catch {};
@@ -189,6 +195,14 @@ fn handleCreateUser(r: zap.Request) void {
 
 fn handleGetAllUsers(r: zap.Request) void {
     const users_json = queryUsers() catch |err| {
+        if (err == error.Closed) {
+            // Handle connection closed error
+            r.setStatusNumeric(500);
+            r.sendBody("{\"error\": \"Database connection closed\"}") catch |send_err| {
+                std.debug.print("Error sending response: {}\n", .{send_err});
+            };
+            return;
+        }
         std.debug.print("Error fetching users: {}\n", .{err});
         r.sendBody("{\"error\": \"Failed to fetch users\"}") catch return;
         return;
@@ -201,6 +215,12 @@ fn handleGetUserById(r: zap.Request, id: i32) void {
         std.debug.print("Error fetching user by ID: {}\n", .{err});
         if (err == error.UserNotFound) {
             sendNotFound(r);
+        } else if (err == error.Closed) {
+            // Handle connection closed error
+            r.setStatusNumeric(500);
+            r.sendBody("{\"error\": \"Database connection closed\"}") catch |send_err| {
+                std.debug.print("Error sending response: {}\n", .{send_err});
+            };
         } else {
             r.sendBody("{\"error\": \"Failed to fetch user\"}") catch |send_err| {
                 std.debug.print("Error sending response: {}\n", .{send_err});
@@ -224,6 +244,12 @@ fn handleUpdateUser(r: zap.Request, id: i32) void {
     const result = updateUser(id, body) catch |err| {
         if (err == error.UserNotFound) {
             sendNotFound(r);
+        } else if (err == error.Closed) {
+            // Handle connection closed error
+            r.setStatusNumeric(500);
+            r.sendBody("{\"error\": \"Database connection closed\"}") catch |send_err| {
+                std.debug.print("Error sending response: {}\n", .{send_err});
+            };
         } else {
             std.debug.print("Error updating user: {}\n", .{err});
             r.setStatusNumeric(500);
@@ -242,6 +268,12 @@ fn handleDeleteUser(r: zap.Request, id: i32) void {
         if (err == error.UserNotFound) {
             r.setStatusNumeric(404);
             _ = r.sendBody("{\"error\": \"User not found\"}") catch |send_err| {
+                std.debug.print("Error sending response: {}\n", .{send_err});
+            };
+        } else if (err == error.Closed) {
+            // Handle connection closed error
+            r.setStatusNumeric(500);
+            r.sendBody("{\"error\": \"Database connection closed\"}") catch |send_err| {
                 std.debug.print("Error sending response: {}\n", .{send_err});
             };
         } else {
