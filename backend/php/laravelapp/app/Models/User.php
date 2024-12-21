@@ -13,4 +13,6 @@ class User extends Model
     protected $keyType = 'integer';
 
     protected $fillable = ['id', 'email'];
+
+    public $timestamps = false;
 }
