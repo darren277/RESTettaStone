@@ -63,3 +63,64 @@ void fetchUsers(HTTPServerRequest req, HTTPServerResponse res) {
 
     res.writeBody(usersJson.toString(), "application/json");
 }
+
+void getUserById(HTTPServerRequest req, HTTPServerResponse res) {
+    auto id = req.params["id"]; // Correctly get path parameter
+    string query = "SELECT id, email FROM users WHERE id = $1";
+    auto result = conn.execParams(query, id);
+
+    Json userJson = Json.emptyObject;
+
+    foreach (row; rangify(result)) {
+        userJson["id"] = row["id"].as!PGtext;
+        userJson["email"] = row["email"].as!PGtext;
+    }
+
+    res.writeBody(userJson.toString(), "application/json");
+}
+
+void addUser(HTTPServerRequest req, HTTPServerResponse res) {
+    auto user = parseRequestBody(req); // Parse JSON request body
+    string query = "INSERT INTO users (email) VALUES ($1) RETURNING id, email";
+    auto result = conn.execParams(query, user["email"].as!string);
+
+    Json userJson = Json.emptyObject;
+
+    foreach (row; rangify(result)) {
+        userJson["id"] = row["id"].as!PGtext;
+        userJson["email"] = row["email"].as!PGtext;
+    }
+
+    res.writeBody(userJson.toString(), "application/json");
+}
+
+void updateUser(HTTPServerRequest req, HTTPServerResponse res) {
+    auto id = req.params["id"]; // Correctly get path parameter
+    auto user = parseRequestBody(req); // Parse JSON request body
+    string query = "UPDATE users SET email = $1 WHERE id = $2 RETURNING id, email";
+    auto result = conn.execParams(query, user["email"].as!string, id);
+
+    Json userJson = Json.emptyObject;
+
+    foreach (row; rangify(result)) {
+        userJson["id"] = row["id"].as!PGtext;
+        userJson["email"] = row["email"].as!PGtext;
+    }
+
+    res.writeBody(userJson.toString(), "application/json");
+}
+
+void deleteUser(HTTPServerRequest req, HTTPServerResponse res) {
+    auto id = req.params["id"]; // Correctly get path parameter
+    string query = "DELETE FROM users WHERE id = $1 RETURNING id, email";
+    auto result = conn.execParams(query, id);
+
+    Json userJson = Json.emptyObject;
+
+    foreach (row; rangify(result)) {
+        userJson["id"] = row["id"].as!PGtext;
+        userJson["email"] = row["email"].as!PGtext;
+    }
+
+    res.writeBody(userJson.toString(), "application/json");
+}
