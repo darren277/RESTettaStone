@@ -14,6 +14,49 @@ Route::get('/users', function () {
     return response()->json(User::all());
 });
 
+// GET /users/<id>
+Route::get('/users/{id}', function ($id) {
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    return response()->json($user);
+});
+
+// POST /users
+Route::post('/users', function () {
+    $data = request()->only(['id', 'email']);
+    $user = User::create($data);
+    return response()->json($user);
+});
+
+// PUT /users/<id>
+Route::put('/users/{id}', function ($id) {
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    $data = request()->only(['email']);
+    $user->fill($data)->save();
+    return response()->json($user);
+});
+
+// DELETE /users/<id>
+Route::delete('/users/{id}', function ($id) {
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    $user->delete();
+    return response()->json(['message' => 'User deleted']);
+});
+
 
 // $user = User::create(['email' => 'laravel@test.com']);
 
