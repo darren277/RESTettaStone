@@ -35,7 +35,7 @@ shared static this() {
     router.get("/users/:id", &getUserById);
     router.post("/users", &addUser);
     router.put("/users/:id", &updateUser);
-    router.delete("/users/:id", &deleteUser);
+    router.delete_("/users/:id", &deleteUser);
 
     listenHTTP(settings, router);
 
