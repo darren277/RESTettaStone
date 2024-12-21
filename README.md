@@ -182,7 +182,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **D**                                                                                                  |            |                |                      |           |                 |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibe/vibeapp)                | Y          | Y              | Y                    |           | ~~Networking~~  |
 | **ZIG**                                                                                                |            |                |                      |           |                 |
-| [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                       | Y          | Y              | Y                    |           | ~~Build~~       |
+| [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                       | Y          | Y              | Y                    | Y*        | ~~Build~~       |
 
 ### Frontend
 
