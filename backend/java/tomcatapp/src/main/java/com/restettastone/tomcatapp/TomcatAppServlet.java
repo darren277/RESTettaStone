@@ -36,6 +36,47 @@ public class TomcatAppServlet extends HttpServlet {
             handleFile(response);
         } else if ("/users".equals(path)) {
             handleGetUsers(response);
+        } else if (path != null && path.matches("/users/\\d+")) {
+            handleGetUserById(request, response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().println("Endpoint not found");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getPathInfo();
+
+        if ("/users".equals(path)) {
+            handlePostUser(request, response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().println("Endpoint not found");
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getPathInfo();
+
+        if (path != null && path.matches("/users/\\d+")) {
+            handlePutUser(request, response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().println("Endpoint not found");
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getPathInfo();
+
+        if (path != null && path.matches("/users/\\d+")) {
+            handleDeleteUser(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().println("Endpoint not found");
