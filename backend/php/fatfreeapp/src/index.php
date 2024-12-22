@@ -10,12 +10,6 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 require_once("./vendor/autoload.php");
 $f3 = Base::instance();
 
-$f3->route('GET /',
-    function() {
-        echo 'Hello, world!!';
-    }
-);
-
 $db=new DB\SQL('pgsql:host='.$_ENV['PG_HOST'].';port='.$_ENV['PG_PORT'].';dbname='.$_ENV['PG_DB'], $_ENV['PG_USER'], $_ENV['PG_PASS']);
 
 $f3->route('GET /users',
