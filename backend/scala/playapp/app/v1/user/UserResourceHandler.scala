@@ -18,39 +18,35 @@ object UserResource {
 
 
 /* Controls access to the backend data, returning [[UserResource]] */
-class UserResourceHandler @Inject()(
-    db: Database,
-    routerProvider: Provider[UserRouter],
-    userRepository: UserRepository
-  )(implicit ec: ExecutionContext) {
+class UserResourceHandler @Inject()(db: Database, routerProvider: Provider[UserRouter], userRepository: UserRepository)(implicit ec: ExecutionContext) {
 
-  def create(userInput: UserFormInput)(implicit mc: MarkerContext): Future[UserResource] = {
-    val data = UserData(UserId("999"), userInput.email)
-    userRepository.create(data).map { id =>
-      createUserResource(data)
+    def create(userInput: UserFormInput)(implicit mc: MarkerContext): Future[UserResource] = {
+        val data = UserData(UserId("999"), userInput.email)
+        userRepository.create(data).map { id =>
+            createUserResource(data)
+        }
     }
-  }
 
-  def lookup(id: String)(implicit mc: MarkerContext): Future[Option[UserResource]] = {
-    val userFuture = userRepository.get(UserId(id))
-    userFuture.map { maybeUserData =>
-      maybeUserData.map { userData =>
-        createUserResource(userData)
-      }
+    def lookup(id: String)(implicit mc: MarkerContext): Future[Option[UserResource]] = {
+        val userFuture = userRepository.get(UserId(id))
+        userFuture.map { maybeUserData =>
+            maybeUserData.map { userData =>
+                createUserResource(userData)
+            }
+        }
     }
-  }
 
-  def find(implicit mc: MarkerContext): Future[Iterable[UserResource]] = {
-    Future {
-      db.withConnection { implicit conn =>
-        userRepository.list().map(userData => createUserResource(userData))
-      }
-    }(ec)
-  }
+    def find(implicit mc: MarkerContext): Future[Iterable[UserResource]] = {
+        Future {
+            db.withConnection { implicit conn =>
+                userRepository.list().map(userData => createUserResource(userData))
+            }
+        }(ec)
+    }
 
-      def delete(id: String)(implicit mc: MarkerContext): Future[Unit] = {
+    def delete(id: String)(implicit mc: MarkerContext): Future[Unit] = {
         userRepository.delete(UserId(id)).map { _ => () }
-      }
+    }
 
     def update(id: String, userInput: UserFormInput)(implicit mc: MarkerContext): Future[UserResource] = {
         val data = UserData(UserId(id), userInput.email)
@@ -64,7 +60,7 @@ class UserResourceHandler @Inject()(
         }
     }
 
-  private def createUserResource(u: UserData): UserResource = {
-    UserResource(u.id.toString, u.email)
-  }
+    private def createUserResource(u: UserData): UserResource = {
+        UserResource(u.id.toString, u.email)
+    }
 }

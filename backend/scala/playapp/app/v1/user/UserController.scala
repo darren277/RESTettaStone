@@ -11,74 +11,69 @@ import scala.concurrent.{ExecutionContext, Future}
 
 case class UserFormInput(email: String)
 object UserFormInput {
-  def unapply(userFormInput: UserFormInput): Option[(String)] = {
-    Some((userFormInput.email))
-  }
+    def unapply(userFormInput: UserFormInput): Option[(String)] = {
+        Some((userFormInput.email))
+    }
 }
 
 /* Takes HTTP requests and produces JSON. */
-class UserController @Inject()(cc: UserControllerComponents)(
-    implicit ec: ExecutionContext)
-    extends UserBaseController(cc) {
+class UserController @Inject()(cc: UserControllerComponents)(implicit ec: ExecutionContext) extends UserBaseController(cc) {
+    private val logger = Logger(getClass)
 
-  private val logger = Logger(getClass)
-
-  private val form: Form[UserFormInput] = {
-    import play.api.data.Forms._
-
-    Form(
-      mapping(
-        "email" -> nonEmptyText
-      )(UserFormInput.apply)(UserFormInput.unapply)
-    )
-  }
-
-  def index: Action[AnyContent] = UserAction.async { implicit request =>
-    logger.trace("index: ")
-    userResourceHandler.find.map { users =>
-      Ok(Json.toJson(users))
+    private val form: Form[UserFormInput] = {
+        import play.api.data.Forms._
+        Form(
+            mapping(
+                "email" -> nonEmptyText
+            )(UserFormInput.apply)(UserFormInput.unapply)
+        )
     }
-  }
 
-  def process: Action[AnyContent] = UserAction.async { implicit request =>
-    logger.trace("process: ")
-    processJsonUser()
-  }
-
-  def show(id: String): Action[AnyContent] = UserAction.async {
-    implicit request =>
-      logger.trace(s"show: id = $id")
-      userResourceHandler.lookup(id).map { user =>
-        Ok(Json.toJson(user))
-      }
-  }
-
-  def update(id: String): Action[AnyContent] = UserAction.async {
-    implicit request =>
-      logger.trace(s"update: id = $id")
-      processJsonUser()
-  }
-
-    def delete(id: String): Action[AnyContent] = UserAction.async {
-        implicit request =>
-        logger.trace(s"delete: id = $id")
-        userResourceHandler.delete(id).map { _ =>
-            NoContent
+    def index: Action[AnyContent] = UserAction.async { implicit request =>
+        logger.trace("index: ")
+        userResourceHandler.find.map { users =>
+            Ok(Json.toJson(users))
         }
     }
 
-  private def processJsonUser[A]()(
-      implicit request: UserRequest[A]): Future[Result] = {
-    def failure(badForm: Form[UserFormInput]) = {
-      Future.successful(BadRequest(badForm.errorsAsJson))
+    def process: Action[AnyContent] = UserAction.async { implicit request =>
+        logger.trace("process: ")
+        processJsonUser()
     }
 
-    def success(input: UserFormInput) = {
-      userResourceHandler.create(input).map { user =>
-        Created(Json.toJson(user)).withHeaders(LOCATION -> s"/v1/user/${user.id}")
-      }
+    def show(id: String): Action[AnyContent] = UserAction.async {
+        implicit request =>
+            logger.trace(s"show: id = $id")
+            userResourceHandler.lookup(id).map { user =>
+                Ok(Json.toJson(user))
+            }
     }
 
-    form.bindFromRequest().fold(failure, success)
-  }
+    def update(id: String): Action[AnyContent] = UserAction.async {
+        implicit request =>
+            logger.trace(s"update: id = $id")
+            processJsonUser()
+    }
+
+    def delete(id: String): Action[AnyContent] = UserAction.async {
+        implicit request =>
+            logger.trace(s"delete: id = $id")
+            userResourceHandler.delete(id).map { _ =>
+                NoContent
+            }
+    }
+
+    private def processJsonUser[A]()(implicit request: UserRequest[A]): Future[Result] = {
+        def failure(badForm: Form[UserFormInput]) = {
+            Future.successful(BadRequest(badForm.errorsAsJson))
+        }
+
+        def success(input: UserFormInput) = {
+            userResourceHandler.create(input).map { user =>
+                Created(Json.toJson(user)).withHeaders(LOCATION -> s"/v1/user/${user.id}")
+            }
+        }
+
+        form.bindFromRequest().fold(failure, success)
+    }
 }
