@@ -31,6 +31,8 @@ RUN echo $INSTALL_SH > /var/www/html/install_composer.sh
 RUN chmod +x /var/www/html/install_composer.sh
 RUN /var/www/html/install_composer.sh
 
+RUN git clone https://github.com/f3-factory/fatfree-core.git vendor/fatfree-core
+
 RUN php composer.phar install
 
 COPY ./src /var/www/html
