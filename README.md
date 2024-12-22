@@ -62,6 +62,8 @@
       - [Django REST Framework](#django-rest-framework)
     + [Zig](#zig)
       - [Postgres Connection Pool Inconsistency Problem](#postgres-connection-pool-inconsistency-problem)
+    + [Fat Free (PHP)](#fat-free--php-)
+      - [Dependency Source](#dependency-source)
   * [Database Gotchas](#database-gotchas)
     + [Postgres](#postgres)
       - [pg_stat_activity Locks](#pg_stat_activity-locks)
@@ -163,7 +165,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | Pascal                                                                                                 | '          | '              | '                    |           |                 |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                    | Y          | Y              | Y                    |           |                 |
 | **PHP**                                                                                                |            |                |                      |           |                 |
-| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/fatfreeapp)        | Y          | Y              | Y                    |           |                 |
+| [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/fatfreeapp)        | Y          | Y              | Y                    | Y         |                 |
 | [Laravel (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/laravelapp)         | Y          | Y              | Y                    | Y         |                 |
 | [PHP](https://github.com/darren277/RESTettaStone/tree/master/backend/php/phpapp)                       | Y          | Y              | Y                    |           |                 |
 | [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/symfonyapp)         | Y          | Y              | Y                    | Y         |                 |
@@ -804,6 +806,39 @@ In fact, I may add such a subproject to the ever-growing collection here.
 Full CRUD works, however, there is a problem with it behaving inconsistently and sometimes throwing errors about the database being closed.
 
 I'm leaving this as a problem to solve in the future.
+
+### Fat Free (PHP)
+
+#### Dependency Source
+
+So I had an interesting experience with getting Fat Free to work right. I kept getting 500 errors automatically with every endpoint. It turned out that there was an issue with `E_STRICT` being used but deprecated for the latest versions of PHP. I had the option to downgrade PHP, but didn't really want to go that route.
+
+Another option I had was to patch the code directly in the downloaded package. In fact, I started adding a few `sed` commands to my `Dockerfile` to accomplish just that:
+```shell
+# Patch the offending line in FatFree framework's base.php
+RUN sed -i 's/error_reporting((E_ALL|E_STRICT)/error_reporting(E_ALL/' vendor/bcosca/fatfree-core/base.php
+```
+
+And I was using various `grep` calls to find other issues including a nullable parameter thing:
+```shell
+# grep -Po "function \w+\((.*?)\)" vendor/bcosca/fatfree-core/base.php
+
+# Patch the Preview::render() method to fix implicit nullable parameter
+# Patch the functions referencing $hive
+RUN sed -i 's/array $hive=NULL/?array $hive=NULL/g' vendor/bcosca/fatfree-core/base.php
+```
+
+But I also kept wondering how these simple fixes hadn't already been done by the maintainers of the repo.
+
+Well, it turns out that the changes _had been made_. I searched inside of GitHub for the offending bits of code, and they were all fixed!
+
+So I spend a bit of time just absolutely puzzled as to what was going on. Of course, I double, even triple, checked that the version number specified in my `Dockerfile` and in my `composer.json` file reflected the latest release according to GitHub.
+
+Suddenly, at some point, I noticed that the repository I was searching through on the GitHub.com website was at `f3-factory/fatfree-core`, not `bcosca/fatfree-core`.
+
+I of course remedied that immediately and everything worked!
+
+So the moral of the story here - the actual "Gotcha!" - is to keep an eye out for scenarios where there can be more than one conflicting repository, probably due to a forking or something like that.
 
 ## Database Gotchas
 
