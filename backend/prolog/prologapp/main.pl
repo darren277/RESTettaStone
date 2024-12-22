@@ -99,21 +99,28 @@ create_user(Data) :-
     % reply_json_dict(_{status: "success", email: Email}).
 
 update_user(UserID, User) :-
+    % ODBC: State 07002: Parameters exist but IPD isn't set. Please call SQLDescribeParam()
     odbc_connect('postgres', Connection, []),
-    odbc_query(Connection, 'UPDATE users SET email = ? WHERE id = ?', [User.email, UserID]),
+    % odbc_query(Connection, 'UPDATE users SET email = ? WHERE id = ?', [User.email, UserID]),
+    odbc_prepare(Connection, 'UPDATE users SET email = ? WHERE id = ?', [varchar, integer], Statement),
+    odbc_execute(Statement, [User.email, UserID]),
+    odbc_free_statement(Statement),
     odbc_disconnect(Connection).
 
 delete_user(UserID) :-
     odbc_connect('postgres', Connection, []),
-    odbc_query(Connection, 'DELETE FROM users WHERE id = ?', [UserID]),
+    % odbc_query(Connection, 'DELETE FROM users WHERE id = ?', [UserID]),
+    odbc_prepare(Connection, 'DELETE FROM users WHERE id = ?', [integer], Statement),
+    odbc_execute(Statement, [UserID]),
+    odbc_free_statement(Statement),
     odbc_disconnect(Connection).
 
 list_users_handler(Request) :-
     safe_log('Handling GET /users request'),
-    % fetch_users(Users),
-    % reply_json_dict(Users).
-    safe_log('Request received: ':Request),
-    reply_json_dict(_{status: 'debugging'}).
+    fetch_users(Users),
+    reply_json_dict(Users).
+    % safe_log('Request received: ':Request),
+    % reply_json_dict(_{status: 'debugging'}).
 
 user_by_id_handler(UserID) :-
     catch(
@@ -212,16 +219,16 @@ extract_user_id_from_path(Request, UserID) :-
     % format('Converted UserID: ~w~n', [UserID]).
     safe_log('Converted UserID: ':UserID).
 
-update_user_handler(Request) :-
-    http_parameters(Request, [id(UserID, [integer])]),
+update_user_handler(UserID, Request) :-
+    % http_parameters(Request, [id(UserID, [integer])]),
     http_read_json_dict(Request, UserData),
     (   update_user(UserID, UserData)
     ->  reply_json_dict(UserData)
     ;   throw(http_reply(not_found))
     ).
 
-delete_user_handler(Request) :-
-    http_parameters(Request, [id(UserID, [integer])]),
+delete_user_handler(UserID, Request) :-
+    % http_parameters(Request, [id(UserID, [integer])]),
     (   delete_user(UserID)
     ->  reply_json_dict(_{message: "User deleted"})
     ;   throw(http_reply(not_found))
