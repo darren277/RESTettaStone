@@ -59,7 +59,7 @@ class UserController @Inject()(cc: UserControllerComponents)(implicit ec: Execut
         implicit request =>
             logger.trace(s"delete: id = $id")
             userResourceHandler.delete(id).map { _ =>
-                NoContent
+                Ok
             }
     }
 
@@ -70,7 +70,7 @@ class UserController @Inject()(cc: UserControllerComponents)(implicit ec: Execut
 
         def success(input: UserFormInput) = {
             userResourceHandler.create(input).map { user =>
-                Created(Json.toJson(user)).withHeaders(LOCATION -> s"/v1/user/${user.id}")
+                Ok(Json.toJson(user)).withHeaders(LOCATION -> s"/v1/user/${user.id}")
             }
         }
 

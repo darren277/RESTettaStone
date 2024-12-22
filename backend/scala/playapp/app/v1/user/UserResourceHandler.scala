@@ -21,9 +21,9 @@ object UserResource {
 class UserResourceHandler @Inject()(db: Database, routerProvider: Provider[UserRouter], userRepository: UserRepository)(implicit ec: ExecutionContext) {
 
     def create(userInput: UserFormInput)(implicit mc: MarkerContext): Future[UserResource] = {
-        val data = UserData(UserId("999"), userInput.email)
+        val data = NewUserData(userInput.email)
         userRepository.create(data).map { id =>
-            createUserResource(data)
+            UserResource(id.toString, userInput.email)
         }
     }
 
