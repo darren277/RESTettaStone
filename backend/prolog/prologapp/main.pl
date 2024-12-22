@@ -7,12 +7,6 @@
 :- use_module(library(odbc)).
 
 :- http_handler(root(user_count), db_query_handler, []).
-% :- http_handler(root(users), list_users_handler, [method(get)]).
-% :- http_handler(root(users/UserID), user_by_id_handler, [id(user_by_id), method(get)]).
-% :- http_handler(root(users/UserID), update_user_handler, [id(update_user), method(put)]).
-% :- http_handler(root(users/UserID), delete_user_handler, [id(delete_user), method(delete)]).
-% :- http_handler(root(users), create_user_handler, [method(post)]).
-
 :- http_handler(/, default_handler, []).
 
 :- http_handler(root(users/UserID), user_handler, []).
@@ -27,7 +21,6 @@ users_handler(Request) :-
     ).
 
 user_handler(Request) :-
-    % Log the inputs
     safe_log('Received Request: ':Request),
 
     % Extract the UserID once from the path
@@ -65,7 +58,6 @@ fetch_users(Users) :-
     odbc_disconnect(Connection).
 
 get_user_by_id(UserID, User) :-
-    % integer(UserID),  % Ensure UserID is an integer
     safe_log('UserID type check: '),
     (   integer(UserID)
     ->  safe_log('UserID is a valid integer: ':UserID)
@@ -74,7 +66,6 @@ get_user_by_id(UserID, User) :-
 
     safe_log('Fetching user with ID: ':UserID),
     odbc_connect('postgres', Connection, []),
-    % odbc_query(Connection, 'SELECT id, email FROM users WHERE id = ?', [UserID], [ID, Email])
     odbc_prepare(Connection, 'SELECT id, email FROM users WHERE id = ?', [integer], Statement),
     odbc_execute(Statement, [UserID], row(ID, Email)),
     odbc_free_statement(Statement),
@@ -91,12 +82,10 @@ create_user(Data) :-
     Email = Data.get(email),
     safe_log('Creating user with email: ':Email),
     odbc_connect('postgres', Connection, []),
-    % odbc_query(Connection, 'INSERT INTO users (email) VALUES (CAST(? AS VARCHAR))', [Email]),
     odbc_prepare(Connection, 'INSERT INTO users (email) VALUES (?)', [varchar], Statement),
     odbc_execute(Statement, [Email]),
     odbc_free_statement(Statement),
     odbc_disconnect(Connection).
-    % reply_json_dict(_{status: "success", email: Email}).
 
 update_user(UserID, User) :-
     odbc_connect('postgres', Connection, []),
@@ -141,23 +130,17 @@ list_users_handler(Request) :-
 
 user_by_id_handler(UserID) :-
     catch(
-        (   % Extract UserID from the request URL
-            % memberchk(path(Path), Request),
-            % split_string(Path, "/", "", Parts),
-            % nth1(3, Parts, UserIDString), % Assuming the ID is the third segment of the path
-            % atom_number(UserIDString, UserID),
-
+        (
             % Attempt to fetch the user by ID
             (   get_user_by_id(UserID, User)
             ->  % If the user exists, return their data as JSON
                 reply_json_dict(User)
             ;   % If no user is found, return a 404 error
-                reply_json_dict(_{error: "User not found 111"}, [status(404)])
+                reply_json_dict(_{error: "User not found"}, [status(404)])
             )
         ),
         Error,
         (
-            % Handle unexpected errors and log them
             safe_log('Error: ':Error),
             reply_json_dict(_{error: "Something went wrong"}, [status(500)])
         )
@@ -187,39 +170,6 @@ safe_log(Message) :-
     % catch(writeln(Message), _, true).
     format(user_error, '~w~n', [Message]).
 
-extract_user_id_from_path1(Request) :-
-    % % Extract the user ID from the path
-    catch(
-        (
-            % http_parameters(Request, [id(UserID, [integer])]),
-            member(path(Path), Request),
-            atom_concat('/users/', AtomID, Path),
-            (   atom_number(AtomID, UserID)
-            ->  true
-            ;   throw(http_reply(bad_request))
-            )
-        ),
-        Error,
-        (
-            safe_log('Error 111: ':Error),
-            % throw(http_reply(not_found))
-            throw(http_reply(bad_request))
-        )
-    ).
-
-extract_user_id_from_path2(Request, UserID) :-
-    % Check if the path is present in the Request
-    (   member(path(Path), Request)
-    ->  (   atom_concat('/users/', AtomID, Path),
-            atom_number(AtomID, UserID)  % Convert AtomID to a number
-        ->  true
-        ;   format('Invalid UserID in Path: ~w~n', [AtomID]),
-            throw(http_reply(bad_request))
-        )
-    ;   format('Missing path in Request: ~w~n', [Request]),
-        throw(http_reply(bad_request))
-    ).
-
 extract_user_id_from_path(Request, UserID) :-
     % Extract the path from the request
     memberchk(path(Path), Request),
@@ -228,12 +178,10 @@ extract_user_id_from_path(Request, UserID) :-
     % Extract the part after '/users/'
     sub_atom(Path, 7, _, 0, AtomID),
     % Debug the extracted part
-    % format('Extracted AtomID: ~w~n', [AtomID]),
     safe_log('Extracted AtomID: ':AtomID),
     % Convert to a number
     atom_number(AtomID, UserID),
     % Debug the final UserID
-    % format('Converted UserID: ~w~n', [UserID]).
     safe_log('Converted UserID: ':UserID).
 
 update_user_handler(UserID, Request) :-
