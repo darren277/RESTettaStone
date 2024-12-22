@@ -30,6 +30,8 @@ class UserExecutionContext @Inject()(actorSystem: ActorSystem)
 /* A pure non-blocking interface for the UserRepository. */
 trait UserRepository {
   def create(data: UserData)(implicit mc: MarkerContext): Future[UserId]
+    def update(id: UserId, data: UserData)(implicit mc: MarkerContext): Future[Option[UserData]]
+    def delete(id: UserId)(implicit mc: MarkerContext): Future[Option[UserData]]
   def list()(implicit conn: Connection): List[UserData]
   def get(id: UserId)(implicit mc: MarkerContext): Future[Option[UserData]]
 }
@@ -68,4 +70,30 @@ class UserRepositoryImpl @Inject()()(implicit ec: UserExecutionContext)
       data.id
     }
   }
+
+  def update(id: UserId, data: UserData)(implicit mc: MarkerContext): Future[Option[UserData]] = {
+    Future {
+      logger.trace(s"update: id = $id, data = $data")
+      userList.find(user => user.id == id) match {
+        case Some(user) =>
+          userList.filterNot(user => user.id == id) :+ data
+          Some(data)
+        case None =>
+          None
+      }
+    }
+  }
+
+    def delete(id: UserId)(implicit mc: MarkerContext): Future[Option[UserData]] = {
+        Future {
+        logger.trace(s"delete: id = $id")
+        userList.find(user => user.id == id) match {
+            case Some(user) =>
+            userList.filterNot(user => user.id == id)
+            Some(user)
+            case None =>
+            None
+        }
+        }
+    }
 }

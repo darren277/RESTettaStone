@@ -53,6 +53,20 @@ class UserController @Inject()(cc: UserControllerComponents)(
       }
   }
 
+  def update(id: String): Action[AnyContent] = UserAction.async {
+    implicit request =>
+      logger.trace(s"update: id = $id")
+      processJsonUser()
+  }
+
+    def delete(id: String): Action[AnyContent] = UserAction.async {
+        implicit request =>
+        logger.trace(s"delete: id = $id")
+        userResourceHandler.delete(id).map { _ =>
+            NoContent
+        }
+    }
+
   private def processJsonUser[A]()(
       implicit request: UserRequest[A]): Future[Result] = {
     def failure(badForm: Form[UserFormInput]) = {
