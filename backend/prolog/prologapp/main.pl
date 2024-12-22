@@ -15,8 +15,8 @@
 
 :- http_handler(/, default_handler, []).
 
-:- http_handler(root(users), users_handler, []).
 :- http_handler(root(users/UserID), user_handler, []).
+:- http_handler(root(users), users_handler, []).
 
 users_handler(Request) :-
     % Dispatch based on the method
@@ -28,12 +28,11 @@ users_handler(Request) :-
 
 user_handler(Request) :-
     % Log the inputs
-    format('Received UserID: ~w~n', [UserID]),
-    format('Received Request: ~w~n', [Request]),
+    safe_log('Received Request: ':Request),
 
     % Extract the UserID once from the path
     (   extract_user_id_from_path(Request, UserID)
-    ->  format('Extracted UserID: ~w~n', [UserID]),
+    ->  safe_log('Extracted UserID: ':UserID),
         handle_method(Request, UserID)
     ;   reply_json_dict(_{error: 'Invalid UserID in path'}, [status(400)]), fail
     ).
@@ -53,16 +52,16 @@ default_handler(Request) :-
 server(Port) :- http_server(http_dispatch, [port(Port)]).
 
 fetch_users(Users) :-
-    format('Connecting to the database~n', []),
+    safe_log('Connecting to the database'),
     odbc_connect('postgres', Connection, []),
-    format('Fetching users~n', []),
+    safe_log('Fetching users'),
     findall(_{id: ID, email: Email},
             (   odbc_query(Connection, 'SELECT id, email FROM users', row(ID, Email))
             ->  true
             ;   writeln('No rows found')
             ),
             Users),
-    format('Users fetched: ~w~n', [Users]),
+    safe_log('Users fetched: ':Users),
     odbc_disconnect(Connection).
 
 get_user_by_id(UserID, User) :-
@@ -205,11 +204,13 @@ extract_user_id_from_path(Request, UserID) :-
     % Extract the part after '/users/'
     sub_atom(Path, 7, _, 0, AtomID),
     % Debug the extracted part
-    format('Extracted AtomID: ~w~n', [AtomID]),
+    % format('Extracted AtomID: ~w~n', [AtomID]),
+    safe_log('Extracted AtomID: ':AtomID),
     % Convert to a number
     atom_number(AtomID, UserID),
     % Debug the final UserID
-    format('Converted UserID: ~w~n', [UserID]).
+    % format('Converted UserID: ~w~n', [UserID]).
+    safe_log('Converted UserID: ':UserID).
 
 update_user_handler(Request) :-
     http_parameters(Request, [id(UserID, [integer])]),
