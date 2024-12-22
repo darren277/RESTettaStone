@@ -99,21 +99,28 @@ create_user(Data) :-
     % reply_json_dict(_{status: "success", email: Email}).
 
 update_user(UserID, User) :-
-    % ODBC: State 07002: Parameters exist but IPD isn't set. Please call SQLDescribeParam()
     odbc_connect('postgres', Connection, []),
-    % odbc_query(Connection, 'UPDATE users SET email = ? WHERE id = ?', [User.email, UserID]),
     odbc_prepare(Connection, 'UPDATE users SET email = ? WHERE id = ?', [varchar, integer], Statement),
-    odbc_execute(Statement, [User.email, UserID]),
+    odbc_execute(Statement, [User.email, UserID], Result),
     odbc_free_statement(Statement),
-    odbc_disconnect(Connection).
+    odbc_disconnect(Connection),
+    safe_log('Result: ':Result),
+    (   Result = affected(RowsAffected), RowsAffected > 0
+    ->  true % Success case
+    ;   throw(http_reply(not_found)) % No rows updated; throw 404
+    ).
 
 delete_user(UserID) :-
     odbc_connect('postgres', Connection, []),
-    % odbc_query(Connection, 'DELETE FROM users WHERE id = ?', [UserID]),
     odbc_prepare(Connection, 'DELETE FROM users WHERE id = ?', [integer], Statement),
-    odbc_execute(Statement, [UserID]),
+    odbc_execute(Statement, [UserID], Result),
     odbc_free_statement(Statement),
-    odbc_disconnect(Connection).
+    odbc_disconnect(Connection),
+    safe_log('Result: ':Result),
+    (   Result = affected(RowsAffected), RowsAffected > 0
+    ->  true % Success case
+    ;   throw(http_reply(not_found)) % No rows updated; throw 404
+    ).
 
 list_users_handler(Request) :-
     safe_log('Handling GET /users request'),
@@ -220,7 +227,6 @@ extract_user_id_from_path(Request, UserID) :-
     safe_log('Converted UserID: ':UserID).
 
 update_user_handler(UserID, Request) :-
-    % http_parameters(Request, [id(UserID, [integer])]),
     http_read_json_dict(Request, UserData),
     (   update_user(UserID, UserData)
     ->  reply_json_dict(UserData)
@@ -228,7 +234,6 @@ update_user_handler(UserID, Request) :-
     ).
 
 delete_user_handler(UserID, Request) :-
-    % http_parameters(Request, [id(UserID, [integer])]),
     (   delete_user(UserID)
     ->  reply_json_dict(_{message: "User deleted"})
     ;   throw(http_reply(not_found))
