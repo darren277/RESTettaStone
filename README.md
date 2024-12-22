@@ -180,7 +180,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Actix (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/actixapp)           | Y          | Y              | Y                    | Y         | ~~Language~~    |
 | [Rocket (Rust)](https://github.com/darren277/RESTettaStone/tree/master/backend/rust/rocketapp)         | Y          | Y              | Y                    |           | ~~Networking~~  |
 | **SCALA**                                                                                              |            |                |                      |           |                 |
-| [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    |           |                 |
+| [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    | Y         |                 |
 | **SWIFT**                                                                                              |            |                |                      |           |                 |
 | [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                 | Y          | Y              | Y                    |           |                 |
 | **D**                                                                                                  |            |                |                      |           |                 |
