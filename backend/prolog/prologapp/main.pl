@@ -105,9 +105,14 @@ update_user(UserID, User) :-
     odbc_free_statement(Statement),
     odbc_disconnect(Connection),
     safe_log('Result: ':Result),
-    (   Result = affected(RowsAffected), RowsAffected > 0
-    ->  true % Success case
-    ;   throw(http_reply(not_found)) % No rows updated; throw 404
+    (   Result = affected(RowsAffected)
+    ->  safe_log('Rows affected: ':RowsAffected),
+        (   RowsAffected > 0
+        ->  true % Success case
+        % ;   throw(http_reply(not_found)) % No rows deleted; throw 404
+        ; fail
+        )
+    ;   throw(http_reply(server_error)) % Unexpected result
     ).
 
 delete_user(UserID) :-
@@ -117,9 +122,14 @@ delete_user(UserID) :-
     odbc_free_statement(Statement),
     odbc_disconnect(Connection),
     safe_log('Result: ':Result),
-    (   Result = affected(RowsAffected), RowsAffected > 0
-    ->  true % Success case
-    ;   throw(http_reply(not_found)) % No rows updated; throw 404
+    (   Result = affected(RowsAffected)
+    ->  safe_log('Rows affected: ':RowsAffected),
+        (   RowsAffected > 0
+        ->  true % Success case
+        % ;   throw(http_reply(not_found)) % No rows deleted; throw 404
+        ; fail
+        )
+    ;   throw(http_reply(server_error)) % Unexpected result
     ).
 
 list_users_handler(Request) :-
@@ -230,11 +240,11 @@ update_user_handler(UserID, Request) :-
     http_read_json_dict(Request, UserData),
     (   update_user(UserID, UserData)
     ->  reply_json_dict(UserData)
-    ;   throw(http_reply(not_found))
+    ;   reply_json_dict(_{error: "User not found"}, [status(404)])
     ).
 
 delete_user_handler(UserID, Request) :-
     (   delete_user(UserID)
     ->  reply_json_dict(_{message: "User deleted"})
-    ;   throw(http_reply(not_found))
+    ;   reply_json_dict(_{error: "User not found"}, [status(404)])
     ).
