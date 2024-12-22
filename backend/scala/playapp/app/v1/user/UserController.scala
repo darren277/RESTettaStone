@@ -36,6 +36,15 @@ class UserController @Inject()(cc: UserControllerComponents)(implicit ec: Execut
         }
     }
 
+    def get(id: String): Action[AnyContent] = UserAction.async { implicit request =>
+        userResourceHandler.lookup(id).map {
+            case Some(user) =>
+                Ok(Json.toJson(user))
+            case None =>
+                NotFound(Json.obj("error" -> "User not found"))
+        }
+    }
+
     def process: Action[AnyContent] = UserAction.async { implicit request =>
         logger.trace("process: ")
         processJsonUser()
@@ -52,14 +61,28 @@ class UserController @Inject()(cc: UserControllerComponents)(implicit ec: Execut
     def update(id: String): Action[AnyContent] = UserAction.async {
         implicit request =>
             logger.trace(s"update: id = $id")
-            processJsonUser()
+            //processJsonUser()
+            form.bindFromRequest().fold(
+                badForm => Future.successful(BadRequest(badForm.errorsAsJson)), // Handle form validation errors
+                input => {
+                    userResourceHandler.update(id, input).map {
+                        case Some(updatedUser) =>
+                            Ok(Json.toJson(updatedUser)) // Return 200 OK with updated user data
+                        case None =>
+                            NotFound(Json.obj("error" -> "User not found")) // Return 404 Not Found
+                    }
+                }
+            )
     }
 
     def delete(id: String): Action[AnyContent] = UserAction.async {
         implicit request =>
             logger.trace(s"delete: id = $id")
-            userResourceHandler.delete(id).map { _ =>
-                Ok
+            userResourceHandler.delete(id).map {
+                case Some(user) =>
+                    Ok
+                case None =>
+                    NotFound(Json.obj("error" -> "User not found")) // Return 404 Not Found
             }
     }
 

@@ -44,19 +44,15 @@ class UserResourceHandler @Inject()(db: Database, routerProvider: Provider[UserR
         }(ec)
     }
 
-    def delete(id: String)(implicit mc: MarkerContext): Future[Unit] = {
-        userRepository.delete(UserId(id)).map { _ => () }
+    def delete(id: String)(implicit mc: MarkerContext): Future[Option[UserData]] = {
+        userRepository.delete(UserId(id))
     }
 
-    def update(id: String, userInput: UserFormInput)(implicit mc: MarkerContext): Future[UserResource] = {
+    def update(id: String, userInput: UserFormInput)(implicit mc: MarkerContext): Future[Option[UserResource]] = {
         val data = UserData(UserId(id), userInput.email)
-        // Found:    (id : String)
-        // Required: v1.user.UserId
-        //userRepository.update(id, data).map { _ =>
-        //    createUserResource(data)
-        //}
-        userRepository.update(UserId(id), data).map { _ =>
-            createUserResource(data)
+        userRepository.update(UserId(id), data).map {
+            case Some(updatedUser) => Some(createUserResource(updatedUser))
+            case None => None
         }
     }
 
