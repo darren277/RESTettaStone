@@ -170,7 +170,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [PHP](https://github.com/darren277/RESTettaStone/tree/master/backend/php/phpapp)                       | Y          | Y              | Y                    |           |                 |
 | [Symfony (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/symfonyapp)         | Y          | Y              | Y                    | Y         |                 |
 | **PROLOG**                                                                                             |            |                |                      |           |                 |
-| [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)              | Y          | Y              | Y                    |           | ~~Language~~    |
+| [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)              | Y          | Y              | Y                    | Y         | ~~Language~~    |
 | **PYTHON**                                                                                             |            |                |                      |           |                 |
 | [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)     | Y          | Y              | Y                    |           |                 |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)       | Y          | Y              | Y                    | Y         |                 |
