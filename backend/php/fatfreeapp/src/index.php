@@ -1,4 +1,11 @@
 <?php
+
+// if (!defined('E_STRICT')) {
+//     define('E_STRICT', 0);
+// }
+
+error_reporting(E_ALL & ~E_DEPRECATED);
+
 // Composer f3 load style
 require_once("./vendor/autoload.php");
 $f3 = Base::instance();
