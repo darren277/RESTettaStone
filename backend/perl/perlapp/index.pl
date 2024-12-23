@@ -26,17 +26,32 @@ sub handle_request {
     my $cgi  = shift;
 
     my $path = $cgi->path_info();
-    my $handler = $dispatch{$path};
+    my $handler;
 
-    if (ref($handler) eq "CODE") {
-        print "HTTP/1.0 200 OK\r\n";
+    # Loop in a predictable order
+    for my $route (@routes) {
+        if ($route->{is_regex}) {
+            if ($path =~ $route->{pattern}) {
+                $handler = $route->{handler};
+                last;
+            }
+        }
+        else {
+            if ($path eq $route->{pattern}) {
+                $handler = $route->{handler};
+                last;
+            }
+        }
+    }
+
+    if ($handler) {
         $handler->($cgi);
-
-    } else {
-        print "HTTP/1.0 404 Not found\r\n";
+    }
+    else {
+        print "HTTP/1.0 404 Not Found\r\n";
         print $cgi->header,
-              $cgi->start_html('Not found'),
-              $cgi->h1('Not found'),
+              $cgi->start_html('Not Found'),
+              $cgi->h1('Not Found'),
               $cgi->end_html;
     }
 }
