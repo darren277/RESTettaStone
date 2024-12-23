@@ -182,7 +182,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **SCALA**                                                                                              |            |                |                      |           |                 |
 | [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)           | Y          | Y              | Y                    | Y         |                 |
 | **SWIFT**                                                                                              |            |                |                      |           |                 |
-| [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                 | Y          | Y              | Y                    |           |                 |
+| [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                 | Y          | Y              | Y                    | Y         |                 |
 | **D**                                                                                                  |            |                |                      |           |                 |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibe/vibeapp)                | Y          | Y              | Y                    | Y         | ~~Networking~~  |
 | **ZIG**                                                                                                |            |                |                      |           |                 |
