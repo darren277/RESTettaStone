@@ -11,6 +11,7 @@ my @routes = (
     { pattern => '/hello',         handler => \&resp_hello, is_regex => 0 },
 );
 
+use JSON;
 use DBI;
 
 my $username = $ENV{PG_USER};
