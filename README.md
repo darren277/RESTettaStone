@@ -163,7 +163,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)           | Y          | Y              | Y                    | Y         |                 |
 | **PASCAL**                                                                                             |            |                |                      |           |                 |
 | Pascal                                                                                                 | '          | '              | '                    |           |                 |
-| [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                    | Y          | Y              | Y                    |           |                 |
+| [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                    | Y          | Y              | Y                    | Y         |                 |
 | **PHP**                                                                                                |            |                |                      |           |                 |
 | [Fat Free (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/fatfreeapp)        | Y          | Y              | Y                    | Y         |                 |
 | [Laravel (PHP)](https://github.com/darren277/RESTettaStone/tree/master/backend/php/laravelapp)         | Y          | Y              | Y                    | Y         |                 |
