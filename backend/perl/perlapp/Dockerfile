@@ -29,6 +29,8 @@ RUN apt-get update
 RUN apt-get install -y libdbd-pg-perl
 RUN perl -MCPAN -e 'install DBD::Pg'
 
+COPY ./JSON.pm /usr/local/lib/perl5/5.40.0/JSON.pm
+
 # For caching installation of dependencies...
 RUN rm -f /var/www/php/index.pl
 COPY index.pl /var/www/php/index.pl
