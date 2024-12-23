@@ -5,10 +5,10 @@ package MyWebServer;
 use HTTP::Server::Simple::CGI;
 use base qw(HTTP::Server::Simple::CGI);
 
-my %dispatch = (
-    '/hello' => \&resp_hello,
-    '/users'   => \&resp_users
-    # ...
+my @routes = (
+    { pattern => qr{^/users/\d+$}, handler => \&resp_user, is_regex => 1 },
+    { pattern => '/users',         handler => \&resp_users, is_regex => 0 },
+    { pattern => '/hello',         handler => \&resp_hello, is_regex => 0 },
 );
 
 use DBI;
