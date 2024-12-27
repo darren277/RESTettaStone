@@ -22,9 +22,25 @@
 </style>
 <div class="content">
     <p>Dockerize Angular app along with spring and mongoDB:</p>
-    <button class="button" (click)="addItem()">Add (Not Yet Implemented)</button>
+    <!-- Create User -->
+    <div>
+        <input [(ngModel)]="newUser.email" type="email" placeholder="New User Email" />
+        <button class="button" (click)="createUser()">Add</button>
+    </div>
+
+    <!-- Edit User -->
+    <div *ngIf="editingUser">
+        <input [(ngModel)]="editingUser.email" type="email" placeholder="Edit User Email" />
+        <button class="button" (click)="updateUser()">Update</button>
+    </div>
+
+    <!-- User List -->
     <ul>
-        <li *ngFor="let user of data">{{ user.id }}: {{ user.email }}</li>
+        <li *ngFor="let user of data">
+            {{ user.id }}: {{ user.email }}
+            <button class="button" (click)="editUser(user)">Edit</button>
+            <button class="button" (click)="deleteUser(user.id)">Delete</button>
+        </li>
     </ul>
 </div>
 <router-outlet></router-outlet>

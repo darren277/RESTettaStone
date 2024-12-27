@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import { environment } from '../environments/environment';
+import { UserService } from "./user.service";
 
 
 @Component({
@@ -10,30 +10,61 @@ import { environment } from '../environments/environment';
     styleUrls: ["./app.component.css"],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = "spMgAngDocker";
+    data: any[] = [];
+    newUser = { email: "" };
+    editingUser: any = null;
 
-constructor(private http: HttpClient) {}
-
-    data = [];
+    constructor(private userService: UserService) {}
 
     ngOnInit() {
-        this.getData();
+        this.getAllUsers();
     }
 
-    getData() {
-        let url = `${environment.apiBaseUrl}/users`;
-        this.http.get(url).subscribe((res) => {
-            console.log(res);
-            this.data = res as any[];
+    getAllUsers() {
+        this.userService.getAllUsers().subscribe((res) => {
+            this.data = res;
         });
     }
 
-    addItem() {
-        throw new Error('Not implemented');
-        let url = "http://localhost:8080/addItem";
-        let data = { itemName: "new item" };
-        this.http.post(url, data, {headers: {"Content-Type": "application/json"}})
-            .subscribe((res) => {console.log(res); this.getData();});
+    getUserById(id: number) {
+        this.userService.getUserById(id).subscribe((res) => {
+            console.log(res);
+        });
+    }
+
+    createUser() {
+        if (!this.newUser.email) {
+            alert("Email is required.");
+            return;
+        }
+
+        this.userService.createUser(this.newUser).subscribe(() => {
+            this.newUser.email = ""; // Reset the form
+            this.getAllUsers(); // Refresh the list
+        });
+    }
+
+    editUser(user: any) {
+        this.editingUser = { ...user };
+    }
+
+    updateUser() {
+        if (!this.editingUser || !this.editingUser.email) {
+            alert("Email is required.");
+            return;
+        }
+
+        this.userService.updateUser(this.editingUser.id, this.editingUser).subscribe(() => {
+            this.editingUser = null; // Reset the form
+            this.getAllUsers(); // Refresh the list
+        });
+    }
+
+    deleteUser(id: number) {
+        this.userService.deleteUser(id).subscribe(() => {
+            this.getAllUsers(); // Refresh the list
+        });
     }
 }
