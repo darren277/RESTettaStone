@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, query, where, getDocs } = require('firebase/firestore');
+const { getFirestore, collection, query, where, doc, addDoc, getDoc, getDocs, updateDoc, deleteDoc } = require('firebase/firestore');
 
 const dotenv = require('dotenv');
 
@@ -39,8 +39,12 @@ class User {
 const addUser = async (req, res, next) => {
     try {
         const data = req.body;
-        await firestore.collection('users').doc().set(data);
-        res.send('Record saved successfuly');
+        const users_collection = await collection(firestore, 'users');
+        const result = await addDoc(users_collection, data);
+        if (!result) {
+            res.status(500).send('Record not saved');
+        }
+        res.send({'Success': 'Record saved successfuly', 'id': result.id, data});
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -54,7 +58,7 @@ const getAllUsers = async (req, res, next) => {
         const usersArray = [];
         if(data.empty) {
             res.status(404).send('No user record found');
-        }else {
+        } else {
             data.forEach(doc => {
                 const user = new User(doc.id, doc.data().email);
                 usersArray.push(user);
@@ -69,12 +73,13 @@ const getAllUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const user = collection(firestore, 'users', id);
-        const q = query(user);
-        const data = await getDocs(q);
-        if(!data.exists) {
+        const user_collection = collection(firestore, 'users');
+        const user = doc(user_collection, id);
+        const data = await getDoc(user);
+
+        if (!data.exists) {
             res.status(404).send('User with the given ID not found');
-        }else {
+        } else {
             res.send(data.data());
         }
     } catch (error) {
@@ -86,10 +91,17 @@ const updateUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const user =  await firestore.collection('users').doc(id);
-        await user.update(data);
+        const user_collection = await collection(firestore, 'users');
+        const user = await doc(user_collection, id);
+
+        const result = await updateDoc(user, data);
+        console.log('result', result);
         res.send('User record updated successfuly');
     } catch (error) {
+        if (error.code === 'not-found') {
+            // Response (400): 5 NOT_FOUND: No document to update: projects/fir-app-3d1ca/databases/(default)/documents/users/11FdZqjmzRRgGJynQ1Oj
+            res.status(404).send('User with the given ID not found');
+        }
         res.status(400).send(error.message);
     }
 }
@@ -97,8 +109,31 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
     try {
         const id = req.params.id;
-        await firestore.collection('users').doc(id).delete();
-        res.send('Record deleted successfuly');
+
+        if (!id) {
+            res.status(400).send('User ID is required');
+        }
+
+        if (id === 'DELETE_ALL') {
+            const users = await collection(firestore, 'users');
+            const q = query(users);
+            const data = await getDocs(q);
+            data.forEach(async doc => {
+                await deleteDoc(doc.ref);
+            });
+            res.send('All records deleted successfuly');
+        } else{
+            console.log('req', req.params.id);
+            const user_collection = await collection(firestore, 'users');
+            const user = await doc(user_collection, id);
+            const result = await getDoc(user);
+            if (!result.exists) {
+                res.status(404).send('User with the given ID not found');
+            } else {
+                await deleteDoc(user);
+                res.send('Record deleted successfuly');
+            }
+        }
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -107,11 +142,11 @@ const deleteUser = async (req, res, next) => {
 
 const router = express.Router();
 
-router.post('/user', addUser);
+router.post('/users', addUser);
 router.get('/users', getAllUsers);
-router.get('/user/:id', getUser);
-router.put('/user/:id', updateUser);
-router.delete('/user/:id', deleteUser);
+router.get('/users/:id', getUser);
+router.put('/users/:id', updateUser);
+router.delete('/users/:id', deleteUser);
 
 
 const app = express();
