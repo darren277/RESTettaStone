@@ -2,13 +2,13 @@ const dev = process.env.NODE_ENV !== 'production'
 
 //module.exports = {
 const exportable = {
-  assetPrefix: '/nextapp',
-  rewrites() {
-    return [
-      { source: '/docs/_next/:path*', destination: '/_next/:path*' }
-    ]
-  },
-  output: 'export'
+    assetPrefix: '/nextapp',
+    rewrites() {
+        return [
+            { source: '/docs/_next/:path*', destination: '/_next/:path*' }
+        ]
+    },
+    output: 'export'
 }
 
 export default exportable;
