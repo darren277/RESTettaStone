@@ -1,30 +1,46 @@
 <style>
-  ul {
-    list-style-type: circle;
-  }
-  .button {
-    background-color: #4caf50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  .content {
-    margin-left: 400px;
-    margin-right: 200px;
-    margin-top: 100px;
-  }
+    ul {
+        list-style-type: circle;
+    }
+    .button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    .content {
+        margin-left: 400px;
+        margin-right: 200px;
+        margin-top: 100px;
+    }
 </style>
 <div class="content">
-  <p>Dockerize Angular app along with spring and mongoDB:</p>
-  <button class="button" (click)="addItem()">Add (Not Yet Implemented)</button>
-  <ul>
-    <li *ngFor="let user of data">{{ user.id }}: {{ user.email }}</li>
-  </ul>
+    <p>Dockerize Angular app along with spring and mongoDB:</p>
+    <!-- Create User -->
+    <div>
+        <input [(ngModel)]="newUser.email" type="email" placeholder="New User Email" />
+        <button class="button" (click)="createUser()">Add</button>
+    </div>
+
+    <!-- Edit User -->
+    <div *ngIf="editingUser">
+        <input [(ngModel)]="editingUser.email" type="email" placeholder="Edit User Email" />
+        <button class="button" (click)="updateUser()">Update</button>
+    </div>
+
+    <!-- User List -->
+    <ul>
+        <li *ngFor="let user of data">
+            {{ user.id }}: {{ user.email }}
+            <button class="button" (click)="editUser(user)">Edit</button>
+            <button class="button" (click)="deleteUser(user.id)">Delete</button>
+        </li>
+    </ul>
 </div>
 <router-outlet></router-outlet>
