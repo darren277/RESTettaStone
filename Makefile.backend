@@ -256,3 +256,8 @@ firebaseapp-test-create-user:
 
 firebaseapp-test-get-users:
 	docker exec -it debugger curl http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/users
+
+# example usage: make b firebase-test-delete-user USER_ID=GJccsYsT1nLeBbdp0VZh
+# or USER_ID=DELETE_ALL to delete all users
+firebase-test-delete-user:
+	docker exec -it debugger curl -X DELETE http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/users/$(USER_ID)

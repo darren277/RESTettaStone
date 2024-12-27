@@ -155,7 +155,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    | Y         |                 |
 | **JAVASCRIPT**                                                                                         |            |                |                      |           |                 |
 | [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/bunapp)           | Y          | Y              | Y                    |           | ~~Libraries~~   |
-| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  |           |                 |
+| [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  | Y         |                 |
 | [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/nodeapp)         | Y          | Y              | Y                    | Y         |                 |
 | **LISP**                                                                                               |            |                |                      |           |                 |
 | Lisp                                                                                                   |            |                |                      |           | Language        |
