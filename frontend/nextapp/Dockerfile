@@ -30,7 +30,15 @@ RUN npx next telemetry disable
 # need to install linux specific swc builds
 RUN pnpm install -D @swc/cli @swc/core
 
-COPY . .
+COPY ./components ./components
+COPY ./pages ./pages
+COPY ./styles ./styles
+
+COPY ./config.js ./config.js
+COPY ./middleware.js ./middleware.js
+
+RUN echo "NEXT_PUBLIC_NGINX_HOST=$NGINX_HOST" > /home/nextjs/app/.env
+RUN echo "NEXT_PUBLIC_NGINX_PORT=$NGINX_PORT" >> /home/nextjs/app/.env
 
 RUN pnpm run build
 
