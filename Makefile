@@ -35,6 +35,12 @@ nginx-build:
 nginx-run:
 	docker run -it --name nginx -p $(NGINX_PORT):$(NGINX_PORT) --env-file ".env" --env NGINX_PORT=$(NGINX_PORT) --net $(SUBNET_NAME) -v $(NGINX_DIR):/usr/share/nginx/html --ip $(NGINX_IP) -d nginx:latest
 
+nginx-access-log:
+	docker exec -it nginx tail -f /var/log/nginx/access.log
+
+nginx-error-log:
+	docker exec -it nginx tail -f /var/log/nginx/error.log
+
 
 nginx-v2-build:
 	cd server/nginx && docker build --build-arg NGINX_VERSION=$(NGINX_VERSION) --build-arg LUA_JIT_VERSION=$(LUA_JIT_VERSION) --build-arg ENTRYPOINT_VERSION=2 --build-arg NGINX_PORT=$(NGINX_PORT) --build-arg LOCATIONS="-more" -t nginx-v2:latest .

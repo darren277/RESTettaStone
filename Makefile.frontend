@@ -2,6 +2,7 @@ include .env
 
 NGINX_VARS_BUILD=--build-arg NGINX_HOST=$(NGINX_HOST) --build-arg NGINX_PORT=$(NGINX_PORT)
 NGINX_VARS_BUILD_SSR=--build-arg NGINX_HOST=host.docker.internal --build-arg NGINX_PORT=$(NGINX_PORT)
+NGINX_VARS_RUN=--env NGINX_HOST=$(NGINX_HOST) --env NGINX_PORT=$(NGINX_PORT)
 
 reactapp-build:
 	cd frontend/reactapp && docker build --build-arg REACTAPP_PORT=$(REACTAPP_PORT) $(NGINX_VARS_BUILD) -t react_app:1 .
@@ -40,8 +41,10 @@ reactfiberapp-run:
 
 
 nextapp-build:
+	@echo "Building with NGINX_HOST=$(NGINX_HOST) NGINX_PORT=$(NGINX_PORT) NGINX_VARS_BUILD_SSR=$(NGINX_VARS_BUILD_SSR)"
 	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t next_app:1 .
 
 # --add-host=host.docker.internal:host-gateway
 nextapp-run:
-	cd frontend/nextapp && docker run --add-host=host.docker.internal:host-gateway -d -it --rm --name next_app_container --env NEXTAPP_PORT=$(NEXTAPP_PORT) --net $(SUBNET_NAME) --ip $(NEXTAPP_IP) -p $(NEXTAPP_PORT):$(NEXTAPP_PORT) next_app:1
+	@echo "Running with NGINX_HOST=$(NGINX_HOST) NGINX_PORT=$(NGINX_PORT) NGINX_VARS_RUN=$(NGINX_VARS_RUN)"
+	cd frontend/nextapp && docker run --add-host=host.docker.internal:host-gateway -d -it --rm --name next_app_container $(NGINX_VARS_RUN) --env NEXTAPP_PORT=$(NEXTAPP_PORT) --net $(SUBNET_NAME) --ip $(NEXTAPP_IP) -p $(NEXTAPP_PORT):$(NEXTAPP_PORT) next_app:1
