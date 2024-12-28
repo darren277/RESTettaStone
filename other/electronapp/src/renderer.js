@@ -46,30 +46,30 @@ async function populateTable() {
   
     const headerRow = document.createElement('tr');
     for (let key in data[0]) {
-      const th = document.createElement('th');
-      th.appendChild(document.createTextNode(key));
-      headerRow.appendChild(th);
+        const th = document.createElement('th');
+        th.appendChild(document.createTextNode(key));
+        headerRow.appendChild(th);
     }
     thead.appendChild(headerRow);
   
     for (let record of data) {
-      const row = document.createElement('tr');
-      for (let key in record) {
-        const cell = document.createElement('td');
-        cell.appendChild(document.createTextNode(record[key]));
-        row.appendChild(cell);
-      }
-      tbody.appendChild(row);
+        const row = document.createElement('tr');
+        for (let key in record) {
+            const cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(record[key]));
+            row.appendChild(cell);
+        }
+        tbody.appendChild(row);
     }
   
     table.appendChild(thead);
     table.appendChild(tbody);
   
     document.body.appendChild(table);
-  }
+}
   
-  // Call the function when the content is loaded
-  window.addEventListener('DOMContentLoaded', () => {
+// Call the function when the content is loaded
+window.addEventListener('DOMContentLoaded', () => {
     populateTable();
-  });
+});
 

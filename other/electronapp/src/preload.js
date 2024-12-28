@@ -27,9 +27,9 @@ const { contextBridge } = require('electron');
 console.log('Preload script loaded.');
 
 try {
-  contextBridge.exposeInMainWorld('api', {
-    fetchData: async () => await fetchData(),
-  });
+    contextBridge.exposeInMainWorld('api', {
+        fetchData: async () => await fetchData(),
+    });
 } catch (error) {
-  console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error);
 }
