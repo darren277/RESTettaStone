@@ -245,6 +245,13 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
+haskellapp-build:
+	cd backend/haskellapp && docker build --build-arg HASKELLAPP_PORT=$(HASKELLAPP_PORT) $(PG_VARS_BUILD) -t haskell_app:1 .
+
+haskellapp-run:
+	cd backend/haskellapp && docker run -d -it --rm --name haskell_app_container --env HASKELLAPP_PORT=$(HASKELLAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(HASKELLAPP_IP) -p $(HASKELLAPP_PORT):$(HASKELLAPP_PORT) haskell_app:1
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 

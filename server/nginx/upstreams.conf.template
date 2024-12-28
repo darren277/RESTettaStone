@@ -97,3 +97,7 @@ upstream fatfreeapp {
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
+
+upstream haskellapp {
+    server ${HASKELLAPP_IP}:${HASKELLAPP_PORT};
+}
