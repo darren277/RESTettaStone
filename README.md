@@ -196,7 +196,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)          | Y          | Y                   | Y         |
 | [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)              | Y          | Y                   | Y         |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)            | Y          | Y                   |           |
-| [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | Y          | Y                   |           |
+| [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | Y          | Y                   | Y         |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | Y          | Y                   | Y         |
 
 ### Other
