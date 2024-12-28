@@ -12,7 +12,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
     res.data.forEach(user => {
         const nodeContent = JSON.stringify(user);
         const nodeMeta = {
-            id: createNodeId(`user-${user.id}`),
+            id: String(user.id), // Use Postgres `id` directly as the Node's `id`
             parent: null,
             children: [],
             internal: {
