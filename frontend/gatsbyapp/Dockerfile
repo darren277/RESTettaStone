@@ -25,6 +25,7 @@ RUN yarn
 
 COPY ./gatsby-config.js /app/gatsby-config.js
 COPY ./gatsby-node.js /app/gatsby-node.js
+COPY ./constants.js /app/constants.js
 
 COPY ./src /app/src
 
