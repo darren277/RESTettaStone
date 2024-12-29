@@ -255,6 +255,16 @@ spockapp-test:
 	docker exec -it debugger curl http://$(SPOCKAPP_IP):$(SPOCKAPP_PORT)/users
 
 
+hunchentootapp-build:
+	cd backend/lisp/hunchentootapp && docker build --build-arg HUNCHENTOOTAPP_PORT=$(HUNCHENTOOTAPP_PORT) $(PG_VARS_BUILD) -t hunchentoot_app:1 .
+
+hunchentootapp-run:
+	cd backend/lisp/hunchentootapp && docker run -d -it --rm --name hunchentoot_app_container --env HUNCHENTOOTAPP_PORT=$(HUNCHENTOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(HUNCHENTOOTAPP_IP) -p $(HUNCHENTOOTAPP_PORT):$(HUNCHENTOOTAPP_PORT) hunchentoot_app:1
+
+hunchentootapp-test:
+	docker exec -it debugger curl http://$(HUNCHENTOOTAPP_IP):$(HUNCHENTOOTAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
