@@ -29,11 +29,49 @@ app.get('/users', async (req, res) => {
     res.status(200).json(users);
 });
 
+app.get('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    const user = await pg`SELECT * FROM users WHERE id = ${id}`;
+    if (!user.length) {
+        res.status(404).json({ message: 'User not found' });
+    } else {
+        res.status(200).json(user[0]);
+    }
+});
+
+app.post('/users', async (req, res) => {
+    const { email } = req.body;
+    const newUser = await pg`INSERT INTO users (email) VALUES (${email}) RETURNING *`;
+    res.status(200).json(newUser);
+});
+
+app.put('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    const { email } = req.body;
+    const updatedUser = await pg`UPDATE users SET email = ${email} WHERE id = ${id} RETURNING *`;
+    if (!updatedUser.length) {
+        res.status(404).json({ message: 'User not found' });
+    } else {
+        res.status(200).json(updatedUser);
+    }
+});
+
+app.delete('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    const user = await pg`SELECT * FROM users WHERE id = ${id}`;
+    if (!user.length) {
+        res.status(404).json({ message: 'User not found' });
+    }
+    const deletedUser = await pg`DELETE FROM users WHERE id = ${id}`;
+    res.status(200).json({ message: 'User deleted', id });
+});
+
 /* Monkey-patch for the listen method to support custom baseUrl */
 const originalListen = app.listen;
 
 app.listen = function(port, callback, options) {
   const baseUrl = process.env.BASE_URL || `http://${HOST}:${port}`;
+  console.log(`App is listening on at http://${HOST}:${PORT}`);
   return this.openServer(port, baseUrl, options);
 };
 /* End of monkey-patch */
