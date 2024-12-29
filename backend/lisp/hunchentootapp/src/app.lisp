@@ -1,4 +1,4 @@
-(load "~/quicklisp/setup.lisp")
+(load "/quicklisp/setup.lisp")
 
 (ql:quickload '(:hunchentoot :postmodern :cl-json))
 
