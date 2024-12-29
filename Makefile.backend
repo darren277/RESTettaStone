@@ -245,6 +245,16 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
+spockapp-build:
+	cd backend/haskell/spockapp && docker build --build-arg SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS_BUILD) -t spock_app:1 .
+
+spockapp-run:
+	cd backend/haskell/spockapp && docker run -d -it --rm --name spock_app_container --env SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPOCKAPP_IP) -p $(SPOCKAPP_PORT):$(SPOCKAPP_PORT) spock_app:1
+
+spockapp-test:
+	docker exec -it debugger curl http://$(SPOCKAPP_IP):$(SPOCKAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 

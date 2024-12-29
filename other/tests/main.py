@@ -155,6 +155,7 @@ def run_tests():
             'prologapp',
             'railsapp',
             'rocketapp',
+            'spockapp',
             'springbootapp',
             'swiftapp',
             'symfonyapp',
