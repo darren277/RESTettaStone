@@ -8,6 +8,11 @@
 
 (in-package :web-api)
 
+(defun plist-to-alist (plist)
+  "Convert a property list (plist) to an association list (alist)."
+  (loop for (key value) on plist by #'cddr
+        collect (cons key value)))
+
 (defun get-env-port (default-port)
   "Retrieve the port number from the environment variable `PORT` or use the default."
   (let ((env-port (uiop:getenv "PORT")))
@@ -38,11 +43,12 @@
 (defun fetch-users ()
   "Fetch all users from the database."
   (handler-case
-    (let ((results (postmodern:query "SELECT * FROM users")))
-      (setf (hunchentoot:content-type*) "application/json")
-      (cl-json:encode-json-to-string
-       `(:status "success"
-         :data ,results)))
+    (let* ((results (postmodern:query "SELECT id, email FROM users"))
+       (formatted-results
+        (mapcar (lambda (row)
+                  (plist-to-alist `(:id ,(first row) :email ,(second row))))results)))
+          (setf (hunchentoot:content-type*) "application/json")
+          (cl-json:encode-json-to-string formatted-results))
     (error (e)
       (setf (hunchentoot:content-type*) "application/json")
       (cl-json:encode-json-to-string
@@ -56,7 +62,7 @@
       (cl-json:encode-json-to-string `(:status ,status :message ,message :user ,user))
       (cl-json:encode-json-to-string `(:status ,status :message ,message))))
 
-;; REST API endpoints for CRUD operations on melodies
+;; REST API endpoints for CRUD operations on users
 (defun handle-unsupported-method ()
   "Handle unsupported HTTP methods."
   (setf (header-out "Content-Type") "application/json")
@@ -71,7 +77,7 @@
                          (babel:octets-to-string raw-data)
                          raw-data)))
            ;; Use assoc instead of getf for alist access
-           (melody (cdr (assoc :melody payload))))
+           (email (cdr (assoc :email payload))))
       (format t "Decoded payload: ~A~%" payload)
       (format t "Email: ~A~%" email)
 
@@ -120,13 +126,15 @@
 (defun handle-get-user (id)
   "Fetch and return the user by ID."
   (let ((parsed-id (parse-integer id)))
-    (let ((user (first (postmodern:query "SELECT * FROM users WHERE id = $1" parsed-id))))
-      (if user
+    (let ((result (first (postmodern:query "SELECT id, email FROM users WHERE id = $1" parsed-id))))
+      (if result
+          (let* ((user `(:id ,(first result) :email ,(second result)))
+                 (user-alist (plist-to-alist user)))
+            (setf (header-out "Content-Type") "application/json")
+            (cl-json:encode-json-to-string user-alist))
           (progn
             (setf (header-out "Content-Type") "application/json")
-            (cl-json:encode-json-to-string `(:status "success" :user ,user)))
-          (progn
-            (setf (header-out "Content-Type") "application/json")
+            (setf (hunchentoot:return-code*) 404)
             (cl-json:encode-json-to-string `(:status "error" :message "User not found")))))))
 
 (defun handle-update-user (id)
@@ -150,11 +158,10 @@
                             email parsed-id))))
                 (if result
                     (progn
-                      (setf (hunchentoot:content-type*) "application/json")
-                      (cl-json:encode-json-to-string
-                       `(:status "success"
-                         :message "User updated"
-                         :data ,result)))
+                      (let* ((user `(:id ,(first result) :email ,(second result)))
+                             (user-alist (plist-to-alist user)))
+                        (setf (hunchentoot:content-type*) "application/json")
+                        (cl-json:encode-json-to-string user-alist)))
                     (progn
                       (setf (hunchentoot:content-type*) "application/json")
                       (setf (hunchentoot:return-code*) 404)
