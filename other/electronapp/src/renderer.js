@@ -45,31 +45,89 @@ async function populateTable() {
     const tbody = document.createElement('tbody');
   
     const headerRow = document.createElement('tr');
-    for (let key in data[0]) {
-      const th = document.createElement('th');
-      th.appendChild(document.createTextNode(key));
-      headerRow.appendChild(th);
-    }
+    ['ID', 'Email', 'Actions'].forEach((header) => {
+        const th = document.createElement('th');
+        th.appendChild(document.createTextNode(header));
+        headerRow.appendChild(th);
+    });
     thead.appendChild(headerRow);
-  
-    for (let record of data) {
-      const row = document.createElement('tr');
-      for (let key in record) {
-        const cell = document.createElement('td');
-        cell.appendChild(document.createTextNode(record[key]));
-        row.appendChild(cell);
-      }
-      tbody.appendChild(row);
-    }
-  
+
+    data.forEach((user) => {
+        const row = document.createElement('tr');
+
+        const idCell = document.createElement('td');
+        idCell.appendChild(document.createTextNode(user.id));
+        row.appendChild(idCell);
+
+        const emailCell = document.createElement('td');
+        const emailInput = document.createElement('input');
+        emailInput.type = 'text';
+        emailInput.value = user.email;
+        emailCell.appendChild(emailInput);
+        row.appendChild(emailCell);
+
+        const actionsCell = document.createElement('td');
+        const updateButton = document.createElement('button');
+        updateButton.textContent = 'Update';
+        updateButton.onclick = async () => {
+            try {
+                await window.api.updateUser(user.id, emailInput.value);
+                alert('User updated successfully.');
+            } catch (err) {
+                console.error(err);
+                alert('Failed to update user.');
+            }
+        };
+        actionsCell.appendChild(updateButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = async () => {
+            try {
+                await window.api.deleteUser(user.id);
+                row.remove();
+                alert('User deleted successfully.');
+            } catch (err) {
+                console.error(err);
+                alert('Failed to delete user.');
+            }
+        };
+        actionsCell.appendChild(deleteButton);
+        row.appendChild(actionsCell);
+
+        tbody.appendChild(row);
+    });
+
     table.appendChild(thead);
     table.appendChild(tbody);
-  
-    document.body.appendChild(table);
-  }
-  
-  // Call the function when the content is loaded
-  window.addEventListener('DOMContentLoaded', () => {
+
+    const container = document.getElementById('table-container');
+    container.innerHTML = '';
+    container.appendChild(table);
+}
+
+async function handleCreateUser() {
+    const emailInput = document.getElementById('new-user-email');
+    const email = emailInput.value;
+    if (!email) {
+        alert('Email is required.');
+        return;
+    }
+    try {
+        await window.api.createUser(email);
+        emailInput.value = '';
+        await populateTable();
+        alert('User created successfully.');
+    } catch (err) {
+        console.error(err);
+        alert('Failed to create user.');
+    }
+}
+
+document.getElementById('create-user-btn').addEventListener('click', handleCreateUser);
+
+// Call the function when the content is loaded
+window.addEventListener('DOMContentLoaded', () => {
     populateTable();
-  });
+});
 
