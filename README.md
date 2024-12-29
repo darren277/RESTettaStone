@@ -158,7 +158,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp) | Y          | Y              | N/A                  | Y         |                 |
 | [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/nodeapp)         | Y          | Y              | Y                    | Y         |                 |
 | **LISP**                                                                                               |            |                |                      |           |                 |
-| Lisp                                                                                                   |            |                |                      |           | Language        |
+| [Hunchentoot (Lisp)](https://github.com/darren277/RESTettaStone/tree/master/backend/lisp/hunchentootapp)                                                                                                   | Y          | Y              | Y                    | Y         | ~~Language~~    |
 | **LUA**                                                                                                |            |                |                      |           |                 |
 | [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)           | Y          | Y              | Y                    | Y         |                 |
 | **PASCAL**                                                                                             |            |                |                      |           |                 |

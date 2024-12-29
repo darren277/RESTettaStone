@@ -31,6 +31,7 @@ envsubst '${NGINX_PORT},\
   ${FATFREEAPP_IP},${FATFREEAPP_PORT},\
   ${PHPAPP_IP},${PHPAPP_PORT},\
   ${SPOCKAPP_IP},${SPOCKAPP_PORT},\
+  ${HUNCHENTOOTAPP_IP},${HUNCHENTOOTAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 

@@ -146,6 +146,7 @@ def run_tests():
             'flaskapp',
             'fsharpapp',
             'goapp',
+            'hunchentootapp',
             'laravelapp',
             'luaapp',
             'nodeapp',
