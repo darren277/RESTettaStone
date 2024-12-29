@@ -149,7 +149,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **GO**                                                                                                 |            |                |                      |           |                 |
 | [Go](https://github.com/darren277/RESTettaStone/tree/master/backend/go/goapp)                          | Y          | Y              | Y                    | Y         |                 |
 | **HASKELL**                                                                                            |            |                |                      |           |                 |
-| Haskell                                                                                                |            |                |                      |           | Language        |
+| [Spock](https://github.com/darren277/RESTettaStone/tree/master/backend/haskell/spockapp)               | Y          | Y              | Y                    | Y         | Language        |
 | **JAVA**                                                                                               |            |                |                      |           |                 |
 | [Tomcat (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/tomcatapp)         | Y          | Y              | Y                    | Y         |                 |
 | [SpringBoot (Java)](https://github.com/darren277/RESTettaStone/tree/master/backend/java/springbootapp) | Y          | Y              | Y                    | Y         |                 |
