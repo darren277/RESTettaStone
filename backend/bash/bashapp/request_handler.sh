@@ -119,14 +119,14 @@ read_full_request() {
 # Read the complete request
 REQUEST=$(read_full_request)
 REQUEST_LINE=$(echo "$REQUEST" | head -n1)
-echo "[DEBUG] Raw request: $REQUEST" >&2
-echo "[DEBUG] Request line: $REQUEST_LINE" >&2
+debug "[DEBUG] Raw request: $REQUEST"
+debug "[DEBUG] Request line: $REQUEST_LINE"
 
 if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     METHOD="${BASH_REMATCH[1]}"
     PATH="${BASH_REMATCH[2]}"
-    echo "Method: $METHOD"
-    echo "Path: /$PATH"
+    debug "Method: $METHOD"
+    debug "Path: /$PATH"
 
     # Parse headers and store them in HEADERS associative array
     declare -A HEADERS
@@ -135,16 +135,16 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     # Parse the entire request and get all the variables we need
     eval "$(parse_request "$METHOD" "$REQUEST")"
 
-    echo "[DEBUG] Content-Type: $CONTENT_TYPE" >&2
-    echo "[DEBUG] Content-Length: $CONTENT_LENGTH" >&2
-    echo "[DEBUG] Body: $BODY" >&2
+    debug "[DEBUG] Content-Type: $CONTENT_TYPE"
+    debug "[DEBUG] Content-Length: $CONTENT_LENGTH"
+    debug "[DEBUG] Body: $BODY"
 
     # For POST/PUT requests, parse the body
     if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
         BODY=$(extract_body "$REQUEST")
         EMAIL=$(parse_body_field "email" "$BODY")
 
-        echo "[DEBUG] Email: $EMAIL" >&2
+        debug "[DEBUG] Email: $EMAIL"
     fi
 
     # Match the "/users/<id>" pattern
