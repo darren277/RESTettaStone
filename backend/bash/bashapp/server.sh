@@ -3,104 +3,116 @@
 PORT=3039
 DB_CONNECTION="postgresql://myusername:mypassword@172.18.0.21:5432/postgres"
 
+send_response() {
+    local STATUS="$1"
+    local CONTENT_TYPE="$2"
+    local RESPONSE="$3"
+
+    echo -ne "HTTP/1.1 $STATUS\r\nContent-Type: $CONTENT_TYPE\r\nContent-Length: ${#RESPONSE}\r\n\r\n$RESPONSE"
+}
+
 # Infinite loop to handle multiple connections
 while true; do
     echo "Listening on http://0.0.0.0:$PORT..."
 
-    # Wait for an HTTP request and handle it
-    /usr/bin/nc -l -p "$PORT" -q 1 > request.txt &
-    wait $! # Wait for the connection to finish
+    # Create a temporary file for the current request
+    TMPFILE=$(/bin/mktemp)
 
-    # Read the request to extract the path
-    read -r REQUEST_LINE < request.txt
-    echo "Request: $REQUEST_LINE"
+    # Capture the full request including headers and body
+    /usr/bin/nc -l -p "$PORT" > "$TMPFILE"
+
+    # Read the request line
+    REQUEST_LINE=$(/usr/bin/head -n 1 "$TMPFILE")
 
     if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
         METHOD="${BASH_REMATCH[1]}"
         PATH="${BASH_REMATCH[2]}"
         echo "Method: $METHOD"
         echo "Path: /$PATH"
+
+        # For POST/PUT requests, get the body
+        if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
+            # Extract JSON body (assuming Content-Length header is present)
+            BODY=$(/usr/bin/awk 'BEGIN{RS="\r\n\r\n"} NR==2' "$TMPFILE")
+            # Extract email from JSON (basic parsing)
+            EMAIL=$(echo "$BODY" | grep -o '"email":"[^"]*"' | cut -d'"' -f4)
+        fi
+
         # Match the "/users/<id>" pattern
         if [[ "$PATH" =~ ^users/([0-9]+)$ ]]; then
-            if [[ "$METHOD" == "PUT" ]]; then
-                RESPONSE='{"error": "Method not yet implemented"}'
-                CONTENT_TYPE="application/json"
-            elif [[ "$METHOD" == "DELETE" ]]; then
-                RESPONSE='{"error": "Method not yet implemented"}'
-                CONTENT_TYPE="application/json"
-            elif [[ "$METHOD" == "GET" ]]; then
-                # Extract the user ID from the path
-                USER_ID="${BASH_REMATCH[1]}"
-                echo "Looking up user with ID: $USER_ID"
+            USER_ID="${BASH_REMATCH[1]}"
 
-                # Run the SQL query for the specific user
-                QUERY_RESULT=$(echo "SELECT id, name, email FROM users WHERE id = $USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+            case "$METHOD" in
+                "GET")
+                    QUERY_RESULT=$(echo "SELECT id, email FROM users WHERE id = $USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                    if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
+                        IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                        RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                        send_response "200 OK" "application/json" "$RESPONSE"
+                    else
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                    fi
+                    ;;
 
-                # Check for query errors or no results
-                if [[ $? -ne 0 || -z "$QUERY_RESULT" ]]; then
-                    RESPONSE='{"error": "User not found or database error"}'
-                    CONTENT_TYPE="application/json"
-                else
-                    # Parse the result into JSON
-                    IFS="|" read -r ID NAME EMAIL <<< "$QUERY_RESULT"
-                    RESPONSE=$(cat <<EOF
-{
-  "id": $ID,
-  "name": "$(echo $NAME | sed 's/"/\\"/g')",
-  "email": "$(echo $EMAIL | sed 's/"/\\"/g')"
-}
-EOF
-)
-                    CONTENT_TYPE="application/json"
-                fi
-            else
-                RESPONSE='{"error": "Method not allowed"}'
-                CONTENT_TYPE="application/json"
-            fi
-        elif [[ "$PATH" = "/users" ]]; then
-            if [[ "$METHOD" == "POST" ]]; then
-                RESPONSE='{"error": "Method not yet implemented"}'
-                CONTENT_TYPE="application/json"
-            elif [[ "$METHOD" == "GET" ]]; then
-                RESPONSE='{"error": "Method not yet implemented"}'
-                CONTENT_TYPE="application/json"
+                "PUT")
+                    if [[ -n "$EMAIL" ]]; then
+                        QUERY_RESULT=$(echo "UPDATE users SET email='$EMAIL' WHERE id=$USER_ID RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                        if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
+                            IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                            RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                            send_response "200 OK" "application/json" "$RESPONSE"
+                        else
+                            send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                        fi
+                    else
+                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
+                    fi
+                    ;;
 
-                # Run the SQL query to fetch the first user
-                QUERY_RESULT=$(echo "SELECT * FROM users LIMIT 1;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                "DELETE")
+                    if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A; then
+                        send_response "204 No Content" "application/json" ""
+                    else
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                    fi
+                    ;;
 
-                # Check for errors
-                if [[ $? -ne 0 ]]; then
-                    RESPONSE='{"error": "Database query failed"}'
-                    CONTENT_TYPE="application/json"
-                else
-                    # Serialize the result into JSON
-                    IFS="|" read -r ID NAME EMAIL <<< "$QUERY_RESULT"
-                    RESPONSE=$(/bin/cat <<EOF
-{
-  "id": $ID,
-  "name": "$(echo $NAME | /bin/sed 's/"/\\"/g')",
-  "email": "$(echo $EMAIL | /bin/sed 's/"/\\"/g')"
-}
-EOF
-)
-                    CONTENT_TYPE="application/json"
-                fi
-            else
-                RESPONSE='{"error": "Method not yet implemented"}'
-                CONTENT_TYPE="application/json"
-            fi
+                *)
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
+                    ;;
+            esac
+
+        elif [[ "$PATH" == "users" ]]; then
+            case "$METHOD" in
+                "GET")
+                    QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                    send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}"
+                    ;;
+
+                "POST")
+                    if [[ -n "$EMAIL" ]]; then
+                        QUERY_RESULT=$(echo "INSERT INTO users (email) VALUES ('$EMAIL') RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                        if [[ $? -eq 0 ]]; then
+                            IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                            RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                            send_response "201 Created" "application/json" "$RESPONSE"
+                        else
+                            send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}'
+                        fi
+                    else
+                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
+                    fi
+                    ;;
+
+                *)
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
+                    ;;
+            esac
         else
-            RESPONSE='{"error": "Endpoint not found"}'
-            CONTENT_TYPE="application/json"
+            send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}'
         fi
-        # Prepare the HTTP response
-        HTTP_RESPONSE="HTTP/1.1 200 OK\r
-Content-Type: $CONTENT_TYPE\r
-Content-Length: ${#RESPONSE}\r
-\r
-$RESPONSE"
-
-        # Send the response back to the client
-        echo -e "$HTTP_RESPONSE" | /usr/bin/nc -l -p "$PORT" -q 1
     fi
+
+    # Clean up temporary file
+    /bin/rm -f "$TMPFILE"
 done
