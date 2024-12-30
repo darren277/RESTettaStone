@@ -76,7 +76,8 @@ while true; do
             # Extract JSON body (assuming Content-Length header is present)
             BODY=$(/usr/bin/awk 'BEGIN{RS="\r\n\r\n"} NR==2' "$TMPFILE")
             # Extract email from JSON (basic parsing)
-            EMAIL=$(echo "$BODY" | grep -o '"email":"[^"]*"' | cut -d'"' -f4)
+            ## TODO: Consider using `jq`: EMAIL=$(echo "$BODY" | jq -r '.email // empty')
+            EMAIL=$(echo "$BODY" | /bin/grep -o '"email"[[:space:]]*:[[:space:]]*"[^"]*"' | /bin/sed 's/.*"email"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
         fi
 
         # Match the "/users/<id>" pattern
