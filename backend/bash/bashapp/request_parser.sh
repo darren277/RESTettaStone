@@ -24,10 +24,6 @@ parse_headers() {
         fi
     done <<< "$RAW_REQUEST"
 
-    # Return headers as a formatted string that can be eval'd
-#    for key in "${!HEADERS[@]}"; do
-#        echo "HEADERS[\"$key\"]=\"${HEADERS[$key]}\""
-#    done
     declare -p HEADERS
 }
 
@@ -60,16 +56,8 @@ parse_body_field() {
 # Usage: extract_body "raw_request"
 extract_body() {
     local RAW_REQUEST="$1"
-    local CONTENT_LENGTH
-
-    # Get Content-Length if it exists
-    CONTENT_LENGTH=$(get_header "Content-Length")
-
-    if [[ -n "$CONTENT_LENGTH" ]]; then
-        # Use awk to get everything after the double newline
-        local BODY=$(/usr/bin/awk 'BEGIN{RS="\r\n\r\n"} NR==2' <<< "$RAW_REQUEST")
-        echo "$BODY"
-    fi
+    # Get everything after the blank line
+    /usr/bin/awk 'BEGIN{RS=""; FS="\n"} NR==2{print}' <<< "$RAW_REQUEST"
 }
 
 # Main request parsing function that returns all parsed data
