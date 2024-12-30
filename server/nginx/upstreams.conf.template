@@ -105,3 +105,7 @@ upstream spockapp {
 upstream hunchentootapp {
     server ${HUNCHENTOOTAPP_IP}:${HUNCHENTOOTAPP_PORT};
 }
+
+upstream pascalapp {
+    server ${PASCALAPP_IP}:${PASCALAPP_PORT};
+}

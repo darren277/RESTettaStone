@@ -265,6 +265,16 @@ hunchentootapp-test:
 	docker exec -it debugger curl http://$(HUNCHENTOOTAPP_IP):$(HUNCHENTOOTAPP_PORT)/users
 
 
+pascalapp-build:
+	cd backend/pascal/pascalapp && docker build --build-arg PASCALAPP_PORT=$(PASCALAPP_PORT) $(PG_VARS_BUILD) -t pascal_app:1 .
+
+pascalapp-run:
+	cd backend/pascal/pascalapp && docker run -d -it --rm --name pascal_app_container --env PASCALAPP_PORT=$(PASCALAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PASCALAPP_IP) -p $(PASCALAPP_PORT):$(PASCALAPP_PORT) pascal_app:1
+
+pascalapp-test:
+	docker exec -it debugger curl http://$(PASCALAPP_IP):$(PASCALAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
