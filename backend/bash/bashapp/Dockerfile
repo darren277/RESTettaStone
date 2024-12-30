@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Install Bash and Netcat
-RUN apk add --no-cache bash netcat-openbsd coreutils postgresql-client
+RUN apk add --no-cache bash netcat-openbsd coreutils postgresql-client socat
 
 # Copy the Bash script into the container
 COPY server.sh /usr/local/bin/server.sh

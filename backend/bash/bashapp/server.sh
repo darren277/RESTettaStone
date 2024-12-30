@@ -8,7 +8,11 @@ send_response() {
     local CONTENT_TYPE="$2"
     local RESPONSE="$3"
 
-    echo -ne "HTTP/1.1 $STATUS\r\nContent-Type: $CONTENT_TYPE\r\nContent-Length: ${#RESPONSE}\r\n\r\n$RESPONSE"
+    info "Sending response: $STATUS"
+
+    #echo -ne "HTTP/1.1 $STATUS\r\nContent-Type: $CONTENT_TYPE\r\nContent-Length: ${#RESPONSE}\r\n\r\n$RESPONSE"
+    printf "HTTP/1.1 %s\r\nContent-Type: %s\r\nConnection: close\r\nContent-Length: %d\r\n\r\n%s" \
+        "$STATUS" "$CONTENT_TYPE" "${#RESPONSE}" "$RESPONSE"
 }
 
 declare -A LOG_LEVELS=(
@@ -52,18 +56,24 @@ info() { log "INFO" "$1" "${2:-${BASH_LINENO[0]}}"; }
 warn() { log "WARN" "$1" "${2:-${BASH_LINENO[0]}}"; }
 error() { log "ERROR" "$1" "${2:-${BASH_LINENO[0]}}"; }
 
-# Infinite loop to handle multiple connections
-while true; do
-    echo "Listening on http://0.0.0.0:$PORT..."
 
-    # Create a temporary file for the current request
-    TMPFILE=$(/bin/mktemp)
-
-    # Capture the full request including headers and body
-    /usr/bin/nc -l -p "$PORT" > "$TMPFILE"
-
+handle_request() {
     # Read the request line
-    REQUEST_LINE=$(/usr/bin/head -n 1 "$TMPFILE")
+    read -r REQUEST_LINE
+    echo "Received request: $REQUEST_LINE" >&2
+
+    # Read headers
+    while IFS= read -r line && [ -n "$line" ] && [ "$line" != $'\r' ]; do
+        if [[ "$line" =~ Content-Length:\ *([0-9]+) ]]; then
+            LENGTH="${BASH_REMATCH[1]}"
+        fi
+    done
+
+    # Read body for POST/PUT requests
+    if [ -n "$LENGTH" ]; then
+        read -n "$LENGTH" BODY
+        echo "Received body: $BODY" >&2
+    fi
 
     if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
         METHOD="${BASH_REMATCH[1]}"
@@ -90,9 +100,9 @@ while true; do
                     if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
                         IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                         RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                        send_response "200 OK" "application/json" "$RESPONSE"
+                        send_response "200 OK" "application/json" "$RESPONSE" >&3
                     else
-                        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
                     fi
                     ;;
 
@@ -102,9 +112,9 @@ while true; do
                         if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
                             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                            send_response "200 OK" "application/json" "$RESPONSE"
+                            send_response "200 OK" "application/json" "$RESPONSE" >&3
                         else
-                            send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                            send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
                         fi
                     else
                         send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
@@ -113,14 +123,14 @@ while true; do
 
                 "DELETE")
                     if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A; then
-                        send_response "204 No Content" "application/json" ""
+                        send_response "204 No Content" "application/json" "" >&3
                     else
-                        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
                     fi
                     ;;
 
                 *)
-                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
                     ;;
             esac
 
@@ -128,7 +138,7 @@ while true; do
             case "$METHOD" in
                 "GET")
                     QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
-                    send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}"
+                    send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}" >&3
                     ;;
 
                 "POST")
@@ -137,25 +147,25 @@ while true; do
                         if [[ $? -eq 0 ]]; then
                             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                            send_response "201 Created" "application/json" "$RESPONSE"
+                            send_response "201 Created" "application/json" "$RESPONSE" >&3
                         else
-                            send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}'
+                            send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}' >&3
                         fi
                     else
                         error "Invalid request body: $BODY"
-                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
+                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}' >&3
                     fi
                     ;;
 
                 *)
-                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
                     ;;
             esac
         else
-            send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}'
+            send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}' >&3
         fi
     fi
+}
 
-    # Clean up temporary file
-    /bin/rm -f "$TMPFILE"
-done
+echo "Starting server on port $PORT..."
+/usr/bin/socat TCP-LISTEN:$PORT,reuseaddr,fork EXEC:"/bin/bash -c 'handle_request'"
