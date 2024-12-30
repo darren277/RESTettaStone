@@ -32,7 +32,7 @@ handle_create_user() {
         if [[ $? -eq 0 ]]; then
             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-            send_response "201 Created" "application/json" "$RESPONSE"
+            send_response "200 Created" "application/json" "$RESPONSE"
         else
             send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}'
         fi
@@ -62,13 +62,21 @@ handle_update_user() {
     local EMAIL="$2"
 
     if [[ -n "$EMAIL" ]]; then
+        # First check if row exists
+        local EXISTS=$(echo "SELECT id FROM users WHERE id=$USER_ID;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
+        if [[ -z "$EXISTS" ]]; then
+            send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+            return
+        fi
+
+        # If we got here, user exists, so do the update
         QUERY_RESULT=$(echo "UPDATE users SET email='$EMAIL' WHERE id=$USER_ID RETURNING id, email;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
-        if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
+        if [[ $? -eq 0 ]]; then
             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
             send_response "200 OK" "application/json" "$RESPONSE"
         else
-            send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+            send_response "500 Internal Server Error" "application/json" '{"error":"Failed to update user"}'
         fi
     else
         send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
@@ -79,10 +87,22 @@ handle_update_user() {
 handle_delete_user() {
     local USER_ID="$1"
 
-    if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A; then
-        send_response "204 No Content" "application/json" ""
+    # Capture the returned id from the deletion
+    QUERY_RESULT=$(echo "DELETE FROM users WHERE id = $USER_ID RETURNING id;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
+
+    # Check return status and if we got a result back
+    if [[ $? -eq 0 ]]; then
+        if [[ -n "$QUERY_RESULT" ]]; then
+            debug "Successfully deleted user $USER_ID"
+            #send_response "204 No Content" "application/json" ""
+            send_response "200 OK" "application/json" '{"message":"User deleted"}'
+        else
+            debug "User $USER_ID not found"
+            send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+        fi
     else
-        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
+        error "Database error during deletion"
+        send_response "500 Internal Server Error" "application/json" '{"error":"Failed to delete user"}'
     fi
 }
 
