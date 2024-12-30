@@ -57,9 +57,9 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
                 if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
                     IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                     RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                    send_response "200 OK" "application/json" "$RESPONSE" >&3
+                    send_response "200 OK" "application/json" "$RESPONSE"
                 else
-                    send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                    send_response "404 Not Found" "application/json" '{"error":"User not found"}'
                 fi
                 ;;
 
@@ -69,9 +69,9 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
                     if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
                         IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                         RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                        send_response "200 OK" "application/json" "$RESPONSE" >&3
+                        send_response "200 OK" "application/json" "$RESPONSE"
                     else
-                        send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}'
                     fi
                 else
                     send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
@@ -80,14 +80,14 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
 
             "DELETE")
                 if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A; then
-                    send_response "204 No Content" "application/json" "" >&3
+                    send_response "204 No Content" "application/json" ""
                 else
-                    send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                    send_response "404 Not Found" "application/json" '{"error":"User not found"}'
                 fi
                 ;;
 
             *)
-                send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
+                send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
                 ;;
         esac
 
@@ -95,7 +95,7 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
         case "$METHOD" in
             "GET")
                 QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
-                send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}" >&3
+                send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}"
                 ;;
 
             "POST")
@@ -104,22 +104,22 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
                     if [[ $? -eq 0 ]]; then
                         IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
                         RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
-                        send_response "201 Created" "application/json" "$RESPONSE" >&3
+                        send_response "201 Created" "application/json" "$RESPONSE"
                     else
-                        send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}' >&3
+                        send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}'
                     fi
                 else
                     error "Invalid request body: $BODY"
-                    send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}' >&3
+                    send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
                 fi
                 ;;
 
             *)
-                send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
+                send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
                 ;;
         esac
     else
-        send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}' >&3
+        send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}'
     fi
 fi
 
