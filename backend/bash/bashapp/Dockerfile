@@ -7,10 +7,12 @@ RUN apk add --no-cache bash netcat-openbsd coreutils postgresql-client socat
 # Copy the Bash script into the container
 COPY server.sh /usr/local/bin/server.sh
 COPY request_handler.sh /usr/local/bin/request_handler.sh
+COPY logger.sh /usr/local/bin/logger.sh
 
 # Make the script executable
 RUN chmod +x /usr/local/bin/server.sh
 RUN chmod +x /usr/local/bin/request_handler.sh
+RUN chmod +x /usr/local/bin/logger.sh
 
 # Expose the desired port
 EXPOSE 3039
