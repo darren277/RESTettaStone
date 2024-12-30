@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source the logger
-source ./logger.sh
+source /usr/local/bin/logger.sh
 
 send_response() {
     local STATUS="$1"
@@ -18,18 +18,23 @@ send_response() {
 # Read the request line
 read -r REQUEST_LINE
 echo "Received request: $REQUEST_LINE" >&2
+info "Received request: $REQUEST_LINE"
 
 # Read headers
 while IFS= read -r line && [ -n "$line" ] && [ "$line" != $'\r' ]; do
+    info "Received header: $line"
     if [[ "$line" =~ Content-Length:\ *([0-9]+) ]]; then
         LENGTH="${BASH_REMATCH[1]}"
     fi
 done
 
+info "Content-Length: $LENGTH"
+
 # Read body for POST/PUT requests
 if [ -n "$LENGTH" ]; then
     read -n "$LENGTH" BODY
     echo "Received body: $BODY" >&2
+    info "Received body: $BODY"
 fi
 
 if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
