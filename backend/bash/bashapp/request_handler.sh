@@ -89,15 +89,36 @@ handle_method_not_allowed() {
     send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
 }
 
-# Read the full request
-REQUEST=""
-while IFS= read -r line; do
-    REQUEST+="$line"$'\n'
-done
+# Read the full request, including body
+read_full_request() {
+    # Read first line (request line)
+    read -r first_line
+    local request="$first_line"$'\n'
 
-# Get first line
+    # Read headers until empty line
+    while IFS= read -r line && [[ -n "$line" ]] && [[ "$line" != $'\r' ]]; do
+        request+="$line"$'\n'
+    done
+
+    # Add the empty line that separates headers from body
+    request+=$'\n'
+
+    # If we have Content-Length, read the body
+    if [[ "$request" =~ Content-Length:\ *([0-9]+) ]]; then
+        local length="${BASH_REMATCH[1]}"
+        # Read exact number of bytes for body
+        local body=$(dd bs=1 count="$length" 2>/dev/null)
+        request+="$body"
+    fi
+
+    echo "$request"
+}
+
+# Read the complete request
+REQUEST=$(read_full_request)
 REQUEST_LINE=$(echo "$REQUEST" | head -n1)
-echo "[DEBUG] Received request: $REQUEST_LINE" >&2
+echo "[DEBUG] Raw request: $REQUEST" >&2
+echo "[DEBUG] Request line: $REQUEST_LINE" >&2
 
 if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     METHOD="${BASH_REMATCH[1]}"
@@ -109,14 +130,20 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     declare -A HEADERS
     eval "$(parse_headers "$REQUEST")"
 
+    # Parse the entire request and get all the variables we need
+    eval "$(parse_request "$METHOD" "$REQUEST")"
+
+    echo "[DEBUG] Content-Type: $CONTENT_TYPE" >&2
+    echo "[DEBUG] Content-Length: $CONTENT_LENGTH" >&2
+    echo "[DEBUG] Body: $BODY" >&2
+
     # For POST/PUT requests, parse the body
     if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
         BODY=$(extract_body "$REQUEST")
         EMAIL=$(parse_body_field "email" "$BODY")
-    fi
 
-    echo "[DEBUG] Content-Type: $(get_header "Content-Type")" >&2
-    echo "[DEBUG] Content-Length: $(get_header "Content-Length")" >&2
+        echo "[DEBUG] Email: $EMAIL" >&2
+    fi
 
     # Match the "/users/<id>" pattern
     if [[ "$PATH" =~ ^users/([0-9]+)$ ]]; then

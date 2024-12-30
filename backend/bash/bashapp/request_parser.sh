@@ -25,9 +25,10 @@ parse_headers() {
     done <<< "$RAW_REQUEST"
 
     # Return headers as a formatted string that can be eval'd
-    for key in "${!HEADERS[@]}"; do
-        echo "HEADERS[\"$key\"]=\"${HEADERS[$key]}\""
-    done
+#    for key in "${!HEADERS[@]}"; do
+#        echo "HEADERS[\"$key\"]=\"${HEADERS[$key]}\""
+#    done
+    declare -p HEADERS
 }
 
 # Function to get a specific header value
@@ -71,19 +72,30 @@ extract_body() {
     fi
 }
 
-# Main request parsing function
-# Usage: parse_request "method" "raw_request"
+# Main request parsing function that returns all parsed data
+# Usage: eval "$(parse_request "$METHOD" "$RAW_REQUEST")"
 parse_request() {
     local METHOD="$1"
     local RAW_REQUEST="$2"
 
-    # Parse headers first
-    declare -A HEADERS
+    # Create a new associative array for headers
+    echo "declare -A HEADERS"
+
+    # Parse headers and get them into calling scope
     eval "$(parse_headers "$RAW_REQUEST")"
 
-    # Only parse body for POST/PUT
+    # Extract Content-Length and Content-Type for convenience
+    echo "CONTENT_LENGTH=\"${HEADERS['Content-Length']}\""
+    echo "CONTENT_TYPE=\"${HEADERS['Content-Type']}\""
+
+    # Parse body for POST/PUT requests
     if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
-        local PARSED_BODY=$(extract_body "$RAW_REQUEST")
-        echo "$PARSED_BODY"
+        local PARSED_BODY=$(extract_body "$RAW_REQUEST" "${HEADERS['Content-Length']}")
+        # If we have a JSON body, parse the email field
+        if [[ "${HEADERS['Content-Type']}" == "application/json" ]]; then
+            local EMAIL=$(parse_body_field "email" "$PARSED_BODY")
+            echo "BODY=\"$PARSED_BODY\""
+            echo "EMAIL=\"$EMAIL\""
+        fi
     fi
 }
