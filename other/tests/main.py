@@ -138,6 +138,7 @@ def run_tests():
     for app in [
             'actixapp',
             'aspnetapp',
+            'bashapp',
             'bunapp',
             'crowapp',
             'djangoapp',
