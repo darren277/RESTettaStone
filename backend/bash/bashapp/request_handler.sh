@@ -3,6 +3,8 @@
 source /usr/local/bin/logger.sh
 source /usr/local/bin/request_parser.sh
 
+PG_HOST="172.18.0.21"
+
 send_response() {
     local STATUS="$1"
     local CONTENT_TYPE="$2"
@@ -17,7 +19,7 @@ send_response() {
 
 # GET /users
 handle_list_users() {
-    QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+    QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
     send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}"
 }
 
@@ -26,7 +28,7 @@ handle_create_user() {
     local EMAIL="$1"
 
     if [[ -n "$EMAIL" ]]; then
-        QUERY_RESULT=$(echo "INSERT INTO users (email) VALUES ('$EMAIL') RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+        QUERY_RESULT=$(echo "INSERT INTO users (email) VALUES ('$EMAIL') RETURNING id, email;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
         if [[ $? -eq 0 ]]; then
             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
@@ -44,7 +46,7 @@ handle_create_user() {
 handle_get_user() {
     local USER_ID="$1"
 
-    QUERY_RESULT=$(echo "SELECT id, email FROM users WHERE id = $USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+    QUERY_RESULT=$(echo "SELECT id, email FROM users WHERE id = $USER_ID;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
     if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
         IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
         RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
@@ -60,7 +62,7 @@ handle_update_user() {
     local EMAIL="$2"
 
     if [[ -n "$EMAIL" ]]; then
-        QUERY_RESULT=$(echo "UPDATE users SET email='$EMAIL' WHERE id=$USER_ID RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+        QUERY_RESULT=$(echo "UPDATE users SET email='$EMAIL' WHERE id=$USER_ID RETURNING id, email;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A)
         if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
             IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
             RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
@@ -77,7 +79,7 @@ handle_update_user() {
 handle_delete_user() {
     local USER_ID="$1"
 
-    if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A; then
+    if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql -h $PG_HOST "$DB_CONNECTION" -t -A; then
         send_response "204 No Content" "application/json" ""
     else
         send_response "404 Not Found" "application/json" '{"error":"User not found"}'
