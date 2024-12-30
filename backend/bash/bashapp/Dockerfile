@@ -1,6 +1,22 @@
 # Use Alpine Linux as the base image
 FROM alpine:latest
 
+ARG BASHAPP_PORT
+ENV BASHAPP_PORT=$BASHAPP_PORT
+ENV PORT=$BASHAPP_PORT
+
+ARG PG_HOST
+ARG PG_PORT
+ARG PG_USER
+ARG PG_PASS
+ARG PG_DB
+
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASS=$PG_PASS
+ENV PG_DB=$PG_DB
+
 # Install Bash and Netcat
 RUN apk add --no-cache bash netcat-openbsd coreutils postgresql-client socat
 
@@ -17,8 +33,7 @@ RUN chmod +x /usr/local/bin/logger.sh
 RUN chmod +x /usr/local/bin/request_parser.sh
 
 # Expose the desired port
-EXPOSE 3039
+EXPOSE $BASHAPP_PORT
 
 # Run the script
-#CMD ["bash", "/usr/local/bin/server.sh"]
-CMD bash
+CMD ["bash", "/usr/local/bin/server.sh"]
