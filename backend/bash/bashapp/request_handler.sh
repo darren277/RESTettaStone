@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Source the logger
 source /usr/local/bin/logger.sh
+source /usr/local/bin/request_parser.sh
 
 send_response() {
     local STATUS="$1"
@@ -89,27 +89,15 @@ handle_method_not_allowed() {
     send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}'
 }
 
-# Read the request line
-read -r REQUEST_LINE
-echo "Received request: $REQUEST_LINE" >&2
-info "Received request: $REQUEST_LINE"
-
-# Read headers
-while IFS= read -r line && [ -n "$line" ] && [ "$line" != $'\r' ]; do
-    info "Received header: $line"
-    if [[ "$line" =~ Content-Length:\ *([0-9]+) ]]; then
-        LENGTH="${BASH_REMATCH[1]}"
-    fi
+# Read the full request
+REQUEST=""
+while IFS= read -r line; do
+    REQUEST+="$line"$'\n'
 done
 
-info "Content-Length: $LENGTH"
-
-# Read body for POST/PUT requests
-if [ -n "$LENGTH" ]; then
-    read -n "$LENGTH" BODY
-    echo "Received body: $BODY" >&2
-    info "Received body: $BODY"
-fi
+# Get first line
+REQUEST_LINE=$(echo "$REQUEST" | head -n1)
+echo "[DEBUG] Received request: $REQUEST_LINE" >&2
 
 if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     METHOD="${BASH_REMATCH[1]}"
@@ -117,14 +105,18 @@ if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
     echo "Method: $METHOD"
     echo "Path: /$PATH"
 
-    # For POST/PUT requests, get the body
+    # Parse headers and store them in HEADERS associative array
+    declare -A HEADERS
+    eval "$(parse_headers "$REQUEST")"
+
+    # For POST/PUT requests, parse the body
     if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
-        # Extract JSON body (assuming Content-Length header is present)
-        BODY=$(/usr/bin/awk 'BEGIN{RS="\r\n\r\n"} NR==2' "$TMPFILE")
-        # Extract email from JSON (basic parsing)
-        ## TODO: Consider using `jq`: EMAIL=$(echo "$BODY" | jq -r '.email // empty')
-        EMAIL=$(echo "$BODY" | /bin/grep -o '"email"[[:space:]]*:[[:space:]]*"[^"]*"' | /bin/sed 's/.*"email"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+        BODY=$(extract_body "$REQUEST")
+        EMAIL=$(parse_body_field "email" "$BODY")
     fi
+
+    echo "[DEBUG] Content-Type: $(get_header "Content-Type")" >&2
+    echo "[DEBUG] Content-Length: $(get_header "Content-Length")" >&2
 
     # Match the "/users/<id>" pattern
     if [[ "$PATH" =~ ^users/([0-9]+)$ ]]; then
