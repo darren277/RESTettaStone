@@ -109,3 +109,7 @@ upstream hunchentootapp {
 upstream pascalapp {
     server ${PASCALAPP_IP}:${PASCALAPP_PORT};
 }
+
+upstream bashapp {
+    server ${BASHAPP_IP}:${BASHAPP_PORT};
+}
