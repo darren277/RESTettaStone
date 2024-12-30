@@ -136,6 +136,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 |                                                                                                          | Dockerized | REST Responses | Postgres Interaction | Full CRUD | Current Barrier      |
 |----------------------------------------------------------------------------------------------------------|------------|----------------|----------------------|-----------|----------------------|
+| **BASH**                                                                                                 |            |                |                      |           |                      |
+| [Bash](https://github.com/darren277/RESTettaStone/tree/master/backend/bash/bashapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
 | **COBOL**                                                                                                |            |                |                      |           |                      |
 | Cobol                                                                                                    | ❌        | ❌              | ❌                    | ❌          | Language             |
 | **C++**                                                                                                  |            |                |                      |           |                      |
