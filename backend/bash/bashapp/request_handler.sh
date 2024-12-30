@@ -1,0 +1,165 @@
+#!/bin/bash
+
+send_response() {
+    local STATUS="$1"
+    local CONTENT_TYPE="$2"
+    local RESPONSE="$3"
+
+    info "Sending response: $STATUS"
+
+    #echo -ne "HTTP/1.1 $STATUS\r\nContent-Type: $CONTENT_TYPE\r\nContent-Length: ${#RESPONSE}\r\n\r\n$RESPONSE"
+    printf "HTTP/1.1 %s\r\nContent-Type: %s\r\nConnection: close\r\nContent-Length: %d\r\n\r\n%s" \
+        "$STATUS" "$CONTENT_TYPE" "${#RESPONSE}" "$RESPONSE"
+}
+
+declare -A LOG_LEVELS=(
+    ["DEBUG"]="0"
+    ["INFO"]="1"
+    ["WARN"]="2"
+    ["ERROR"]="3"
+)
+
+CURRENT_LOG_LEVEL=${BASH_APP_LOG_LEVEL:-"INFO"}
+LOG_FILE="bashapp.log"
+
+log() {
+    local level="$1"
+    local message="$2"
+    local line_number="${3:-${BASH_LINENO[0]}}"
+    local timestamp=$(/bin/date '+%Y-%m-%d %H:%M:%S')
+
+    # Convert log levels to numeric for comparison
+    local current_level_num=${LOG_LEVELS[$CURRENT_LOG_LEVEL]}
+    local msg_level_num=${LOG_LEVELS[$level]}
+
+    # Only log if message level >= current log level
+    if [[ $msg_level_num -ge $current_level_num ]]; then
+        # Format the log message
+        local log_message="[$timestamp] [${level}]: (${line_number}) ${message}"
+
+        # Write to log file
+        echo "$log_message" >> "$LOG_FILE"
+
+        # Also print to stderr if it's an error
+        if [[ "$level" == "ERROR" ]]; then
+            echo "$log_message" >&2
+        fi
+    fi
+}
+
+# Convenience wrapper functions
+debug() { log "DEBUG" "$1" "${2:-${BASH_LINENO[0]}}"; }
+info() { log "INFO" "$1" "${2:-${BASH_LINENO[0]}}"; }
+warn() { log "WARN" "$1" "${2:-${BASH_LINENO[0]}}"; }
+error() { log "ERROR" "$1" "${2:-${BASH_LINENO[0]}}"; }
+
+
+handle_request() {
+    # Read the request line
+    read -r REQUEST_LINE
+    echo "Received request: $REQUEST_LINE" >&2
+
+    # Read headers
+    while IFS= read -r line && [ -n "$line" ] && [ "$line" != $'\r' ]; do
+        if [[ "$line" =~ Content-Length:\ *([0-9]+) ]]; then
+            LENGTH="${BASH_REMATCH[1]}"
+        fi
+    done
+
+    # Read body for POST/PUT requests
+    if [ -n "$LENGTH" ]; then
+        read -n "$LENGTH" BODY
+        echo "Received body: $BODY" >&2
+    fi
+
+    if [[ "$REQUEST_LINE" =~ ^([A-Z]+)\ /(.*)\ HTTP ]]; then
+        METHOD="${BASH_REMATCH[1]}"
+        PATH="${BASH_REMATCH[2]}"
+        echo "Method: $METHOD"
+        echo "Path: /$PATH"
+
+        # For POST/PUT requests, get the body
+        if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" ]]; then
+            # Extract JSON body (assuming Content-Length header is present)
+            BODY=$(/usr/bin/awk 'BEGIN{RS="\r\n\r\n"} NR==2' "$TMPFILE")
+            # Extract email from JSON (basic parsing)
+            ## TODO: Consider using `jq`: EMAIL=$(echo "$BODY" | jq -r '.email // empty')
+            EMAIL=$(echo "$BODY" | /bin/grep -o '"email"[[:space:]]*:[[:space:]]*"[^"]*"' | /bin/sed 's/.*"email"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+        fi
+
+        # Match the "/users/<id>" pattern
+        if [[ "$PATH" =~ ^users/([0-9]+)$ ]]; then
+            USER_ID="${BASH_REMATCH[1]}"
+
+            case "$METHOD" in
+                "GET")
+                    QUERY_RESULT=$(echo "SELECT id, email FROM users WHERE id = $USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                    if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
+                        IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                        RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                        send_response "200 OK" "application/json" "$RESPONSE" >&3
+                    else
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                    fi
+                    ;;
+
+                "PUT")
+                    if [[ -n "$EMAIL" ]]; then
+                        QUERY_RESULT=$(echo "UPDATE users SET email='$EMAIL' WHERE id=$USER_ID RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                        if [[ $? -eq 0 && -n "$QUERY_RESULT" ]]; then
+                            IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                            RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                            send_response "200 OK" "application/json" "$RESPONSE" >&3
+                        else
+                            send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                        fi
+                    else
+                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}'
+                    fi
+                    ;;
+
+                "DELETE")
+                    if echo "DELETE FROM users WHERE id=$USER_ID;" | /usr/bin/psql "$DB_CONNECTION" -t -A; then
+                        send_response "204 No Content" "application/json" "" >&3
+                    else
+                        send_response "404 Not Found" "application/json" '{"error":"User not found"}' >&3
+                    fi
+                    ;;
+
+                *)
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
+                    ;;
+            esac
+
+        elif [[ "$PATH" == "users" ]]; then
+            case "$METHOD" in
+                "GET")
+                    QUERY_RESULT=$(echo "SELECT array_to_json(array_agg(row_to_json(u))) FROM (SELECT id, email FROM users) u;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                    send_response "200 OK" "application/json" "${QUERY_RESULT:-[]}" >&3
+                    ;;
+
+                "POST")
+                    if [[ -n "$EMAIL" ]]; then
+                        QUERY_RESULT=$(echo "INSERT INTO users (email) VALUES ('$EMAIL') RETURNING id, email;" | /usr/bin/psql "$DB_CONNECTION" -t -A)
+                        if [[ $? -eq 0 ]]; then
+                            IFS="|" read -r ID EMAIL <<< "$QUERY_RESULT"
+                            RESPONSE="{\"id\":$ID,\"email\":\"$EMAIL\"}"
+                            send_response "201 Created" "application/json" "$RESPONSE" >&3
+                        else
+                            send_response "500 Internal Server Error" "application/json" '{"error":"Failed to create user"}' >&3
+                        fi
+                    else
+                        error "Invalid request body: $BODY"
+                        send_response "400 Bad Request" "application/json" '{"error":"Invalid request body"}' >&3
+                    fi
+                    ;;
+
+                *)
+                    send_response "405 Method Not Allowed" "application/json" '{"error":"Method not allowed"}' >&3
+                    ;;
+            esac
+        else
+            send_response "404 Not Found" "application/json" '{"error":"Endpoint not found"}' >&3
+        fi
+    fi
+}
