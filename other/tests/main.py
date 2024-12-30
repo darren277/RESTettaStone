@@ -150,6 +150,7 @@ def run_tests():
             'laravelapp',
             'luaapp',
             'nodeapp',
+            'pascalapp',
             'perlapp',
             'phpapp',
             'playapp',

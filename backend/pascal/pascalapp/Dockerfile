@@ -1,0 +1,29 @@
+FROM freepascal/fpc:trunk-jammy-full
+
+ARG PG_HOST
+ARG PG_PORT
+ARG PG_USER
+ARG PG_PASS
+ARG PG_DB
+
+ARG PASCALAPP_PORT
+
+ENV PASCALAPP_PORT=$PASCALAPP_PORT
+ENV PORT=$PASCALAPP_PORT
+
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASS=$PG_PASS
+ENV PG_DB=$PG_DB
+
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
+
+RUN apt-get update && apt-get install -y libpq-dev
+
+COPY ./src ./src
+
+RUN fpc -dPORT -dPG_HOST -dPG_PORT -dPG_USER -dPG_PASS -dPG_DB src/pascalapp.pas
+
+ENTRYPOINT ./src/pascalapp > /app/log.txt 2>&1

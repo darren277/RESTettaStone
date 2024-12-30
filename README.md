@@ -162,7 +162,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **LUA**                                                                                                  |            |                |                      |           |                      |
 | [Lua / OpenResty](https://github.com/darren277/RESTettaStone/tree/master/backend/lua/luaapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **PASCAL**                                                                                               |            |                |                      |           |                      |
-| Pascal                                                                                                   | ❌          | ❌              | ❌                    | ❌          |                      |
+| [Pascal](https://github.com/darren277/RESTettaStone/tree/master/backend/pascal/pascalapp)                | ✅          | ✅              | ✅                    | ✅          |                      |
 | **PERL**                                                                                                 |            |                |                      |           |                      |
 | [Perl](https://github.com/darren277/RESTettaStone/tree/master/backend/perl/perlapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
 | **PHP**                                                                                                  |            |                |                      |           |                      |
