@@ -7,7 +7,8 @@ import boto3 as boto3
 
 app = Chalice(app_name="chaliceapp")
 
-
+@app.route("/api/users")
+def index():
 def generate_id():
     import uuid
     return str(uuid.uuid4())

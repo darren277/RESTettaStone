@@ -14,7 +14,9 @@ chalice-deploy:
 	cd other/chaliceapp && ../../venv/Scripts/chalice deploy --profile $(AWS_PROFILE)
 
 
+
 chalice-test:
+	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/api/users
 	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users
 
 chalice-test-create:
