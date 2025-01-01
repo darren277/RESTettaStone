@@ -67,6 +67,8 @@
   * [Database Gotchas](#database-gotchas)
     + [Postgres](#postgres)
       - [pg_stat_activity Locks](#pg_stat_activity-locks)
+  * [Other General Lessons](#other-general-lessons)
+    + [Branch Protection](#branch-protection)
   * [Comparisons](#comparisons)
     + [Projects by Language](#projects-by-language)
       - [Classic](#classic)
@@ -880,6 +882,16 @@ For some additional background:
 As for what specifically kept causing the locks in the first place, I have a few theories, but I did not test any of them out directly (there were over 20 different locks by the time I noticed they were causing problems).
 
 They did occur when I started adding database interaction during the running of the [full scale CRUD testing suites](#using-python-script-for-more-advanced-testing).
+
+## Other General Lessons
+
+### Branch Protection
+
+Well, a little over 600 commits in with this project and I slipped up and pushed three commits directly to the main branch before realizing that I hadn't branched off. [The first one](https://github.com/darren277/RESTettaStone/commit/1a861861a9cbfec420ce9dec1e4c411d1772cc1f).
+
+On work projects, if there aren't already protections in place, I always insist on them, because mistakes can happen rather easily. I guess I kind of figured I wouldn't make that type of slip up, but, alas, I did.
+
+I of course went right ahead and added some branch protection rules for the main branch, and I advise anyone else out there to do the same, whether it's a professional repo or just a fun little side project like this, it's best to follow good practices with consistency.
 
 ## Comparisons
 
