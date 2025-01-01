@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-FROM rust:1.81-bullseye as builder
+FROM rustlang/rust:nightly-bullseye as builder
 
 ARG ROCKETAPP_PORT
 ARG ROCKETAPP_IP
@@ -37,7 +37,7 @@ RUN /usr/local/cargo/bin/cargo install --path .
 # Note that for this to work, you will likely need to compile the app during the build process:
 #FROM debian:buster-slim as runner
 
-FROM rust:1.81-bullseye as runner
+FROM rustlang/rust:nightly-bullseye as runner
 WORKDIR /app
 COPY --from=builder /usr/local/cargo/bin /usr/local/cargo/bin
 COPY --from=builder /app /app
