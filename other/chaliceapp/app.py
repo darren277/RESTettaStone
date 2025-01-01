@@ -7,6 +7,7 @@ import boto3 as boto3
 
 app = Chalice(app_name="chaliceapp")
 
+
 def generate_id():
     import uuid
     return str(uuid.uuid4())
