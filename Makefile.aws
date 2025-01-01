@@ -13,8 +13,31 @@ FIREBASE_VARS_BUILD=--build-arg FIREBASE_API_KEY=$(FIREBASE_API_KEY) --build-arg
 chalice-deploy:
 	cd other/chaliceapp && ../../venv/Scripts/chalice deploy --profile $(AWS_PROFILE)
 
+
+
 chalice-test:
 	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/api/users
+	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users
+
+chalice-test-create:
+	curl -X POST https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users -H "Content-Type: application/json" -d '{"email": "hello@mail.com"}'
+
+# USER_ID=1 or USER_ID=e066049e-eab2-4d92-8aed-792f81cbc547
+chalice-test-read:
+	curl -X GET https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users/$(USER_ID)
+
+# USER_ID=1 or USER_ID=e066049e-eab2-4d92-8aed-792f81cbc547
+chalice-test-update:
+	curl -X PUT https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users/$(USER_ID) -H "Content-Type: application/json" -d '{"email": "updated@mail.com"}'
+
+# USER_ID=1 or USER_ID=e066049e-eab2-4d92-8aed-792f81cbc547
+chalice-test-delete:
+	curl -X DELETE https://$(API_GATEWAY_ID).execute-api.$(AWS_REGION).amazonaws.com/$(CHALICE_ENV)/users/$(USER_ID)
+
+
+chalice-logs:
+	cd other/chaliceapp && ../../venv/Scripts/chalice logs --profile $(AWS_PROFILE)
+
 
 dynamodb-create:
 	aws dynamodb create-table --profile $(AWS_PROFILE) --table-name $(DYNAMODB_TABLE_NAME) --attribute-definitions AttributeName=ID,AttributeType=S --key-schema AttributeName=ID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
