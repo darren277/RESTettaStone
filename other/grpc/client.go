@@ -90,4 +90,19 @@ func main() {
     }
 
     log.Printf("Response from server: %v", deleteRes)
+
+
+    log.Println("About to GET a list of users...")
+
+    listReq := &userpb.ListUsersRequest{}
+
+    listCtx, listCancel := context.WithTimeout(context.Background(), time.Second)
+    defer listCancel()
+
+    listRes, listErr := client.ListUsers(listCtx, listReq)
+    if listErr != nil {
+        log.Fatalf("Error calling ListUsers: %v", listErr)
+    }
+
+    log.Printf("Response from server: %v", listRes)
 }

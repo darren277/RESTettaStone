@@ -112,6 +112,26 @@ func (s *userService) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequ
     }, nil
 }
 
+func (s *userService) ListUsers(ctx context.Context, req *userpb.ListUsersRequest) (*userpb.ListUsersResponse, error) {
+    var users []userpb.User
+
+    if err := s.db.Find(&users).Error; err != nil {
+        return nil, status.Errorf(codes.Internal, "Error listing users: %v", err)
+    }
+
+    var pbUsers []*userpb.User
+    for _, user := range users {
+        pbUsers = append(pbUsers, &userpb.User{
+            Id: user.Id,
+            Email: user.Email,
+        })
+    }
+
+    return &userpb.ListUsersResponse{
+        Users: pbUsers,
+    }, nil
+}
+
 func main() {
     pg_host := os.Getenv("PG_HOST")
     pg_user := os.Getenv("PG_USER")
