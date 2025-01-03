@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-FROM rust:1.81-bullseye as builder
+FROM rustlang/rust:nightly-bullseye as builder
 
 ARG ROCKETAPP_PORT
 ARG ROCKETAPP_IP
@@ -20,8 +20,6 @@ ENV PG_DB=$PG_DB
 WORKDIR /app
 COPY ./Cargo.toml ./
 
-COPY ./src ./src
-
 RUN apt update
 RUN apt install -y ca-certificates
 
@@ -31,14 +29,24 @@ RUN /usr/local/cargo/bin/rustup default nightly
 RUN /usr/local/cargo/bin/rustup --version
 RUN /usr/local/cargo/bin/cargo --version
 
-RUN /usr/local/cargo/bin/cargo install --path .
+COPY ./src ./src
 
+RUN /usr/local/cargo/bin/cargo update
+RUN /usr/local/cargo/bin/rustup update
+RUN /usr/local/cargo/bin/rustup override set nightly
+
+RUN /usr/local/cargo/bin/cargo fetch
+RUN /usr/local/cargo/bin/cargo build --release --locked || true
 
 # Note that for this to work, you will likely need to compile the app during the build process:
 #FROM debian:buster-slim as runner
 
-FROM rust:1.81-bullseye as runner
+FROM rustlang/rust:nightly-bullseye as runner
 WORKDIR /app
+
+RUN mkdir -p /usr/local/cargo/registry/src
+
+COPY --from=builder /usr/local/cargo/registry/src /usr/local/cargo/registry/src
 COPY --from=builder /usr/local/cargo/bin /usr/local/cargo/bin
 COPY --from=builder /app /app
 
@@ -66,7 +74,7 @@ ENV PG_DB=$PG_DB
 
 # Note that the following is required to bypass this ridiculous error: "failed to run custom build command for `pear_codegen v0.1.5`".
 # See README (Gotchas) for more details.
-RUN /usr/local/cargo/bin/rustup override set nightly
+#RUN /usr/local/cargo/bin/rustup override set nightly
 
 EXPOSE $ROCKETAPP_PORT
 
@@ -74,3 +82,4 @@ COPY ./entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
+#ENTRYPOINT tail -f /dev/null
