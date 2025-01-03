@@ -189,7 +189,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **SWIFT**                                                                                                |            |                |                      |           |                      |
 | [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                   | ✅          | ✅              | ✅                    | ✅         |                      |
 | **D**                                                                                                    |            |                |                      |           |                      |
-| [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibe/vibeapp)                  | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
+| [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **ZIG**                                                                                                  |            |                |                      |           |                      |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                         | ✅          | ✅              | ✅                    | ✅*        | ~~Build~~            |
 
