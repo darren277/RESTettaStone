@@ -22,9 +22,11 @@ func main() {
 
     client := userpb.NewUserServiceClient(conn)
 
+
+    log.Println("About to GET a user...")
+
     req := &userpb.GetUserRequest{
-        //UserId: "123",
-        Uuid: "123",
+        Id: 1,
     }
 
     ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -36,4 +38,71 @@ func main() {
     }
 
     log.Printf("Response from server: %v", res)
+
+
+    log.Println("About to CREATE a user...")
+
+    createReq := &userpb.CreateUserRequest{
+        Email: "testing@mail.com",
+    }
+
+    createCtx, createCancel := context.WithTimeout(context.Background(), time.Second)
+    defer createCancel()
+
+    createRes, createErr := client.CreateUser(createCtx, createReq)
+    if createErr != nil {
+        log.Fatalf("Error calling CreateUser: %v", createErr)
+    }
+
+    log.Printf("Response from server: %v", createRes)
+
+
+    log.Println("About to UPDATE a user...")
+
+    updateReq := &userpb.UpdateUserRequest{
+        Id: 1,
+        Email: "updated@mail.com",
+    }
+
+    updateCtx, updateCancel := context.WithTimeout(context.Background(), time.Second)
+    defer updateCancel()
+
+    updateRes, updateErr := client.UpdateUser(updateCtx, updateReq)
+    if updateErr != nil {
+        log.Fatalf("Error calling UpdateUser: %v", updateErr)
+    }
+
+    log.Printf("Response from server: %v", updateRes)
+
+
+    log.Println("About to DELETE a user...")
+
+    deleteReq := &userpb.DeleteUserRequest{
+        Id: 1,
+    }
+
+    deleteCtx, deleteCancel := context.WithTimeout(context.Background(), time.Second)
+    defer deleteCancel()
+
+    deleteRes, deleteErr := client.DeleteUser(deleteCtx, deleteReq)
+    if deleteErr != nil {
+        log.Fatalf("Error calling DeleteUser: %v", deleteErr)
+    }
+
+    log.Printf("Response from server: %v", deleteRes)
+
+
+    log.Println("About to GET a list of users...")
+
+    listReq := &userpb.ListUsersRequest{}
+
+    listCtx, listCancel := context.WithTimeout(context.Background(), time.Second)
+    defer listCancel()
+
+    listRes, listErr := client.ListUsers(listCtx, listReq)
+    if listErr != nil {
+        log.Fatalf("Error calling ListUsers: %v", listErr)
+    }
+
+    log.Printf("Response from server: %v", listRes)
 }

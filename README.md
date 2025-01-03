@@ -141,13 +141,13 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **BASH**                                                                                                 |            |                |                      |           |                      |
 | [Bash](https://github.com/darren277/RESTettaStone/tree/master/backend/bash/bashapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
 | **COBOL**                                                                                                |            |                |                      |           |                      |
-| Cobol                                                                                                    | ❌        | ❌              | ❌                    | ❌          | Language             |
+| [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
 | **C++**                                                                                                  |            |                |                      |           |                      |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)                 | ✅          | ✅              | ✅                    | ✅         |                      |
 | **C#**                                                                                                   |            |                |                      |           |                      |
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
 | **FORTRAN**                                                                                              |            |                |                      |           |                      |
-| Fortran                                                                                                  | ❌          | ❌              | ❌                    | ❌          | Language             |
+| [Fortran](https://github.com/darren277/risk)**                                                           | ❌          | ❌              | ✅                    | ❌          | Language             |
 | **F#**                                                                                                   |            |                |                      |           |                      |
 | [F#](https://github.com/darren277/RESTettaStone/tree/master/backend/fsharp/fsharpapp)                    | ✅          | ✅              | ✅                    | ✅         | ~~Language~~         |
 | **GO**                                                                                                   |            |                |                      |           |                      |
@@ -177,7 +177,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **PROLOG**                                                                                               |            |                |                      |           |                      |
 | [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)                | ✅          | ✅              | ✅                    | ✅         | ~~Language~~         |
 | **PYTHON**                                                                                               |            |                |                      |           |                      |
-| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)       | ✅          | ✅              | ✅                    | ❌          |                      |
+| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)       | ✅          | ✅              | ✅                    | ✅          |                      |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)         | ✅          | ✅              | ✅                    | ✅         |                      |
 | **RUBY**                                                                                                 |            |                |                      |           |                      |
 | [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
@@ -192,6 +192,10 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/vibe/vibeapp)                  | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **ZIG**                                                                                                  |            |                |                      |           |                      |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                         | ✅          | ✅              | ✅                    | ✅*        | ~~Build~~            |
+
+(*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. (See notes below)[#zig].
+
+(**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out.
 
 ### Frontend
 
@@ -211,9 +215,9 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Electron](https://github.com/darren277/RESTettaStone/tree/master/other/electronapp)        | N/A       | ✅                   | ✅         |
 | [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A       | ✅                   | ✅         |
 | [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A       | N/A                 | ✅          |
-| [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | ✅         | ✅                   | ❌          |
-| [gRPC](https://github.com/darren277/RESTettaStone/tree/master/other/grpc)                   | ✅         | N/A                 | ❌          |
-| [RabbitMQ](#rabbitmq)                                                                       | ✅         | N/A                 | ❌          |
+| [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | ✅         | ✅                   | N/A          |
+| [gRPC](https://github.com/darren277/RESTettaStone/tree/master/other/grpc)                   | ✅         | N/A                 | ✅          |
+| [RabbitMQ](#rabbitmq)                                                                       | ✅         | N/A                 | N/A          |
 
 ### Servers
 
