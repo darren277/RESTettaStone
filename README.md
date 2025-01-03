@@ -146,6 +146,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)                 | ✅          | ✅              | ✅                    | ✅         |                      |
 | **C#**                                                                                                   |            |                |                      |           |                      |
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
+| **D**                                                                                                    |            |                |                      |           |                      |
+| [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **FORTRAN**                                                                                              |            |                |                      |           |                      |
 | [Fortran](https://github.com/darren277/risk)**                                                           | ❌          | ❌              | ✅                    | ❌          | Language             |
 | **F#**                                                                                                   |            |                |                      |           |                      |
@@ -188,8 +190,6 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Play (Scala)](https://github.com/darren277/RESTettaStone/tree/master/backend/scala/playapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **SWIFT**                                                                                                |            |                |                      |           |                      |
 | [Swift](https://github.com/darren277/RESTettaStone/tree/master/backend/swift/swiftapp)                   | ✅          | ✅              | ✅                    | ✅         |                      |
-| **D**                                                                                                    |            |                |                      |           |                      |
-| [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **ZIG**                                                                                                  |            |                |                      |           |                      |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                         | ✅          | ✅              | ✅                    | ✅*        | ~~Build~~            |
 
