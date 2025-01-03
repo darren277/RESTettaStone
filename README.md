@@ -177,7 +177,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **PROLOG**                                                                                               |            |                |                      |           |                      |
 | [Prolog](https://github.com/darren277/RESTettaStone/tree/master/backend/prolog/prologapp)                | ✅          | ✅              | ✅                    | ✅         | ~~Language~~         |
 | **PYTHON**                                                                                               |            |                |                      |           |                      |
-| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)       | ✅          | ✅              | ✅                    | ❌          |                      |
+| [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)       | ✅          | ✅              | ✅                    | ✅          |                      |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)         | ✅          | ✅              | ✅                    | ✅         |                      |
 | **RUBY**                                                                                                 |            |                |                      |           |                      |
 | [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
