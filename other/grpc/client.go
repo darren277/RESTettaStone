@@ -73,4 +73,21 @@ func main() {
     }
 
     log.Printf("Response from server: %v", updateRes)
+
+
+    log.Println("About to DELETE a user...")
+
+    deleteReq := &userpb.DeleteUserRequest{
+        Id: 1,
+    }
+
+    deleteCtx, deleteCancel := context.WithTimeout(context.Background(), time.Second)
+    defer deleteCancel()
+
+    deleteRes, deleteErr := client.DeleteUser(deleteCtx, deleteReq)
+    if deleteErr != nil {
+        log.Fatalf("Error calling DeleteUser: %v", deleteErr)
+    }
+
+    log.Printf("Response from server: %v", deleteRes)
 }

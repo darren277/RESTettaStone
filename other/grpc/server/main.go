@@ -91,6 +91,27 @@ func (s *userService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequ
     }, nil
 }
 
+func (s *userService) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
+    var user userpb.User
+    idInt := req.GetId()
+    id := uint(idInt)
+
+    if err := s.db.Where("id = ?", id).First(&user).Error; err != nil {
+        if err == gorm.ErrRecordNotFound {
+            return nil, status.Error(codes.NotFound, "User not found")
+        }
+        return nil, status.Errorf(codes.Internal, "Error getting user: %v", err)
+    }
+
+    if err := s.db.Delete(&user).Error; err != nil {
+        return nil, status.Errorf(codes.Internal, "Could not delete user: %v", err)
+    }
+
+    return &userpb.DeleteUserResponse{
+        Success: true,
+    }, nil
+}
+
 func main() {
     pg_host := os.Getenv("PG_HOST")
     pg_user := os.Getenv("PG_USER")
