@@ -55,4 +55,22 @@ func main() {
     }
 
     log.Printf("Response from server: %v", createRes)
+
+
+    log.Println("About to UPDATE a user...")
+
+    updateReq := &userpb.UpdateUserRequest{
+        Id: 1,
+        Email: "updated@mail.com",
+    }
+
+    updateCtx, updateCancel := context.WithTimeout(context.Background(), time.Second)
+    defer updateCancel()
+
+    updateRes, updateErr := client.UpdateUser(updateCtx, updateReq)
+    if updateErr != nil {
+        log.Fatalf("Error calling UpdateUser: %v", updateErr)
+    }
+
+    log.Printf("Response from server: %v", updateRes)
 }

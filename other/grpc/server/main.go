@@ -65,6 +65,32 @@ func (s *userService) CreateUser(ctx context.Context, req *userpb.CreateUserRequ
     }, nil
 }
 
+func (s *userService) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
+    var user userpb.User
+    idInt := req.GetId()
+    id := uint(idInt)
+
+    if err := s.db.Where("id = ?", id).First(&user).Error; err != nil {
+        if err == gorm.ErrRecordNotFound {
+            return nil, status.Error(codes.NotFound, "User not found")
+        }
+        return nil, status.Errorf(codes.Internal, "Error getting user: %v", err)
+    }
+
+    user.Email = req.GetEmail()
+
+    if err := s.db.Save(&user).Error; err != nil {
+        return nil, status.Errorf(codes.Internal, "Could not update user: %v", err)
+    }
+
+    return &userpb.UpdateUserResponse{
+        User: &userpb.User{
+            Id: user.Id,
+            Email: user.Email,
+        },
+    }, nil
+}
+
 func main() {
     pg_host := os.Getenv("PG_HOST")
     pg_user := os.Getenv("PG_USER")
