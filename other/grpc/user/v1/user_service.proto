@@ -8,6 +8,7 @@ import "user/v1/user.proto";
 
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
 }
 
 message GetUserRequest {
@@ -15,5 +16,13 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  string email = 1;
+}
+
+message CreateUserResponse {
   User user = 1;
 }

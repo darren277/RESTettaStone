@@ -22,6 +22,9 @@ func main() {
 
     client := userpb.NewUserServiceClient(conn)
 
+
+    log.Println("About to GET a user...")
+
     req := &userpb.GetUserRequest{
         Id: 1,
     }
@@ -35,4 +38,21 @@ func main() {
     }
 
     log.Printf("Response from server: %v", res)
+
+
+    log.Println("About to CREATE a user...")
+
+    createReq := &userpb.CreateUserRequest{
+        Email: "testing@mail.com",
+    }
+
+    createCtx, createCancel := context.WithTimeout(context.Background(), time.Second)
+    defer createCancel()
+
+    createRes, createErr := client.CreateUser(createCtx, createReq)
+    if createErr != nil {
+        log.Fatalf("Error calling CreateUser: %v", createErr)
+    }
+
+    log.Printf("Response from server: %v", createRes)
 }

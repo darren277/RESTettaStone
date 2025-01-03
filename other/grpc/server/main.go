@@ -48,6 +48,23 @@ func (s *userService) GetUser(ctx context.Context, req *userpb.GetUserRequest) (
     }, nil
 }
 
+func (s *userService) CreateUser(ctx context.Context, req *userpb.CreateUserRequest) (*userpb.CreateUserResponse, error) {
+    user := userpb.User{
+        Email: req.GetEmail(),
+    }
+
+    if err := s.db.Create(&user).Error; err != nil {
+        return nil, status.Errorf(codes.Internal, "Could not create user: %v", err)
+    }
+
+    return &userpb.CreateUserResponse{
+        User: &userpb.User{
+            Id: user.Id,
+            Email: user.Email,
+        },
+    }, nil
+}
+
 func main() {
     pg_host := os.Getenv("PG_HOST")
     pg_user := os.Getenv("PG_USER")
