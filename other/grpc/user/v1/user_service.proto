@@ -11,7 +11,7 @@ service UserService {
 }
 
 message GetUserRequest {
-  string uuid = 1;
+  int32 id = 1;
 }
 
 message GetUserResponse {

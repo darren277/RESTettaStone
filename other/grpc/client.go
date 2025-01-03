@@ -23,8 +23,7 @@ func main() {
     client := userpb.NewUserServiceClient(conn)
 
     req := &userpb.GetUserRequest{
-        //UserId: "123",
-        Uuid: "123",
+        Id: 1,
     }
 
     ctx, cancel := context.WithTimeout(context.Background(), time.Second)

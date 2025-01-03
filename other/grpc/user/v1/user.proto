@@ -5,13 +5,15 @@ package user.v1;
 option go_package = "example.com/mygrpcapp/user/v1;userpb";
 
 message User {
-    string uuid = 1;
-    string full_name = 2;
-    int64 birth_year = 3;
+    //string id = 1;
+    int32 id = 1;
+    string email = 2;
+    //string full_name = 2;
+    //int64 birth_year = 3;
 
-    optional uint32  salary         = 4;
-    repeated Address addresses      = 5;
-    MaritalStatus    marital_status = 6;
+    //optional uint32  salary         = 4;
+    //repeated Address addresses      = 5;
+    //MaritalStatus    marital_status = 6;
 }
 
 message Address {
@@ -31,7 +33,7 @@ service UserService {
 }
 
 message GetUserRequest {
-  string uuid = 1;
+  int32 id = 1;
 }
 
 message GetUserResponse {
