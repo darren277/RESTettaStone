@@ -14,23 +14,54 @@ import (
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 
+	"gorm.io/driver/postgres"
+    "gorm.io/gorm"
+
 	userpb "example.com/mygrpcapp/gen/go/user/v1"
+
+	"google.golang.org/grpc/codes"
+    "google.golang.org/grpc/status"
 )
 
 type userService struct {
 	userpb.UnimplementedUserServiceServer
+	db *gorm.DB
 }
 
-func (u *userService) GetUser(_ context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
-	return &userpb.GetUserResponse{
-		User: &userpb.User{
-			Uuid:     req.Uuid,
-			FullName: "User1",
-		},
-	}, nil
+func (s *userService) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
+    var user userpb.User
+    idInt := req.GetId()
+    id := uint(idInt)
+
+    if err := s.db.Where("id = ?", id).First(&user).Error; err != nil {
+        if err == gorm.ErrRecordNotFound {
+            return nil, status.Error(codes.NotFound, "User not found")
+        }
+        return nil, status.Errorf(codes.Internal, "Error getting user: %v", err)
+    }
+
+    return &userpb.GetUserResponse{
+        User: &userpb.User{
+            Id: user.Id,
+            Email: user.Email,
+        },
+    }, nil
 }
 
 func main() {
+    pg_host := os.Getenv("PG_HOST")
+    pg_user := os.Getenv("PG_USER")
+    pg_pass := os.Getenv("PG_PASS")
+    pg_db := os.Getenv("PG_DB")
+    pg_port := os.Getenv("PG_PORT")
+
+    dsn := "host=" + pg_host + " user=" + pg_user + " password=" + pg_pass + " dbname=" + pg_db + " port=" + pg_port + " sslmode=disable"
+
+    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        log.Fatalf("Could not connect to Postgres: %v", err)
+    }
+
     server_ip := "0.0.0.0"
     server_port := os.Getenv("GRPCSERVER_PORT")
     server_address := server_ip + ":" + server_port
@@ -40,7 +71,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	userServer := &userService{}
+	userServer := &userService{db: db}
 
 	healthServer := health.NewServer()
 
