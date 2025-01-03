@@ -212,7 +212,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Expo / React Native](https://github.com/darren277/RESTettaStone/tree/master/other/expoapp) | N/A       | ✅                   | ✅         |
 | [Chalice](https://github.com/darren277/RESTettaStone/tree/master/other/chaliceapp)          | N/A       | N/A                 | ✅          |
 | [Monitoring](https://github.com/darren277/RESTettaStone/tree/master/other/monitoring)       | ✅         | ✅                   | ❌          |
-| [gRPC](https://github.com/darren277/RESTettaStone/tree/master/other/grpc)                   | ✅         | N/A                 | ❌          |
+| [gRPC](https://github.com/darren277/RESTettaStone/tree/master/other/grpc)                   | ✅         | N/A                 | ✅          |
 | [RabbitMQ](#rabbitmq)                                                                       | ✅         | N/A                 | ❌          |
 
 ### Servers
