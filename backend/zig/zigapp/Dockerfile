@@ -34,7 +34,7 @@ ENV PATH="/usr/local/zig:${PATH}"
 COPY . .
 
 RUN zig fetch --save git+https://github.com/karlseguin/pg.zig#zig-0.13
-RUN zig fetch --save git+https://github.com/zigzap/zap.git#v0.8.0
+RUN zig fetch --save git+https://github.com/zigzap/zap.git#v0.9.1
 
 EXPOSE $PORT
 

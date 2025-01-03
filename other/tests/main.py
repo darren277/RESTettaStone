@@ -6,6 +6,7 @@ import requests
 
 from other.populate_pg_db import create_table, drop_table
 
+_id = 1
 
 class HTTP(enum.Enum):
     GET = 'GET'
@@ -23,7 +24,7 @@ class HTTP(enum.Enum):
 
 
 class Tester:
-    def __init__(self, host: str, port: int, name: str, endpoint: str, method: HTTP, assertions: callable, data: dict = None):
+    def __init__(self, host: str, port: int, name: str, endpoint: str, method: HTTP, assertions: callable, data: dict = None, debug: bool = True):
         self.host = host
         self.port = port
         self.name = name
@@ -31,19 +32,34 @@ class Tester:
         self.method = method
         self.assertions = assertions
         self.data = data
+        self.debug = debug
 
     def test(self):
-        url = f'http://{self.host}:{self.port}/{self.name}{self.endpoint}'
+        global _id
+
+        url = f"http://{self.host}:{self.port}/{self.name}{self.endpoint.format(_id=_id)}"
+        if self.debug: print(f"---- Testing {url} with method {self.method} and data {self.data}...")
         if self.data:
             r = requests.request(self.method, url, json=self.data)
         else:
             r = requests.request(self.method, url)
+        if self.name == 'firebaseapp' and self.method == HTTP.POST:
+            _id = r.json().get('id')
+            print("SETTING FIREBASE APP ID", _id)
+        if self.debug:
+            try:
+                print(f"---- Response ({r.status_code}): {r.json()}")
+            except:
+                print(f"---- Response ({r.status_code}): {r.text}")
         for assertion in self.assertions:
+            if self.debug: print(f"---- Running assertion {assertion}...")
             if not assertion(r): return False
         return True
 
 
 def run_tests():
+    global _id
+
     DELAY_TIME = 0.1
 
     args = sys.argv
@@ -54,52 +70,54 @@ def run_tests():
 
     nginx_host = args[2]
     nginx_port = int(args[3])
+    try:
+        debug = bool(args[4])
+    except:
+        debug = False
 
     print("\x1b[32;20m"+"Running tests..."+f"Nginx host: {nginx_host}. Nginx port: {nginx_port}."+"\x1b[0m")
 
-    _id = 1
-
     endpoint = '/users'
     method = HTTP.GET
     assertions = [lambda r: r.status_code == 200, lambda r: r.json()[0].get('email') == 'test_email1@testing.com']
     data = None
 
-    test_get_many = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_get_many = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
-    endpoint = '/users'
+    endpoint = '/users/{_id}'
     method = HTTP.GET
-    assertions = [lambda r: r.status_code == 200, lambda r: r.json()[0].get('email') == 'test_email1@testing.com']
+    assertions = [lambda r: r.status_code == 200, lambda r: r.json().get('email') == 'test_email1@testing.com']
     data = None
 
-    test_get_one = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_get_one = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     endpoint = '/users'
     method = HTTP.POST
     assertions = [lambda r: r.status_code == 200]
     data = {'email': 'test_email1@testing.com'}
 
-    test_post = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_post = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
-    endpoint = f'/users/{_id}'
+    endpoint = '/users/{_id}'
     method = HTTP.PUT
     assertions = [lambda r: r.status_code == 200]
     data = {'email': 'test_email1b@testing.com'}
 
-    test_update = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_update = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
-    endpoint = f'/users/{_id}'
+    endpoint = '/users/{_id}'
     method = HTTP.PUT
     assertions = [lambda r: r.status_code == 404]
     data = {'email': 'test_email1b@testing.com'}
 
-    test_update_not_found = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_update_not_found = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
-    endpoint = f'/users/{_id}'
+    endpoint = '/users/{_id}'
     method = HTTP.DELETE
     assertions = [lambda r: r.status_code == 200]
     data = None
 
-    test_delete = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data)
+    test_delete = Tester(host=nginx_host, port=nginx_port, name='', endpoint=endpoint, method=method, assertions=assertions, data=data, debug=debug)
 
     tests = [
         # This order is logical for the above tests...
@@ -120,6 +138,7 @@ def run_tests():
     for app in [
             'actixapp',
             'aspnetapp',
+            'bashapp',
             'bunapp',
             'crowapp',
             'djangoapp',
@@ -128,15 +147,18 @@ def run_tests():
             'flaskapp',
             'fsharpapp',
             'goapp',
+            'hunchentootapp',
             'laravelapp',
             'luaapp',
             'nodeapp',
+            'pascalapp',
             'perlapp',
             'phpapp',
             'playapp',
             'prologapp',
             'railsapp',
             'rocketapp',
+            'spockapp',
             'springbootapp',
             'swiftapp',
             'symfonyapp',
@@ -157,11 +179,11 @@ def run_tests():
             test.name = app
             try:
                 assert test.test()
-                print("\x1b[32;20m"+f"{app} test passed for endpoint {test.endpoint} ({test.method})."+'\x1b[0m')
+                print("\x1b[32;20m"+f"{app} test passed for endpoint {test.endpoint.format(_id=_id)} ({test.method})."+'\x1b[0m')
             except AssertionError:
-                print("\x1b[31;1m"+f"{app} test failed for endpoint {test.endpoint} ({test.method})."+"\x1b[0m")
+                print("\x1b[31;1m"+f"{app} test failed for endpoint {test.endpoint.format(_id=_id)} ({test.method})."+"\x1b[0m")
             except KeyError:
-                print("\x1b[31;1m"+f"{app} test failed [KEY ERROR] for endpoint {test.endpoint} ({test.method})."+"\x1b[0m")
+                print("\x1b[31;1m"+f"{app} test failed [KEY ERROR] for endpoint {test.endpoint.format(_id=_id)} ({test.method})."+"\x1b[0m")
 
 
 if __name__ == '__main__':

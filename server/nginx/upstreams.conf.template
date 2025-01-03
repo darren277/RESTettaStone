@@ -97,3 +97,19 @@ upstream fatfreeapp {
 upstream phpapp {
     server ${PHPAPP_IP}:${PHPAPP_PORT};
 }
+
+upstream spockapp {
+    server ${SPOCKAPP_IP}:${SPOCKAPP_PORT};
+}
+
+upstream hunchentootapp {
+    server ${HUNCHENTOOTAPP_IP}:${HUNCHENTOOTAPP_PORT};
+}
+
+upstream pascalapp {
+    server ${PASCALAPP_IP}:${PASCALAPP_PORT};
+}
+
+upstream bashapp {
+    server ${BASHAPP_IP}:${BASHAPP_PORT};
+}

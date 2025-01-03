@@ -1,5 +1,11 @@
 {
+    "repositories": [
+        {
+            "type": "path",
+            "url": "vendor/fatfree-core"
+        }
+    ],
     "require": {
-        "bcosca/fatfree-core": "3.8.2"
+        "bcosca/fatfree-core": "dev-master"
     }
 }

@@ -4,18 +4,18 @@ import Meta from '../../../components/Meta'
 import {USER_API_BASE_URL} from "../../../config";
 
 const user = ({ user }) => {
-  // const router = useRouter()
-  // const { id } = router.query
+    // const router = useRouter()
+    // const { id } = router.query
 
-  return (
-    <>
-      <Meta title={user.id} description={user.email} />
-      <h1>{user.id}</h1>
-      <p>{user.email}</p>
-      <br />
-      <Link href='/'>Go Back</Link>
-    </>
-  )
+    return (
+        <>
+            <Meta title={user.id} description={user.email} />
+            <h1>{user.id}</h1>
+            <p>{user.email}</p>
+            <br />
+            <Link href='/'>Go Back</Link>
+        </>
+    )
 }
 
 export const getStaticProps = async (context) => {

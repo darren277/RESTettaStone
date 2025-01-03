@@ -19,9 +19,15 @@ let deserialize (str : string) =
     JsonSerializer.Deserialize(str, jsonOptions)
 
 type User = {
-    Id: int
-    Email: string
+    id: int option
+    email: string
 }
+
+type DbError =
+    | NotFound
+    | DatabaseError of string
+
+type DbResult<'T> = Result<'T, DbError>
 
 let connection =
     Sql.host pg_host
@@ -33,20 +39,28 @@ let connection =
 
 let getUser id =
     try
-        connection
-        |> Sql.connectFromConfig
-        |> Sql.query "SELECT * FROM users where id = @userid"
-        |> Sql.parameters [ "@userid", Sql.int id ]
-        |> Sql.executeRow (fun read ->
-        {
-          Id = read.int "id"
-          Email = read.text "email"
-        })
-        |> Ok
+        let result =
+            connection
+            |> Sql.connectFromConfig
+            |> Sql.query "SELECT * FROM users WHERE id = @id"
+            |> Sql.parameters [ "@id", Sql.int id ]
+            |> Sql.execute (fun read ->
+                {
+                    id = Some (read.int "id")
+                    email = read.text "email"
+                })
+
+        match result with
+        | [user] -> Ok user
+        | [] -> Error NotFound
+        | _ ->
+            Error (DatabaseError "Unexpected result: multiple users found")
+
     with
     | ex ->
         printfn "Database error: \n%A" ex.Message
-        Error ()
+        Error (DatabaseError ex.Message)
+
 
 let getUsers () =
     try
@@ -55,10 +69,61 @@ let getUsers () =
         |> Sql.query "SELECT * FROM users"
         |> Sql.execute (fun read ->
         {
-          Id = read.int "id"
-          Email = read.text "email"
+          id = Some (read.int "id")
+          email = read.text "email"
         })
+        |> Ok
     with
     | ex ->
         printfn "Database error: \n%A" ex.Message
-        []
+        Error (DatabaseError ex.Message)
+
+let addUser user =
+    try
+        connection
+        |> Sql.connectFromConfig
+        |> Sql.query "INSERT INTO users (email) VALUES (@email)"
+        |> Sql.parameters [ "@email", Sql.text user.email ]
+        |> Sql.executeNonQuery
+        |> ignore
+        Ok ()
+    with
+    | ex ->
+        printfn "Database error: \n%A" ex.Message
+        Error (DatabaseError ex.Message)
+
+let updateUser id user =
+    try
+        let affectedRows =
+            connection
+            |> Sql.connectFromConfig
+            |> Sql.query "UPDATE users SET email = @email WHERE id = @id"
+            |> Sql.parameters [ "@email", Sql.text user.email; "@id", Sql.int id ]
+            |> Sql.executeNonQuery
+
+        if affectedRows = 0 then
+            Error NotFound
+        else
+            Ok ()
+    with
+    | ex ->
+        printfn "Database error: \n%A" ex.Message
+        Error (DatabaseError ex.Message)
+
+let deleteUser id =
+    try
+        let affectedRows =
+            connection
+            |> Sql.connectFromConfig
+            |> Sql.query "DELETE FROM users WHERE id = @id"
+            |> Sql.parameters [ "@id", Sql.int id ]
+            |> Sql.executeNonQuery
+
+        if affectedRows = 0 then
+            Error NotFound
+        else
+            Ok ()
+    with
+    | ex ->
+        printfn "Database error: \n%A" ex.Message
+        Error (DatabaseError ex.Message)

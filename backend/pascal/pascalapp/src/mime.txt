@@ -1,0 +1,7 @@
+application/json				json
+application/octet-stream        bin
+text/html					    html htm
+text/plain					    txt
+text/xml					    xml
+text/css					    css
+text/javascript				    js

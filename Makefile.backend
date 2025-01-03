@@ -245,6 +245,46 @@ phpapp-test:
 	docker exec -it debugger curl http://$(PHPAPP_IP):$(PHPAPP_PORT)/users
 
 
+spockapp-build:
+	cd backend/haskell/spockapp && docker build --build-arg SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS_BUILD) -t spock_app:1 .
+
+spockapp-run:
+	cd backend/haskell/spockapp && docker run -d -it --rm --name spock_app_container --env SPOCKAPP_PORT=$(SPOCKAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SPOCKAPP_IP) -p $(SPOCKAPP_PORT):$(SPOCKAPP_PORT) spock_app:1
+
+spockapp-test:
+	docker exec -it debugger curl http://$(SPOCKAPP_IP):$(SPOCKAPP_PORT)/users
+
+
+hunchentootapp-build:
+	cd backend/lisp/hunchentootapp && docker build --build-arg HUNCHENTOOTAPP_PORT=$(HUNCHENTOOTAPP_PORT) $(PG_VARS_BUILD) -t hunchentoot_app:1 .
+
+hunchentootapp-run:
+	cd backend/lisp/hunchentootapp && docker run -d -it --rm --name hunchentoot_app_container --env HUNCHENTOOTAPP_PORT=$(HUNCHENTOOTAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(HUNCHENTOOTAPP_IP) -p $(HUNCHENTOOTAPP_PORT):$(HUNCHENTOOTAPP_PORT) hunchentoot_app:1
+
+hunchentootapp-test:
+	docker exec -it debugger curl http://$(HUNCHENTOOTAPP_IP):$(HUNCHENTOOTAPP_PORT)/users
+
+
+pascalapp-build:
+	cd backend/pascal/pascalapp && docker build --build-arg PASCALAPP_PORT=$(PASCALAPP_PORT) $(PG_VARS_BUILD) -t pascal_app:1 .
+
+pascalapp-run:
+	cd backend/pascal/pascalapp && docker run -d -it --rm --name pascal_app_container --env PASCALAPP_PORT=$(PASCALAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PASCALAPP_IP) -p $(PASCALAPP_PORT):$(PASCALAPP_PORT) pascal_app:1
+
+pascalapp-test:
+	docker exec -it debugger curl http://$(PASCALAPP_IP):$(PASCALAPP_PORT)/users
+
+
+bashapp-build:
+	cd backend/bash/bashapp && docker build --build-arg BASHAPP_PORT=$(BASHAPP_PORT) $(PG_VARS_BUILD) -t bash_app:1 .
+
+bashapp-run:
+	cd backend/bash/bashapp && docker run -d -it --rm --name bash_app_container --env BASHAPP_PORT=$(BASHAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(BASHAPP_IP) -p $(BASHAPP_PORT):$(BASHAPP_PORT) bash_app:1
+
+bashapp-test:
+	docker exec -it debugger curl http://$(BASHAPP_IP):$(BASHAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
@@ -256,3 +296,8 @@ firebaseapp-test-create-user:
 
 firebaseapp-test-get-users:
 	docker exec -it debugger curl http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/users
+
+# example usage: make b firebase-test-delete-user USER_ID=GJccsYsT1nLeBbdp0VZh
+# or USER_ID=DELETE_ALL to delete all users
+firebase-test-delete-user:
+	docker exec -it debugger curl -X DELETE http://$(FIREBASEAPP_IP):$(FIREBASEAPP_PORT)/users/$(USER_ID)

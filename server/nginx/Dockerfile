@@ -17,6 +17,9 @@ COPY locations$LOCATIONS.conf /usr/local/openresty/nginx/conf/
 
 COPY entrypoint$ENTRYPOINT_VERSION.sh /entrypoint.sh
 
+# nginx: [emerg] open() "/var/log/nginx/access.log" failed (2: No such file or directory)
+RUN mkdir -p /var/log/nginx
+
 # For debugging inside the container:
 RUN apk add nano
 

@@ -10,8 +10,7 @@ import v1.user._
 class Module(environment: Environment, configuration: Configuration)
     extends AbstractModule
     with ScalaModule {
-
-  override def configure() = {
-    bind[UserRepository].to[UserRepositoryImpl].in[Singleton]()
-  }
+        override def configure() = {
+        bind[UserRepository].to[UserRepositoryImpl].in[Singleton]()
+    }
 }

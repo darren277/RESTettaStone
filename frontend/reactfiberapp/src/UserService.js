@@ -15,9 +15,9 @@ const USER_API_BASE_URL = `${FLASK_APP}/users`;
 
 class UserService {
     getUsers(){return axios.get(USER_API_BASE_URL);}
-    createUser(user){return axios.post(USER_API_BASE_URL, user);}
+    createUser(user){return axios.post(USER_API_BASE_URL, user, {headers: { 'Content-Type': 'application/json' }});}
     getUserById(userId){return axios.get(USER_API_BASE_URL + '/' + userId);}
-    updateUser(user, userId){return axios.put(USER_API_BASE_URL + '/' + userId, user);}
+    updateUser(userId, user){return axios.put(USER_API_BASE_URL + '/' + userId, user, {headers: { 'Content-Type': 'application/json' }});}
     deleteUser(userId){return axios.delete(USER_API_BASE_URL + '/' + userId);}
 }
 
