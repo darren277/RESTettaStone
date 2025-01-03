@@ -4,25 +4,25 @@ BUILD=build --no-cache
 #BUILD=build
 
 
-grpc-protos:
+protos-volume:
 	docker volume rm grpc-protos
 	docker volume create grpc-protos
 
 
-grpc-server-build:
+server-build:
 	cd other/grpc && docker $(BUILD) --build-arg GRPCSERVER_IP=$(GRPCSERVER_IP) --build-arg GRPCSERVER_PORT=$(GRPCSERVER_PORT) --build-arg PG_HOST=$(PG_HOST) --build-arg PG_DB=$(PG_DB) --build-arg PG_USER=$(PG_USER) --build-arg PG_PASS=$(PG_PASS) --build-arg PG_PORT=$(PG_PORT) -t grpc_server:1 .
 
-grpc-server-run:
+server-run:
 	cd other/grpc && docker run -d -it --rm -v grpc-protos:/protos --name grpc_server_container --env GRPCSERVER_IP=$(GRPCSERVER_IP) --env GRPCSERVER_PORT=$(GRPCSERVER_PORT) --env PG_HOST=$(PG_HOST) --env PG_DB=$(PG_DB) --env PG_USER=$(PG_USER) --env PG_PASS=$(PG_PASS) --env PG_PORT=$(PG_PORT) --net $(SUBNET_NAME) --ip $(GRPCSERVER_IP) -p $(GRPCSERVER_PORT):$(GRPCSERVER_PORT) grpc_server:1
 
 debugger-curl-grpc-server:
 	docker exec -it debugger curl http://$(GRPCSERVER_IP):$(GRPCSERVER_PORT)/
 
 
-grpc-client-build:
+client-build:
 	cd other/grpc && docker $(BUILD) --build-arg GRPCCLIENT_PORT=$(GRPCCLIENT_PORT) --build-arg GRPCSERVER_IP=$(GRPCSERVER_IP) --build-arg GRPCSERVER_PORT=$(GRPCSERVER_PORT) -t grpc_client:1 -f Dockerfile.client .
 
-grpc-client-run:
+client-run:
 	cd other/grpc && docker run -d -it --rm -v grpc-protos:/protos --name grpc_client_container --env GRPCCLIENT_PORT=$(GRPCCLIENT_PORT) --env GRPCSERVER_IP=$(GRPCSERVER_IP) --env GRPC_SERVER_PORT=$(GRPCCLIENT_PORT) --net $(SUBNET_NAME) --ip $(GRPCCLIENT_IP) -p $(GRPCCLIENT_PORT):$(GRPCCLIENT_PORT) grpc_client:1
 # Read the end of the Dockerfile for the commands to run the client
 
@@ -34,7 +34,7 @@ get-grpcurl:
 	docker pull fullstorydev/grpcurl:latest
 
 # TODO: Not currently working...
-grpc-test:
+test:
 	docker run fullstorydev/grpcurl -plaintext -d '{"id": 1}' $(GRPCSERVER_IP):$(GRPCSERVER_PORT) user.v1.UserService/GetUser
 
 
