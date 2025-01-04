@@ -121,3 +121,7 @@ upstream phoenixapp {
 upstream http4kapp {
     server ${HTTP4KAPP_IP}:${HTTP4KAPP_PORT};
 }
+
+upstream shelfapp {
+    server ${SHELFAPP_IP}:${SHELFAPP_PORT};
+}

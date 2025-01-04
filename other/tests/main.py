@@ -160,6 +160,7 @@ def run_tests():
             'prologapp',
             'railsapp',
             'rocketapp',
+            'shelfapp',
             'spockapp',
             'springbootapp',
             'swiftapp',

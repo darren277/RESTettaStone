@@ -148,6 +148,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
 | **D**                                                                                                    |            |                |                      |           |                      |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
+| **DART**                                                                                                 |            |                |                      |           |                      |
+| [Shelf (Dart)](https://github.com/darren277/RESTettaStone/tree/master/backend/dart/shelfapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **ELIXIR**                                                                                               |            |                |                      |           |                      |
 | [Phoenix (Elixir)](https://github.com/darren277/RESTettaStone/tree/master/backend/elixir/phoenixapp)    | ✅          | ✅              | ✅                    | ✅         |                      |
 | **FORTRAN**                                                                                              |            |                |                      |           |                      |
