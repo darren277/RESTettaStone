@@ -165,6 +165,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Bun (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/bunapp)             | ✅          | ✅              | ✅                    | ✅         | ~~Libraries~~        |
 | [Firebase (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/firebaseapp)   | ✅          | ✅              | N/A                  | ✅         |                      |
 | [Node (JS)](https://github.com/darren277/RESTettaStone/tree/master/backend/javascript/nodeapp)           | ✅          | ✅              | ✅                    | ✅         |                      |
+| **KOTLIN**                                                                                               |            |                |                      |           |                      |
+| [Http4k (Kotlin)](https://github.com/darren277/RESTettaStone/tree/master/backend/kotlin/http4kapp)       | ✅          | ✅              | ✅                    | ✅         |                      |
 | **LISP**                                                                                                 |            |                |                      |           |                      |
 | [Hunchentoot (Lisp)](https://github.com/darren277/RESTettaStone/tree/master/backend/lisp/hunchentootapp) | ✅          | ✅              | ✅                    | ✅         | ~~Language~~         |
 | **LUA**                                                                                                  |            |                |                      |           |                      |

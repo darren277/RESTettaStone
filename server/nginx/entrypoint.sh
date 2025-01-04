@@ -35,6 +35,7 @@ envsubst '${NGINX_PORT},\
   ${PASCALAPP_IP},${PASCALAPP_PORT},\
   ${BASHAPP_IP},${BASHAPP_PORT},\
   ${PHOENIXAPP_IP},${PHOENIXAPP_PORT},\
+  ${HTTP4KAPP_IP},${HTTP4KAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 

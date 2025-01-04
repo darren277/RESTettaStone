@@ -117,3 +117,7 @@ upstream bashapp {
 upstream phoenixapp {
     server ${PHOENIXAPP_IP}:${PHOENIXAPP_PORT};
 }
+
+upstream http4kapp {
+    server ${HTTP4KAPP_IP}:${HTTP4KAPP_PORT};
+}
