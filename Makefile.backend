@@ -305,6 +305,16 @@ http4kapp-test:
 	docker exec -it debugger curl http://$(HTTP4KAPP_IP):$(HTTP4KAPP_PORT)/users
 
 
+shelfapp-build:
+	cd backend/dart/shelfapp && docker build --build-arg SHELFAPP_PORT=$(SHELFAPP_PORT) $(PG_VARS_BUILD) -t shelf_app:1 .
+
+shelfapp-run:
+	cd backend/dart/shelfapp && docker run -d -it --rm --name shelf_app_container --env SHELFAPP_PORT=$(SHELFAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(SHELFAPP_IP) -p $(SHELFAPP_PORT):$(SHELFAPP_PORT) shelf_app:1
+
+shelfapp-test:
+	docker exec -it debugger curl http://$(SHELFAPP_IP):$(SHELFAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
