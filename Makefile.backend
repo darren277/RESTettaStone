@@ -285,6 +285,16 @@ bashapp-test:
 	docker exec -it debugger curl http://$(BASHAPP_IP):$(BASHAPP_PORT)/users
 
 
+phoenixapp-build:
+	cd backend/elixir/phoenixapp && docker build --build-arg PHOENIXAPP_PORT=$(PHOENIXAPP_PORT) $(PG_VARS_BUILD) -t phoenix_app:1 .
+
+phoenixapp-run:
+	cd backend/elixir/phoenixapp && docker run -d -it --rm --name phoenix_app_container --env PHOENIXAPP_PORT=$(PHOENIXAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PHOENIXAPP_IP) -p $(PHOENIXAPP_PORT):$(PHOENIXAPP_PORT) phoenix_app:1
+
+phoenixapp-test:
+	docker exec -it debugger curl http://$(PHOENIXAPP_IP):$(PHOENIXAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
