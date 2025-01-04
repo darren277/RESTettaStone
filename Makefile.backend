@@ -295,6 +295,16 @@ phoenixapp-test:
 	docker exec -it debugger curl http://$(PHOENIXAPP_IP):$(PHOENIXAPP_PORT)/users
 
 
+http4kapp-build:
+	cd backend/kotlin/http4kapp && docker build --build-arg HTTP4KAPP_PORT=$(HTTP4KAPP_PORT) $(PG_VARS_BUILD) -t http4k_app:1 .
+
+http4kapp-run:
+	cd backend/kotlin/http4kapp && docker run -d -it --rm --name http4k_app_container --env HTTP4KAPP_PORT=$(HTTP4KAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(HTTP4KAPP_IP) -p $(HTTP4KAPP_PORT):$(HTTP4KAPP_PORT) http4k_app:1
+
+http4kapp-test:
+	docker exec -it debugger curl http://$(HTTP4KAPP_IP):$(HTTP4KAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
