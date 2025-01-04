@@ -146,6 +146,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)                 | ✅          | ✅              | ✅                    | ✅         |                      |
 | **C#**                                                                                                   |            |                |                      |           |                      |
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
+| **DART**                                                                                                 |            |                |                      |           |                      |
+| [Shelf (Dart)](https://github.com/darren277/RESTettaStone/tree/master/backend/dart/shelfapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **D**                                                                                                    |            |                |                      |           |                      |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **ELIXIR**                                                                                               |            |                |                      |           |                      |
