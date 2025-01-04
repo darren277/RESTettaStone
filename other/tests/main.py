@@ -153,6 +153,7 @@ def run_tests():
             'nodeapp',
             'pascalapp',
             'perlapp',
+            'phoenixapp',
             'phpapp',
             'playapp',
             'prologapp',

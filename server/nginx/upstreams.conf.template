@@ -113,3 +113,7 @@ upstream pascalapp {
 upstream bashapp {
     server ${BASHAPP_IP}:${BASHAPP_PORT};
 }
+
+upstream phoenixapp {
+    server ${PHOENIXAPP_IP}:${PHOENIXAPP_PORT};
+}
