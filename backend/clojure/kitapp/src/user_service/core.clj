@@ -2,14 +2,8 @@
   (:require
     [integrant.core :as ig]
     [clojure.java.io :as io]
-    [ring.adapter.jetty :as jetty])
+    [user_service.server])
   (:gen-class))
-
-(defmethod ig/init-key :server.http/jetty
-  [_ {:keys [handler port]}]
-  (let [server (jetty/run-jetty handler {:port port :join? false})]
-    ;; Return something that integrant can 'halt' if you want
-    {:server server}))
 
 (defn env
   "Return the environment variable `key` or `default` if not set."
