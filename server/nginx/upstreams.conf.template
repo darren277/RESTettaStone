@@ -129,3 +129,7 @@ upstream shelfapp {
 upstream plumberapp {
     server ${PLUMBERAPP_IP}:${PLUMBERAPP_PORT};
 }
+
+upstream kitapp {
+    server ${KITAPP_IP}:${KITAPP_PORT};
+}

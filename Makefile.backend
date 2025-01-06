@@ -325,6 +325,16 @@ plumberapp-test:
 	docker exec -it debugger curl http://$(PLUMBERAPP_IP):$(PLUMBERAPP_PORT)/users
 
 
+kitapp-build:
+	cd backend/clojure/kitapp && docker build --build-arg KITAPP_PORT=$(KITAPP_PORT) $(PG_VARS_BUILD) -t kit_app:1 .
+
+kitapp-run:
+	cd backend/clojure/kitapp && docker run -d -it --rm --name kit_app_container --env KITAPP_PORT=$(KITAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(KITAPP_IP) -p $(KITAPP_PORT):$(KITAPP_PORT) kit_app:1
+
+kitapp-test:
+	docker exec -it debugger curl http://$(KITAPP_IP):$(KITAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
