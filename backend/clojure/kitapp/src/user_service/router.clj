@@ -5,7 +5,7 @@
     [reitit.ring.middleware.muuntaja :as muuntaja]
     [muuntaja.core :as m]))
 
-(defmethod ig/init-key :router
+(defmethod ig/init-key :user_service.router/router
   [_ {:keys [routes]}]
   (ring/ring-handler
     (ring/router routes

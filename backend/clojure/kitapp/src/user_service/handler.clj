@@ -4,7 +4,7 @@
     [cheshire.core :as json]
     [integrant.core :as ig]))
 
-(defmethod ig/init-key :handler
+(defmethod ig/init-key :user_service.handler/handler
   [_ {:keys [db router]}]
   ;; We wrap the router with a function that merges the db into the request.
   (fn [request]

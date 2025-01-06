@@ -2,6 +2,9 @@
   (:require
     [integrant.core :as ig]
     [clojure.java.io :as io]
+    [user_service.db]
+    [user_service.router]
+    [user_service.handler]
     [user_service.server])
   (:gen-class))
 
@@ -37,6 +40,6 @@
 
         ;; Patch in the environment-derived values
         final-config (-> base-config
-                         (assoc-in [:db :connection-uri] connection-uri)
-                         (assoc-in [:server.http/jetty :port] port))]
+                         (assoc-in [:user_service.db/db :connection-uri] connection-uri)
+                         (assoc-in [:user_service.server.http/jetty :port] port))]
     (ig/init final-config)))
