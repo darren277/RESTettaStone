@@ -125,3 +125,7 @@ upstream http4kapp {
 upstream shelfapp {
     server ${SHELFAPP_IP}:${SHELFAPP_PORT};
 }
+
+upstream plumberapp {
+    server ${PLUMBERAPP_IP}:${PLUMBERAPP_PORT};
+}
