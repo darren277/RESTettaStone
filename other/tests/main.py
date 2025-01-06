@@ -157,6 +157,7 @@ def run_tests():
             'phoenixapp',
             'phpapp',
             'playapp',
+            'plumberapp',
             'prologapp',
             'railsapp',
             'rocketapp',
