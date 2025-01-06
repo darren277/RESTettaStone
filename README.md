@@ -187,6 +187,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **PYTHON**                                                                                               |            |                |                      |           |                      |
 | [Django (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/djangoapp)       | ✅          | ✅              | ✅                    | ✅          |                      |
 | [Flask (Python)](https://github.com/darren277/RESTettaStone/tree/master/backend/python/flaskapp)         | ✅          | ✅              | ✅                    | ✅         |                      |
+| **R**                                                                                                    |            |                |                      |           |                      |
+| [Plumber (R)](https://github.com/darren277/RESTettaStone/tree/master/backend/r/plumberapp)               | ✅          | ✅              | ✅                    | ✅         |                      |
 | **RUBY**                                                                                                 |            |                |                      |           |                      |
 | [Rails (Ruby)](https://github.com/darren277/RESTettaStone/tree/master/backend/ruby/railsapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **RUST**                                                                                                 |            |                |                      |           |                      |

@@ -315,6 +315,16 @@ shelfapp-test:
 	docker exec -it debugger curl http://$(SHELFAPP_IP):$(SHELFAPP_PORT)/users
 
 
+plumberapp-build:
+	cd backend/r/plumberapp && docker build --build-arg PLUMBERAPP_PORT=$(PLUMBERAPP_PORT) $(PG_VARS_BUILD) -t plumber_app:1 .
+
+plumberapp-run:
+	cd backend/r/plumberapp && docker run -d -it --rm --name plumber_app_container --env PLUMBERAPP_PORT=$(PLUMBERAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(PLUMBERAPP_IP) -p $(PLUMBERAPP_PORT):$(PLUMBERAPP_PORT) plumber_app:1
+
+plumberapp-test:
+	docker exec -it debugger curl http://$(PLUMBERAPP_IP):$(PLUMBERAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
