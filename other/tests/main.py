@@ -149,6 +149,7 @@ def run_tests():
             'goapp',
             'http4kapp',
             'hunchentootapp',
+            'kitapp',
             'laravelapp',
             'luaapp',
             'nodeapp',

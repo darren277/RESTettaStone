@@ -1,0 +1,15 @@
+{
+ :user_service.db/db
+ {:connection-uri "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"}
+
+ :user_service.router/router
+ {:routes :unused}
+
+ :user_service.handler/handler
+ {:db     #ig/ref :user_service.db/db
+  :router #ig/ref :user_service.router/router}
+
+ :user_service.server.http/jetty
+ {:handler #ig/ref :user_service.handler/handler
+  :port 3000}
+}
