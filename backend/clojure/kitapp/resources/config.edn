@@ -1,0 +1,25 @@
+;; resources/config.edn
+
+{:db
+ ;; Change the connection string to match your environment.
+ ;; In Docker Compose, we’ll reference the DB container as "db".
+ {:connection-uri "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"}
+
+ :router
+ {:routes
+  [["/users"
+    {:get    user_service.handler/list-users
+     :post   user_service.handler/create-user}]
+   ["/users/:id"
+    {:get    user_service.handler/get-user
+     :put    user_service.handler/update-user
+     :delete user_service.handler/delete-user}]]}
+
+ :handler
+ ;; The `:db` and `:router` Integrant refs
+ {:db     #ig/ref :db
+  :router #ig/ref :router}
+
+ :server.http/jetty
+ {:handler #ig/ref :handler
+  :port 3000}}
