@@ -7,14 +7,7 @@
  {:connection-uri "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"}
 
  :user_service.router/router
- {:routes
-  [["/users"
-    {:get    user_service.handler/list-users
-     :post   user_service.handler/create-user}]
-   ["/users/:id"
-    {:get    user_service.handler/get-user
-     :put    user_service.handler/update-user
-     :delete user_service.handler/delete-user}]]}
+ {:routes :unused} ;; Or no `:routes` at all, since it's coded in the ns
 
  :user_service.handler/handler
  {:db     #ig/ref :user_service.db/db
