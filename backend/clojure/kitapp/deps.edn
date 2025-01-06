@@ -17,7 +17,7 @@
   org.postgresql/postgresql {:mvn/version "42.6.0"}
 
   ;; Integrant (Kit uses it under the hood)
-  integrant/integrant {:mvn/version "0.8.0"}
+  integrant/integrant {:mvn/version "0.13.1"}
 
   ;; For building uberjar if you like (or use the build CLI tools)
   io.github.clojure/tools.build {:git/tag "v0.10.6" :git/sha "52cf7d638995307f3946712b3389ee6e39670e78"}
