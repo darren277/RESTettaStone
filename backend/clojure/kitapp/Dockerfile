@@ -1,0 +1,55 @@
+# 1) Build stage
+FROM clojure:tools-deps AS builder
+
+ARG KITAPP_PORT
+ENV KITAPP_PORT=$KITAPP_PORT
+ENV PORT=$KITAPP_PORT
+
+ARG PG_HOST
+ARG PG_PORT
+ARG PG_USER
+ARG PG_PASS
+ARG PG_DB
+
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASS=$PG_PASS
+ENV PG_DB=$PG_DB
+
+WORKDIR /app
+
+COPY deps.edn ./
+COPY build.clj ./
+COPY src src
+COPY resources resources
+
+RUN clojure -T:build uber
+
+
+# 2) Runtime stage
+FROM openjdk:11-jre-slim
+
+ARG KITAPP_PORT
+ENV KITAPP_PORT=$KITAPP_PORT
+ENV PORT=$KITAPP_PORT
+
+ARG PG_HOST
+ARG PG_PORT
+ARG PG_USER
+ARG PG_PASS
+ARG PG_DB
+
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASS=$PG_PASS
+ENV PG_DB=$PG_DB
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar user_service.jar
+
+EXPOSE $KITAPP_PORT
+
+CMD ["java", "-jar", "user_service.jar"]
