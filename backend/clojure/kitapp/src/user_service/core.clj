@@ -22,7 +22,7 @@
                         io/resource
                         slurp
                         ig/read-string)
-        ;; Build a Postgres connection string from env
+
         connection-uri (str "jdbc:postgresql://"
                             (env "PG_HOST" "db") ":"
                             (env "PG_PORT" "5432") "/"
@@ -30,10 +30,6 @@
                             "?user="     (env "PG_USER" "postgres")
                             "&password=" (env "PG_PASS" "postgres"))
 
-        ;; console log connection URI...
-        _ (println "Connection URI: " connection-uri)
-
-        ;; Optionally parse the :port from env
         port (Integer/parseInt (env "PORT" "3000"))
 
         _ (println "Port: " port)

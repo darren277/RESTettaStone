@@ -22,10 +22,10 @@
   ;; For building uberjar if you like (or use the build CLI tools)
   io.github.clojure/tools.build {:git/tag "v0.10.6" :git/sha "52cf7d638995307f3946712b3389ee6e39670e78"}
  }
- ;; Tools build alias
+
  :aliases
  {:build
-  {:ns-default build                  ; This tells -T:build to default to the 'build' ns
+  {:ns-default build
    :extra-deps
    {io.github.clojure/tools.build
     {:git/tag "v0.10.6" :git/sha "52cf7d638995307f3946712b3389ee6e39670e78"}}}}

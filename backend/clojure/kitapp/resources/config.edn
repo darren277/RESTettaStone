@@ -1,13 +1,9 @@
-;; resources/config.edn
-
 {
  :user_service.db/db
- ;; Change the connection string to match your environment.
- ;; In Docker Compose, we’ll reference the DB container as "db".
  {:connection-uri "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"}
 
  :user_service.router/router
- {:routes :unused} ;; Or no `:routes` at all, since it's coded in the ns
+ {:routes :unused}
 
  :user_service.handler/handler
  {:db     #ig/ref :user_service.db/db
