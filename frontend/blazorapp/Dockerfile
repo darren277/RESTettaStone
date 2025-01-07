@@ -52,6 +52,8 @@ ENV NGINX_PORT=$NGINX_PORT
 # Copy published wasm output into nginx’s html folder
 COPY --from=build /app/publish/wwwroot /usr/share/nginx/html
 
+RUN sed -i 's|<base href="/" />|<base href="/blazorapp/" />|g' /usr/share/nginx/html/index.html
+
 COPY nginx.template.conf /etc/nginx/nginx.template.conf
 RUN envsubst '$BLAZORAPP_PORT' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf
 
