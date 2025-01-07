@@ -212,6 +212,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |                                                                                              | Dockerized | Backend Integration | Full CRUD |
 |----------------------------------------------------------------------------------------------|------------|---------------------|-----------|
 | [Angular](https://github.com/darren277/RESTettaStone/tree/master/frontend/angularapp)        | ✅          | ✅                   | ✅         |
+| [Blazor (C#)](https://github.com/darren277/RESTettaStone/tree/master/frontend/blazorapp)     | ✅          | ✅                   | ✅         |
 | [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)          | ✅          | ✅                   | ✅         |
 | [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)              | ✅          | ✅                   | ✅         |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)            | ✅          | ✅                   | ✅         |
