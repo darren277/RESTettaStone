@@ -1,0 +1,145 @@
+@page "/users"
+@using BlazorApp.Models
+@using BlazorApp.Services
+
+@inject UserService UserService
+
+<h3>User Management</h3>
+
+@if (UsersList == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in UsersList)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>
+                    @if (EditingUser != null && EditingUser.Id == user.Id)
+                    {
+                        <input @bind="EditingEmail" @bind:event="oninput" />
+                    }
+                    else
+                    {
+                        @user.Email
+                    }
+                </td>
+                <td>
+                    @if (EditingUser != null && EditingUser.Id == user.Id)
+                    {
+                        <button class="btn btn-success" @onclick="() => SaveUser(user.Id)">Save</button>
+                        <button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" @onclick="() => EditUser(user)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Delete</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<h4>Create New User</h4>
+<div>
+    <input @bind="NewUserEmail" placeholder="Enter email" />
+    <button class="btn btn-success" @onclick="CreateUser">Add User</button>
+</div>
+
+@code {
+    private List<User>? UsersList;
+    private string NewUserEmail = string.Empty;
+
+    private User? EditingUser = null;
+    private string EditingEmail = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUsers();
+    }
+
+    private async Task LoadUsers()
+    {
+        UsersList = await UserService.GetAllUsersAsync();
+    }
+
+    private async Task CreateUser()
+    {
+        if (string.IsNullOrWhiteSpace(NewUserEmail))
+        {
+            return; // or show an alert
+        }
+
+        var newUser = new User { Email = NewUserEmail };
+        var createdUser = await UserService.CreateUserAsync(newUser);
+        if (createdUser != null)
+        {
+            NewUserEmail = string.Empty;
+            UsersList?.Add(createdUser);
+        }
+        else
+        {
+            // handle error if needed
+        }
+    }
+
+    private void EditUser(User user)
+    {
+        EditingUser = user;
+        EditingEmail = user.Email;
+    }
+
+    private void CancelEdit()
+    {
+        EditingUser = null;
+        EditingEmail = string.Empty;
+    }
+
+    private async Task SaveUser(int id)
+    {
+        if (EditingUser == null) return;
+
+        var updatedUser = new User { Id = id, Email = EditingEmail };
+        bool success = await UserService.UpdateUserAsync(id, updatedUser);
+        if (success)
+        {
+            // Reflect changes in UI
+            var user = UsersList?.FirstOrDefault(u => u.Id == id);
+            if (user != null) user.Email = EditingEmail;
+        }
+        else
+        {
+            // handle error
+        }
+
+        EditingUser = null;
+        EditingEmail = string.Empty;
+    }
+
+    private async Task DeleteUser(int id)
+    {
+        bool success = await UserService.DeleteUserAsync(id);
+        if (success && UsersList != null)
+        {
+            var user = UsersList.FirstOrDefault(u => u.Id == id);
+            if (user != null) UsersList.Remove(user);
+        }
+        else
+        {
+            // handle error
+        }
+    }
+}
