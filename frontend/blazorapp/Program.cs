@@ -21,7 +21,7 @@ Console.WriteLine($"USER_API_BASE_URL={USER_API_BASE_URL}");
 
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri(FLASK_APP)
+    BaseAddress = new Uri(USER_API_BASE_URL)
 });
 
 builder.Services.AddScoped<UserService>();
