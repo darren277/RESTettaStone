@@ -27,7 +27,8 @@ RUN dotnet restore "BlazorApp.csproj"
 RUN dotnet publish "BlazorApp.csproj" -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+# --- Final Stage with Nginx ---
+FROM nginx:alpine AS final
 
 ARG BLAZORAPP_PORT
 ENV BLAZORAPP_PORT=$BLAZORAPP_PORT
@@ -39,11 +40,12 @@ ENV NGINX_HOST=$NGINX_HOST
 ARG NGINX_PORT
 ENV NGINX_PORT=$NGINX_PORT
 
-WORKDIR /app
+# Copy published wasm output into nginx’s html folder
+COPY --from=build /app/publish/wwwroot /usr/share/nginx/html
 
-COPY --from=build /app/publish .
+COPY nginx.template.conf /etc/nginx/nginx.template.conf
+RUN envsubst '$BLAZORAPP_PORT' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf
 
 EXPOSE $BLAZORAPP_PORT
 
-#ENTRYPOINT ["dotnet", "BlazorApp.dll"]
-ENTRYPOINT tail -f /dev/null
+CMD ["nginx", "-g", "daemon off;"]
