@@ -40,6 +40,13 @@ reactfiberapp-run:
 	cd frontend/reactfiberapp && docker run -d -it --rm --name reactfiber_app_container --env REACTFIBERAPP_PORT=$(REACTFIBERAPP_PORT) --net $(SUBNET_NAME) --ip $(REACTFIBERAPP_IP) -p $(REACTFIBERAPP_PORT):$(REACTFIBERAPP_PORT) reactfiber_app:1
 
 
+blazorapp-build:
+	cd frontend/blazorapp && docker build --build-arg BLAZORAPP_PORT=$(BLAZORAPP_PORT) $(NGINX_VARS_BUILD) -t blazor_app:1 .
+
+blazorapp-run:
+	cd frontend/blazorapp && docker run -d -it --rm --name blazor_app_container --env BLAZORAPP_PORT=$(BLAZORAPP_PORT) --net $(SUBNET_NAME) --ip $(BLAZORAPP_IP) -p $(BLAZORAPP_PORT):$(BLAZORAPP_PORT) blazor_app:1
+
+
 nextapp-build:
 	@echo "Building with NGINX_HOST=$(NGINX_HOST) NGINX_PORT=$(NGINX_PORT) NGINX_VARS_BUILD_SSR=$(NGINX_VARS_BUILD_SSR)"
 	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t next_app:1 .
