@@ -21,3 +21,7 @@ upstream reactfiberapp {
 upstream nextapp {
     server ${NEXTAPP_IP}:${NEXTAPP_PORT};
 }
+
+upstream blazorapp {
+    server ${BLAZORAPP_IP}:${BLAZORAPP_PORT};
+}
