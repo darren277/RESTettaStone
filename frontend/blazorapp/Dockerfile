@@ -12,6 +12,8 @@ ENV NGINX_HOST=$NGINX_HOST
 ARG NGINX_PORT
 ENV NGINX_PORT=$NGINX_PORT
 
+RUN apt update && apt install -y gettext-base
+
 RUN dotnet new install Bootstrap.Blazor.Templates::9.0.4
 
 RUN dotnet new blazorwasm -n BlazorApp
@@ -21,6 +23,13 @@ WORKDIR /app/BlazorApp
 COPY ./src .
 
 COPY ./appsettings.json .
+
+COPY ./BlazorApp.csproj .
+
+RUN mv ./appsettings.json ./appsettings.template.json
+RUN envsubst '$NGINX_HOST $NGINX_PORT' < ./appsettings.template.json > ./appsettings.json
+RUN cp ./appsettings.json ./wwwroot/appsettings.json
+
 COPY ./Program.cs .
 
 RUN dotnet restore "BlazorApp.csproj"

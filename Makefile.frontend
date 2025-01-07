@@ -44,7 +44,7 @@ blazorapp-build:
 	cd frontend/blazorapp && docker build --build-arg BLAZORAPP_PORT=$(BLAZORAPP_PORT) $(NGINX_VARS_BUILD) -t blazor_app:1 .
 
 blazorapp-run:
-	cd frontend/blazorapp && docker run -d -it --rm --name blazor_app_container --env BLAZORAPP_PORT=$(BLAZORAPP_PORT) --net $(SUBNET_NAME) --ip $(BLAZORAPP_IP) -p $(BLAZORAPP_PORT):$(BLAZORAPP_PORT) blazor_app:1
+	cd frontend/blazorapp && docker run -d -it --rm --name blazor_app_container $(NGINX_VARS_RUN) --env BLAZORAPP_PORT=$(BLAZORAPP_PORT) --net $(SUBNET_NAME) --ip $(BLAZORAPP_IP) -p $(BLAZORAPP_PORT):$(BLAZORAPP_PORT) blazor_app:1
 
 
 nextapp-build:
