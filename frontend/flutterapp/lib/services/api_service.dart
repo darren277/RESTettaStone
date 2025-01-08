@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
@@ -7,6 +8,7 @@ class ApiService {
 
   Future<List<User>> getUsers() async {
     final response = await http.get(Uri.parse('$baseUrl/users'));
+    log('response: ${response.body}');
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => User.fromJson(json)).toList();
@@ -25,6 +27,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));
     } else {
+      log('data: ${response.body}');
       throw Exception('Failed to create user');
     }
   }
