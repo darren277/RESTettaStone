@@ -47,6 +47,13 @@ blazorapp-run:
 	cd frontend/blazorapp && docker run -d -it --rm --name blazor_app_container $(NGINX_VARS_RUN) --env BLAZORAPP_PORT=$(BLAZORAPP_PORT) --net $(SUBNET_NAME) --ip $(BLAZORAPP_IP) -p $(BLAZORAPP_PORT):$(BLAZORAPP_PORT) blazor_app:1
 
 
+svelteapp-build:
+	cd frontend/svelteapp && docker build --build-arg SVELTEAPP_PORT=$(SVELTEAPP_PORT) $(NGINX_VARS_BUILD) -t svelte_app:1 .
+
+svelteapp-run:
+	cd frontend/svelteapp && docker run -d -it --rm --name svelte_app_container --env SVELTEAPP_PORT=$(SVELTEAPP_PORT) --net $(SUBNET_NAME) --ip $(SVELTEAPP_IP) -p $(SVELTEAPP_PORT):$(SVELTEAPP_PORT) svelte_app:1
+
+
 nextapp-build:
 	@echo "Building with NGINX_HOST=$(NGINX_HOST) NGINX_PORT=$(NGINX_PORT) NGINX_VARS_BUILD_SSR=$(NGINX_VARS_BUILD_SSR)"
 	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t next_app:1 .
