@@ -48,6 +48,7 @@ envsubst '${REACTAPP_IP},${REACTAPP_PORT},\
   ${REACTFIBERAPP_IP},${REACTFIBERAPP_PORT},\
   ${NEXTAPP_IP},${NEXTAPP_PORT},\
   ${BLAZORAPP_IP},${BLAZORAPP_PORT},\
+  ${SVELTEAPP_IP},${SVELTEAPP_PORT},\
   ${ANGULARAPP_IP},${ANGULARAPP_PORT}' < /usr/local/openresty/nginx/conf/upstreams-frontend.conf.template > /usr/local/openresty/nginx/conf/upstreams-frontend.conf
 
 /usr/local/openresty/nginx/sbin/nginx -g 'daemon off;'

@@ -25,3 +25,7 @@ upstream nextapp {
 upstream blazorapp {
     server ${BLAZORAPP_IP}:${BLAZORAPP_PORT};
 }
+
+upstream svelteapp {
+    server ${SVELTEAPP_IP}:${SVELTEAPP_PORT};
+}
