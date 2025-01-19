@@ -140,8 +140,6 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |----------------------------------------------------------------------------------------------------------|------------|----------------|----------------------|-----------|----------------------|
 | **BASH**                                                                                                 |            |                |                      |           |                      |
 | [Bash](https://github.com/darren277/RESTettaStone/tree/master/backend/bash/bashapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
-| **COBOL**                                                                                                |            |                |                      |           |                      |
-| [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
 | **C**                                                                                                    |            |                |                      |           |                      |
 | [C](https://github.com/darren277/series-of-tubes)**                                    | ✅          | ✅              | ❌                    | ❌         |                      |
 | **C++**                                                                                                  |            |                |                      |           |                      |
@@ -150,6 +148,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
 | **CLOJURE**                                                                                              |            |                |                      |           |                      |
 | [Kit (Clojure)](https://github.com/darren277/RESTettaStone/tree/master/backend/clojure/kitapp)           | ✅          | ✅              | ✅                    | ✅         |                      |
+| **COBOL**                                                                                                |            |                |                      |           |                      |
+| [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
 | **D**                                                                                                    |            |                |                      |           |                      |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **DART**                                                                                                 |            |                |                      |           |                      |
