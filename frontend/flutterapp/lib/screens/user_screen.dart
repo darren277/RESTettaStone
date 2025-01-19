@@ -17,6 +17,58 @@ class _UserScreenState extends State<UserScreen> {
         _users = _apiService.getUsers();
     }
 
+    void _showCreateUserDialog() {
+        final TextEditingController emailController = TextEditingController();
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+                return AlertDialog(
+                    title: Text('Create User'),
+                    content: TextField(controller: emailController, decoration: InputDecoration(labelText: 'Email')),
+                    actions: [
+                        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('CANCEL')),
+                        TextButton(
+                            onPressed: () async {
+                                final newUser = await _apiService.createUser(emailController.text);
+                                setState(() {_users = _apiService.getUsers();});
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Created user ${newUser.email}')));
+                            },
+                            child: Text('SAVE'),
+                        ),
+                    ],
+                );
+            },
+        );
+    }
+
+    void _showUpdateDialog(BuildContext context, User user) {
+        final TextEditingController emailController = TextEditingController(text: user.email);
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+                return AlertDialog(
+                    title: Text('Update Email'),
+                    content: TextField(controller: emailController, decoration: InputDecoration(labelText: 'New Email')),
+                    actions: [
+                        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('CANCEL')),
+                        TextButton(
+                            onPressed: () async {
+                                final updatedUser = await _apiService.updateUser(user.id, emailController.text);
+                                setState(() {_users = _apiService.getUsers();});
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Updated user to ${updatedUser.email}')));
+                            },
+                            child: Text('SAVE'),
+                        ),
+                    ],
+                );
+            },
+        );
+    }
+
     @override
     Widget build(BuildContext context) {
         return Scaffold(
@@ -40,9 +92,7 @@ class _UserScreenState extends State<UserScreen> {
                                 title: Text(user.email),
                                 subtitle: Text('ID: ${user.id}'),
                                 onTap: () async {
-                                    final updatedUser = await _apiService.updateUser(user.id, 'new_email@mail.com');
-                                    setState(() {_users = _apiService.getUsers();});
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Updated user ${updatedUser.email}')));
+                                    _showUpdateDialog(context, user);
                                 },
                                 trailing: IconButton(
                                     icon: Icon(Icons.delete),
@@ -57,11 +107,7 @@ class _UserScreenState extends State<UserScreen> {
                 },
             ),
             floatingActionButton: FloatingActionButton(
-                onPressed: () async {
-                    final newUser = await _apiService.createUser('new_user@mail.com');
-                    setState(() {_users = _apiService.getUsers();});
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Created user ${newUser.email}')));
-                },
+                onPressed: () => _showCreateUserDialog(),
                 child: Icon(Icons.add),
             ),
         );
