@@ -140,14 +140,16 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 |----------------------------------------------------------------------------------------------------------|------------|----------------|----------------------|-----------|----------------------|
 | **BASH**                                                                                                 |            |                |                      |           |                      |
 | [Bash](https://github.com/darren277/RESTettaStone/tree/master/backend/bash/bashapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
-| **COBOL**                                                                                                |            |                |                      |           |                      |
-| [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
+| **C**                                                                                                    |            |                |                      |           |                      |
+| [C](https://github.com/darren277/series-of-tubes)**                                    | ✅          | ✅              | ❌                    | ❌         |                      |
 | **C++**                                                                                                  |            |                |                      |           |                      |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)                 | ✅          | ✅              | ✅                    | ✅         |                      |
 | **C#**                                                                                                   |            |                |                      |           |                      |
 | [Asp.Net (C#)](https://github.com/darren277/RESTettaStone/tree/master/backend/csharp/aspnetapp)          | ✅          | ✅              | ✅                    | ✅         |                      |
 | **CLOJURE**                                                                                              |            |                |                      |           |                      |
 | [Kit (Clojure)](https://github.com/darren277/RESTettaStone/tree/master/backend/clojure/kitapp)           | ✅          | ✅              | ✅                    | ✅         |                      |
+| **COBOL**                                                                                                |            |                |                      |           |                      |
+| [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
 | **D**                                                                                                    |            |                |                      |           |                      |
 | [Vibe (D)](https://github.com/darren277/RESTettaStone/tree/master/backend/d/vibeapp)                 | ✅          | ✅              | ✅                    | ✅         | ~~Networking~~       |
 | **DART**                                                                                                 |            |                |                      |           |                      |
@@ -203,9 +205,9 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **ZIG**                                                                                                  |            |                |                      |           |                      |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                         | ✅          | ✅              | ✅                    | ✅*        | ~~Build~~            |
 
-(*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. (See notes below)[#zig].
+(*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. [See notes below](#zig).
 
-(**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out.
+(**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out. The C web application is also a work in progress and is in its own repo.
 
 ### Frontend
 
@@ -219,6 +221,9 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | ✅          | ✅                   | ✅         |
 | [Svelte](https://github.com/darren277/RESTettaStone/tree/master/frontend/svelteapp)          | ✅          | ✅                   | ✅         |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | ✅          | ✅                   | ✅         |
+| [Yew (Rust)](https://github.com/darren277/wasm-frp)**                                       | ✅          | ✅**                 | ❌         |
+
+(**) The Yew app is in a separate repo. It does not currently connect to *this* backend, but it integrates just fine with its own backend web server built in Rust, with a SurrealDB database.
 
 ### Other
 
