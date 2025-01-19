@@ -203,7 +203,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | **ZIG**                                                                                                  |            |                |                      |           |                      |
 | [Zig](https://github.com/darren277/RESTettaStone/tree/master/backend/zig/zigapp)                         | ✅          | ✅              | ✅                    | ✅*        | ~~Build~~            |
 
-(*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. (See notes below)[#zig].
+(*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. [See notes below](#zig).
 
 (**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out.
 
