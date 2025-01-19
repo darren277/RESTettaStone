@@ -219,6 +219,9 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | ✅          | ✅                   | ✅         |
 | [Svelte](https://github.com/darren277/RESTettaStone/tree/master/frontend/svelteapp)          | ✅          | ✅                   | ✅         |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | ✅          | ✅                   | ✅         |
+| [Yew (Rust)](https://github.com/darren277/wasm-frp)**                                       | ✅          | ✅**                 | ❌         |
+
+(**) The Yew app is in a separate repo. It does not currently connect to *this* backend, but it integrates just fine with its own backend web server built in Rust, with a SurrealDB database.
 
 ### Other
 
