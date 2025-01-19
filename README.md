@@ -142,6 +142,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Bash](https://github.com/darren277/RESTettaStone/tree/master/backend/bash/bashapp)                      | ✅          | ✅              | ✅                    | ✅         |                      |
 | **COBOL**                                                                                                |            |                |                      |           |                      |
 | [Cobol](https://github.com/darren277/bank)**                                                             | ✅        | ✅              | ✅                    | ❌          | Language             |
+| **C**                                                                                                    |            |                |                      |           |                      |
+| [C](https://github.com/darren277/series-of-tubes)**                                    | ✅          | ✅              | ❌                    | ❌         |                      |
 | **C++**                                                                                                  |            |                |                      |           |                      |
 | [Crow (C++)](https://github.com/darren277/RESTettaStone/tree/master/backend/cpp/crowapp)                 | ✅          | ✅              | ✅                    | ✅         |                      |
 | **C#**                                                                                                   |            |                |                      |           |                      |
@@ -205,7 +207,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 
 (*) Zig app has full CRUD functionality, but there is an issue with connection pooling that causes it to behave inconsistently. [See notes below](#zig).
 
-(**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out.
+(**) The COBOL and Fortran apps are a work in progress that are in separate repos while I build them out. The C web application is also a work in progress and is in its own repo.
 
 ### Frontend
 
