@@ -55,10 +55,10 @@ svelteapp-run:
 
 
 pythonreactapp-build:
-	cd frontend/pythonreactapp && docker build --build-arg PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) $(NGINX_VARS_BUILD) -t pythonreact_app:1 .
+	cd frontend/pythonreactapp && docker build --build-arg PYTHONREACTAPP_HOST=$(PYTHONREACTAPP_HOST) --build-arg PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) $(NGINX_VARS_BUILD) -t pythonreact_app:1 .
 
 pythonreactapp-run:
-	cd frontend/pythonreactapp && docker run -d -it --rm --name pythonreact_app_container --env PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) --net $(SUBNET_NAME) --ip $(PYTHONREACTAPP_IP) -p $(PYTHONREACTAPP_PORT):$(PYTHONREACTAPP_PORT) pythonreact_app:1
+	cd frontend/pythonreactapp && docker run -d -it --rm --name pythonreact_app_container --env PYTHONREACTAPP_HOST=$(PYTHONREACTAPP_HOST) --env PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) --net $(SUBNET_NAME) --ip $(PYTHONREACTAPP_IP) -p $(PYTHONREACTAPP_PORT):$(PYTHONREACTAPP_PORT) pythonreact_app:1
 
 
 nextapp-build:
