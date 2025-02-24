@@ -1,26 +1,7 @@
 from react import useState
 from react import useEffect
 
-
-class UserService:
-    @staticmethod
-    async def getUsers():
-        return {'data': [{'id': 1, 'email': 'email1'}, {'id': 2, 'email': 'email2'}]}
-
-    @staticmethod
-    async def createUser(user):
-        return {'data': {'id': 3, 'email': user['email']}}
-
-    @staticmethod
-    async def updateUser(id, updatedUser):
-        return {'data': {'id': id, 'email': updatedUser['email']}}
-
-    @staticmethod
-    async def deleteUser(id):
-        return None
-
-    def then(self, func):
-        return func(self)
+import_('UserService', _from='../services/UserService')
 
 
 def useUsers():
