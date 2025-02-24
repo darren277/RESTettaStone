@@ -54,6 +54,13 @@ svelteapp-run:
 	cd frontend/svelteapp && docker run -d -it --rm --name svelte_app_container --env SVELTEAPP_PORT=$(SVELTEAPP_PORT) --net $(SUBNET_NAME) --ip $(SVELTEAPP_IP) -p $(SVELTEAPP_PORT):$(SVELTEAPP_PORT) svelte_app:1
 
 
+pythonreactapp-build:
+	cd frontend/pythonreactapp && docker build --build-arg PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) $(NGINX_VARS_BUILD) -t pythonreact_app:1 .
+
+pythonreactapp-run:
+	cd frontend/pythonreactapp && docker run -d -it --rm --name pythonreact_app_container --env PYTHONREACTAPP_PORT=$(PYTHONREACTAPP_PORT) --net $(SUBNET_NAME) --ip $(PYTHONREACTAPP_IP) -p $(PYTHONREACTAPP_PORT):$(PYTHONREACTAPP_PORT) pythonreact_app:1
+
+
 nextapp-build:
 	@echo "Building with NGINX_HOST=$(NGINX_HOST) NGINX_PORT=$(NGINX_PORT) NGINX_VARS_BUILD_SSR=$(NGINX_VARS_BUILD_SSR)"
 	cd frontend/nextapp && docker build --build-arg NEXTAPP_PORT=$(NEXTAPP_PORT) $(NGINX_VARS_BUILD_SSR) -t next_app:1 .

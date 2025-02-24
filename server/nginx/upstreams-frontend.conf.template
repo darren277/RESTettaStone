@@ -29,3 +29,7 @@ upstream blazorapp {
 upstream svelteapp {
     server ${SVELTEAPP_IP}:${SVELTEAPP_PORT};
 }
+
+upstream pythonreactapp {
+    server ${PYTHONREACTAPP_IP}:${PYTHONREACTAPP_PORT};
+}
