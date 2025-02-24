@@ -218,6 +218,7 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Gatsby](https://github.com/darren277/RESTettaStone/tree/master/frontend/gatsbyapp)          | ✅          | ✅                   | ✅         |
 | [Next](https://github.com/darren277/RESTettaStone/tree/master/frontend/nextapp)              | ✅          | ✅                   | ✅         |
 | [React](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactapp)            | ✅          | ✅                   | ✅         |
+| [React (Python)](https://github.com/darren277/RESTettaStone/tree/master/frontend/pythonreactapp) | ✅          | ✅                   | ✅         |
 | [React Fiber](https://github.com/darren277/RESTettaStone/tree/master/frontend/reactfiberapp) | ✅          | ✅                   | ✅         |
 | [Svelte](https://github.com/darren277/RESTettaStone/tree/master/frontend/svelteapp)          | ✅          | ✅                   | ✅         |
 | [Vue](https://github.com/darren277/RESTettaStone/tree/master/frontend/vueapp)                | ✅          | ✅                   | ✅         |
