@@ -133,3 +133,7 @@ upstream plumberapp {
 upstream kitapp {
     server ${KITAPP_IP}:${KITAPP_PORT};
 }
+
+upstream genieapp {
+    server ${GENIEAPP_IP}:${GENIEAPP_PORT};
+}

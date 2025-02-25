@@ -335,6 +335,16 @@ kitapp-test:
 	docker exec -it debugger curl http://$(KITAPP_IP):$(KITAPP_PORT)/users
 
 
+genieapp-build:
+	cd backend/julia/genieapp && docker build --build-arg GENIEAPP_PORT=$(GENIEAPP_PORT) $(PG_VARS_BUILD) -t genie_app:1 .
+
+genieapp-run:
+	cd backend/julia/genieapp && docker run -d -it --rm --name genie_app_container --env GENIEAPP_PORT=$(GENIEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(GENIEAPP_IP) -p $(GENIEAPP_PORT):$(GENIEAPP_PORT) genie_app:1
+
+genieapp-test:
+	docker exec -it debugger curl http://$(GENIEAPP_IP):$(GENIEAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 

@@ -39,6 +39,7 @@ envsubst '${NGINX_PORT},\
   ${SHELFAPP_IP},${SHELFAPP_PORT},\
   ${PLUMBERAPP_IP},${PLUMBERAPP_PORT},\
   ${KITAPP_IP},${KITAPP_PORT},\
+  ${GENIEAPP_IP},${GENIEAPP_PORT},\
   ${DUMMY_VAR}'\
   < /usr/local/openresty/nginx/conf/upstreams.conf.template > /usr/local/openresty/nginx/conf/upstreams.conf
 
