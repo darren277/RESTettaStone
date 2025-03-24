@@ -5,6 +5,27 @@ using LibPQ, Tables
 include("db.jl")
 using .Database
 
+# Helper function for parsing JSON request body
+function get_json_payload()
+    payload_data = Genie.Requests.jsonpayload()
+
+    # If payload is already a Dict, return it
+    if isa(payload_data, Dict)
+        return payload_data
+    end
+
+    # Otherwise, try to parse it as JSON
+    if isa(payload_data, String) && !isempty(payload_data)
+        try
+            return JSON.parse(payload_data)
+        catch e
+            return Dict()
+        end
+    end
+
+    return Dict()
+end
+
 route("/hello") do
     "Welcome to Genie!"
 end
@@ -15,7 +36,67 @@ end
 
 # GET /users - fetch an array of all users
 route("/users", method="GET") do
-    rows = Database.query_rows("SELECT * FROM users")
-    rows |> json
+    users = Database.get_all_users()
+    users |> json
 end
 
+# GET /users/:id - fetch a single user
+route("/users/:id", method="GET") do
+    user_id = parse(Int, params(:id))
+    user = Database.get_user_by_id(user_id)
+
+    if user === nothing
+        return Genie.Renderer.Http.response("User not found", 404)
+    end
+
+    user |> json
+end
+
+# POST /users - create a new user
+route("/users", method="POST") do
+    payload = get_json_payload()
+
+    # Validate required fields
+    if !haskey(payload, "name") || !haskey(payload, "email")
+        return Genie.Renderer.Http.response(
+            json(:error => "Name and email are required"),
+            400
+        )
+    end
+
+    user = Database.create_user(payload["name"], payload["email"])
+
+    Genie.Renderer.Http.response(
+        json(user),
+        200
+    )
+end
+
+# PUT /users/:id - update a user
+route("/users/:id", "PUT") do
+    user_id = parse(Int, params(:id))
+    payload = get_json_payload()
+
+    updated_user = Database.update_user(user_id, payload)
+
+    if updated_user === nothing
+        return Genie.Renderer.Http.response("User not found", 404)
+    end
+
+    updated_user |> json
+end
+
+# DELETE /users/:id - delete a user
+route("/users/:id", method="DELETE") do
+    user_id = parse(Int, params(:id))
+
+    deleted_user = Database.delete_user(user_id)
+
+    if deleted_user === nothing
+        return Genie.Renderer.Http.response("User not found", 404)
+    end
+
+    Genie.Renderer.Http.response("", 200)
+end
+
+#Genie.Router.notfound(error -> "Not found: $(Genie.Router.currentroute())")
