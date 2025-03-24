@@ -73,7 +73,7 @@ route("/users", method="POST") do
 end
 
 # PUT /users/:id - update a user
-route("/users/:id", "PUT") do
+route("/users/:id", method="PUT") do
     user_id = parse(Int, params(:id))
     payload = get_json_payload()
 
