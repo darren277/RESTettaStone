@@ -41,16 +41,14 @@ module Database
             result = params === nothing ? execute(conn, sql) : execute(conn, sql, params)
 
             # Get column names
-            columns = propertynames(result)
-
-            # {'result': 1, 'column_types': None, 'column_oids': 'test_email1@testing.com', 'column_names': None, 'not_null': None, 'column_funcs': None, 'closed': ''}
+            col_names = LibPQ.column_names(result)
 
             # Convert to row-based format
             rows = []
             for row in result
                 row_dict = Dict{Symbol, Any}()
-                for (i, col) in enumerate(columns)
-                    row_dict[Symbol(col)] = row[i]
+                for (i, col) in enumerate(col_names)
+                    row_dict[col_name] = row[i]
                 end
                 push!(rows, row_dict)
             end
