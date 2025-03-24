@@ -1,7 +1,6 @@
 using Genie
 using Genie.Renderer.Json
 using LibPQ, Tables
-using HTTP
 
 include("db.jl")
 using .Database
