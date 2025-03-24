@@ -11,7 +11,7 @@ route("/json") do
 end
 
 # GET /users - fetch an array of all users
-route("/users", method="GET")
+route("/users", method="GET") do
     host = get(ENV, "PG_HOST", "localhost")
     port = get(ENV, "PG_PORT", "5432")
     user = get(ENV, "PG_USER", "postgres")
