@@ -1,6 +1,7 @@
 using Genie
 using Genie.Renderer.Json
 using LibPQ, Tables
+using HTTP
 
 include("db.jl")
 using .Database
@@ -46,7 +47,7 @@ route("/users/:id", method="GET") do
     user = Database.get_user_by_id(user_id)
 
     if user === nothing
-        return Genie.Renderer.Http.response("User not found", 404)
+        return Genie.Renderer.respond(Genie.Renderer.json(Dict(:error => "User not found")), 404)
     end
 
     user |> json
@@ -58,16 +59,16 @@ route("/users", method="POST") do
 
     # Validate required fields
     if !haskey(payload, "name") || !haskey(payload, "email")
-        return Genie.Renderer.Http.response(
-            json(:error => "Name and email are required"),
+        return Genie.Renderer.respond(
+            Genie.Renderer.json(Dict(:error => "Name and email are required")),
             400
         )
     end
 
     user = Database.create_user(payload["name"], payload["email"])
 
-    Genie.Renderer.Http.response(
-        json(user),
+    Genie.Renderer.respond(
+        Genie.Renderer.json(user),
         200
     )
 end
@@ -80,7 +81,7 @@ route("/users/:id", method="PUT") do
     updated_user = Database.update_user(user_id, payload)
 
     if updated_user === nothing
-        return Genie.Renderer.Http.response("User not found", 404)
+        return Genie.Renderer.respond(Genie.Renderer.json(Dict(:error => "User not found")), 404)
     end
 
     updated_user |> json
@@ -93,10 +94,10 @@ route("/users/:id", method="DELETE") do
     deleted_user = Database.delete_user(user_id)
 
     if deleted_user === nothing
-        return Genie.Renderer.Http.response("User not found", 404)
+        return Genie.Renderer.respond(Genie.Renderer.json(Dict(:error => "User not found")), 404)
     end
 
-    Genie.Renderer.Http.response("", 200)
+    deleted_user |> json
 end
 
 #Genie.Router.notfound(error -> "Not found: $(Genie.Router.currentroute())")
