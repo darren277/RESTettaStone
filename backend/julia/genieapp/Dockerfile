@@ -53,6 +53,12 @@ ENV EARLYBIND "true"
 ENV JULIA_CPU_TARGET="generic;sandybridge,-xsaveopt,clone_all;haswell,-rdrnd,base(1)"
 RUN julia -e "using Pkg; Pkg.activate(\".\"); Pkg.instantiate(); Pkg.precompile(); "
 
+RUN chmod -R u+w $(find ~/.julia/packages/Genie -type d)
+
+RUN sed -i "230s/.*/if haskey(collection, name)\n    pop!(collection, name)\nend\ncollection[name] = item/" $(find ~/.julia/packages/Genie -name Router.jl)
+
+RUN julia -e 'using Pkg; Pkg.precompile()'
+
 #ENTRYPOINT pkill -9 julia || true && julia --project app.jl
 ENTRYPOINT tail -f /dev/null
 
