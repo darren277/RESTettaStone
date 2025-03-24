@@ -17,7 +17,6 @@ using Genie
 Genie.config.server_port = 3051
 Genie.config.server_host = "0.0.0.0"
 Genie.config.run_as_server = true
-Genie.config.webpipes_enable = false
 Genie.config.websockets_server = false
 Genie.config.startup_eval_file = ""
 
