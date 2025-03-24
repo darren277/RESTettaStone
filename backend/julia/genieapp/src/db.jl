@@ -43,6 +43,8 @@ module Database
             # Get column names
             columns = propertynames(result)
 
+            # {'result': 1, 'column_types': None, 'column_oids': 'test_email1@testing.com', 'column_names': None, 'not_null': None, 'column_funcs': None, 'closed': ''}
+
             # Convert to row-based format
             rows = []
             for row in result
@@ -137,9 +139,13 @@ module Database
         # Build dynamic update SQL
         fields = []
         values = []
+        param_index = 1
+
         for (key, value) in data
-            push!(fields, "$(key) = \$(length(values) + 1)")
+            # Use string concatenation for field names and plain $n for parameters
+            push!(fields, "$(key) = \$$(param_index)")
             push!(values, value)
+            param_index += 1
         end
 
         # If no fields to update, return the existing user
@@ -147,11 +153,9 @@ module Database
             return get_user_by_id(id)
         end
 
-        # Add the id as the last parameter
         push!(values, id)
 
-        # Construct and execute the query
-        sql = "UPDATE users SET $(join(fields, ", ")) WHERE id = \$(length(values)) RETURNING *"
+        sql = "UPDATE users SET $(join(fields, ", ")) WHERE id = \$$(param_index) RETURNING *"
         return query_single_row(sql, values)
     end
 
