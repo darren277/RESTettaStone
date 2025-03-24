@@ -61,6 +61,23 @@ module Database
     end
 
     """
+        query_single_row(sql::String, params=nothing)
+
+    Execute an SQL query and return a single row as a dictionary.
+
+    Arguments:
+        sql::String: The SQL query to execute
+        params: Optional parameters for the query
+
+    Returns:
+        Dict: A dictionary representing a single row, or nothing if no rows found
+    """
+    function query_single_row(sql::String, params=nothing)
+        rows = query_rows(sql, params)
+        return isempty(rows) ? nothing : rows[1]
+    end
+
+    """
         get_all_users()
 
     Get all users from the database.
