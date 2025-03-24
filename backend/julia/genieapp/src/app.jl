@@ -21,8 +21,19 @@ route("/users", method="GET") do
     conn_string = "dbname=$db host=$host port=$port user=$user password=$pass"
     conn = LibPQ.Connection(conn_string)
     result = execute(conn, "SELECT * FROM users")
-    data = columntable(result)
+
+    columns = propertynames(result)
+
+    rows = []
+    for row in result
+        row_dict = Dict{Symbol, Any}()
+        for col in columns
+            row_dict[col] = row[col]
+        end
+        push!(rows, row_dict)
+    end
+
     close(conn)
-    data |> json
+    rows |> json
 end
 
