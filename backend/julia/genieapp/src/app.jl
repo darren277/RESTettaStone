@@ -57,14 +57,20 @@ route("/users", method="POST") do
     payload = get_json_payload()
 
     # Validate required fields
-    if !haskey(payload, "name") || !haskey(payload, "email")
+    if !haskey(payload, "email")
         return Genie.Renderer.respond(
             Genie.Renderer.Json.json(Dict(:error => "Name and email are required")),
             400
         )
     end
 
-    user = Database.create_user(payload["name"], payload["email"])
+    # only email is required; name is optional...
+    # user = Database.create_user(payload["name"], payload["email"])
+    if haskey(payload, "name")
+        user = Database.create_user(payload["name"], payload["email"])
+    else
+        user = Database.create_user("", payload["email"])
+    end
 
     Genie.Renderer.respond(
         Genie.Renderer.Json.json(user),
