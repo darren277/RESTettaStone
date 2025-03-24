@@ -146,6 +146,7 @@ def run_tests():
             'firebaseapp',
             'flaskapp',
             'fsharpapp',
+            'genieapp',
             'goapp',
             'http4kapp',
             'hunchentootapp',
