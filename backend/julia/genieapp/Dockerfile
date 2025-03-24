@@ -60,11 +60,9 @@ RUN sed -i "230s/.*/if haskey(collection, name)\n    pop!(collection, name)\nend
 
 RUN julia -e 'using Pkg; Pkg.precompile()'
 
-#ENTRYPOINT pkill -9 julia || true && julia --project app.jl
-ENTRYPOINT tail -f /dev/null
-
 COPY entrypoint.sh /app/entrypoint.sh
 USER root
 RUN chmod +x /app/entrypoint.sh
 USER genie
-#ENTRYPOINT ["/app/entrypoint.sh"]
+
+ENTRYPOINT ["/app/entrypoint.sh"]
