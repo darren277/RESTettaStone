@@ -19,7 +19,6 @@ Genie.config.server_port = port
 Genie.config.server_host = "0.0.0.0"
 Genie.config.run_as_server = true
 Genie.config.websockets_server = false
-Genie.config.startup_eval_file = ""
 
 # Load the routes from app.jl without letting Genie auto-start
 include("app.jl")
