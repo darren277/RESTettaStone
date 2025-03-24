@@ -84,7 +84,7 @@ module Database
         Union{Dict,Nothing}: A dictionary representing the user, or nothing if not found
     """
     function get_user_by_id(id)
-        return query_single_row("SELECT * FROM users WHERE id = $1", [id])
+        return query_single_row("SELECT * FROM users WHERE id = \$1", [id])
     end
 
     """
@@ -100,7 +100,7 @@ module Database
         Dict: A dictionary representing the created user
     """
     function create_user(name, email)
-        result = query_single_row("INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *", [name, email])
+        result = query_single_row("INSERT INTO users (name, email) VALUES (\$1, \$2) RETURNING *", [name, email])
         return result
     end
 
@@ -150,6 +150,6 @@ module Database
         Union{Dict,Nothing}: A dictionary representing the deleted user, or nothing if not found
     """
     function delete_user(id)
-        return query_single_row("DELETE FROM users WHERE id = $1 RETURNING *", [id])
+        return query_single_row("DELETE FROM users WHERE id = \$1 RETURNING *", [id])
     end
 end
