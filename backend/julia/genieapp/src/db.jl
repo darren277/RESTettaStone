@@ -46,7 +46,7 @@ module Database
             # Convert to row-based format
             rows = []
             for row in result
-                row_dict = Dict{Symbol, Any}()
+                row_dict = Dict{String, Any}()
                 for (i, col_name) in enumerate(col_names)
                     row_dict[col_name] = row[i]
                 end
