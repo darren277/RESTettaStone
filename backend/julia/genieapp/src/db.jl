@@ -47,7 +47,7 @@ module Database
             rows = []
             for row in result
                 row_dict = Dict{Symbol, Any}()
-                for (i, col) in enumerate(col_names)
+                for (i, col_name) in enumerate(col_names)
                     row_dict[col_name] = row[i]
                 end
                 push!(rows, row_dict)
