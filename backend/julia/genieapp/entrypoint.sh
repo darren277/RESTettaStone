@@ -2,11 +2,6 @@
 set -x  # Print all commands
 
 echo "Checking port usage before starting:"
-# Install netstat if needed
-if ! command -v netstat &> /dev/null; then
-    echo "netstat not found, installing net-tools..."
-    apt-get update && apt-get install -y net-tools
-fi
 netstat -tulpn | grep ${GENIEAPP_PORT:-3051} || echo "No process using port ${GENIEAPP_PORT:-3051}"
 
 # Start Julia with explicit control over the startup process

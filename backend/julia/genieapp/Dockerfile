@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y vim nano
 RUN useradd --create-home --shell /bin/bash genie
 RUN mkdir /home/genie/app
 
-RUN apt-get update && apt-get install -y procps
+RUN apt-get update && apt-get install -y procps net-tools
 
 WORKDIR /home/genie/app
 
