@@ -29,6 +29,7 @@ RUN useradd --create-home --shell /bin/bash genie
 RUN mkdir /home/genie/app
 
 COPY ./src/app.jl /home/genie/app/app.jl
+COPY ./src/db.jl /home/genie/app/db.jl
 
 RUN apt-get update && apt-get install -y procps
 
