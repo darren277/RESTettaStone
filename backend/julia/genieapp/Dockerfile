@@ -28,9 +28,6 @@ RUN apt-get update && apt-get install -y vim nano
 RUN useradd --create-home --shell /bin/bash genie
 RUN mkdir /home/genie/app
 
-COPY ./src/app.jl /home/genie/app/app.jl
-COPY ./src/db.jl /home/genie/app/db.jl
-
 RUN apt-get update && apt-get install -y procps
 
 WORKDIR /home/genie/app
@@ -49,6 +46,9 @@ ENV JULIA_REVISE "off"
 ENV GENIE_ENV "prod"
 
 RUN julia -e 'using Pkg; Pkg.update(); Pkg.add("Genie"); Pkg.add("LibPQ"); Pkg.add("Tables")'
+
+COPY ./src/app.jl /home/genie/app/app.jl
+COPY ./src/db.jl /home/genie/app/db.jl
 
 ENV EARLYBIND "true"
 ENV JULIA_CPU_TARGET="generic;sandybridge,-xsaveopt,clone_all;haswell,-rdrnd,base(1)"
