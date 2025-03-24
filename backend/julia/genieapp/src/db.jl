@@ -59,4 +59,97 @@ module Database
             close(conn)
         end
     end
+
+    """
+        get_all_users()
+
+    Get all users from the database.
+
+    Returns:
+        Array: An array of dictionaries, each representing a user
+    """
+    function get_all_users()
+        return query_rows("SELECT * FROM users ORDER BY id")
+    end
+
+    """
+        get_user_by_id(id)
+
+    Get a single user by ID.
+
+    Arguments:
+        id: The user ID to look up
+
+    Returns:
+        Union{Dict,Nothing}: A dictionary representing the user, or nothing if not found
+    """
+    function get_user_by_id(id)
+        return query_single_row("SELECT * FROM users WHERE id = $1", [id])
+    end
+
+    """
+        create_user(name, email)
+
+    Create a new user.
+
+    Arguments:
+        name: The user's name
+        email: The user's email
+
+    Returns:
+        Dict: A dictionary representing the created user
+    """
+    function create_user(name, email)
+        result = query_single_row("INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *", [name, email])
+        return result
+    end
+
+    """
+        update_user(id, data)
+
+    Update an existing user.
+
+    Arguments:
+        id: The user ID to update
+        data: Dictionary containing fields to update
+
+    Returns:
+        Union{Dict,Nothing}: A dictionary representing the updated user, or nothing if not found
+    """
+    function update_user(id, data)
+        # Build dynamic update SQL
+        fields = []
+        values = []
+        for (key, value) in data
+            push!(fields, "$(key) = \$(length(values) + 1)")
+            push!(values, value)
+        end
+
+        # If no fields to update, return the existing user
+        if isempty(fields)
+            return get_user_by_id(id)
+        end
+
+        # Add the id as the last parameter
+        push!(values, id)
+
+        # Construct and execute the query
+        sql = "UPDATE users SET $(join(fields, ", ")) WHERE id = \$(length(values)) RETURNING *"
+        return query_single_row(sql, values)
+    end
+
+    """
+        delete_user(id)
+
+    Delete a user by ID.
+
+    Arguments:
+        id: The user ID to delete
+
+    Returns:
+        Union{Dict,Nothing}: A dictionary representing the deleted user, or nothing if not found
+    """
+    function delete_user(id)
+        return query_single_row("DELETE FROM users WHERE id = $1 RETURNING *", [id])
+    end
 end
