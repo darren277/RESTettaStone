@@ -345,6 +345,16 @@ genieapp-test:
 	docker exec -it debugger curl http://$(GENIEAPP_IP):$(GENIEAPP_PORT)/users
 
 
+emojicodeapp-build:
+	cd backend/emojicode/emojicodeapp && docker build --build-arg EMOJICODEAPP_PORT=$(EMOJICODEAPP_PORT) $(PG_VARS_BUILD) -t emojicode_app:1 .
+
+emojicodeapp-run:
+	cd backend/emojicode/emojicodeapp && docker run -d -it --rm --name emojicode_app_container --env EMOJICODEAPP_PORT=$(EMOJICODEAPP_PORT) $(PG_VARS) --net $(SUBNET_NAME) --ip $(EMOJICODEAPP_IP) -p $(EMOJICODEAPP_PORT):$(EMOJICODEAPP_PORT) emojicode_app:1
+
+emojicodeapp-test:
+	docker exec -it debugger curl http://$(EMOJICODEAPP_IP):$(EMOJICODEAPP_PORT)/users
+
+
 firebaseapp-build:
 	cd backend/javascript/firebaseapp && docker build --build-arg FIREBASEAPP_PORT=$(FIREBASEAPP_PORT) $(FIREBASE_VARS_BUILD) -t firebase_app:1 .
 
