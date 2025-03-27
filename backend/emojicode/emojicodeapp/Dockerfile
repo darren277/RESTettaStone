@@ -1,0 +1,57 @@
+FROM ubuntu:18.04
+
+ENV CC clang-8
+ENV CXX clang++-8
+ENV DEBIAN_FRONTEND=nontinteractive
+ENV PYTHONIOENCODING utf8
+
+RUN \
+  apt-get update \
+  && apt-get install -y \
+    gnupg \
+    wget \
+  && echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main" >> /etc/apt/sources.list \
+  && echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main" >> /etc/apt/sources.list \
+  && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|apt-key add - \
+  && apt-get update \
+  && apt-get install -y \
+    clang-8 \
+    cmake \
+    gnupg \
+    libclang1-8 \
+    libclang-8-dev \
+    libclang-common-8-dev \
+    libfuzzer-8-dev\
+    libllvm8 \
+    libncurses-dev \
+    libz-dev \
+    llvm-8 \
+    llvm-8-dev \
+    llvm-runtime \
+    ninja-build \
+    python3 \
+    rsync \
+    wget \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y git
+
+# Clone Emojicode repository
+WORKDIR /tmp
+RUN git clone https://github.com/emojicode/emojicode
+WORKDIR /tmp/emojicode
+
+# Build Emojicode
+RUN mkdir build && \
+    cd build && \
+    cmake .. -GNinja && \
+    ninja && \
+    ninja dist && \
+    ninja magicinstall
+
+WORKDIR /app
+
+COPY ./server.ec /app/server.🍇
+
+RUN emojicodec server.🍇
+CMD ["./server"]

@@ -137,3 +137,7 @@ upstream kitapp {
 upstream genieapp {
     server ${GENIEAPP_IP}:${GENIEAPP_PORT};
 }
+
+upstream emojicodeapp {
+    server ${EMOJICODEAPP_IP}:${EMOJICODEAPP_PORT};
+}
