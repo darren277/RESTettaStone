@@ -156,6 +156,8 @@ I also have two asterisks (`*`) but I can't remember what those were for. I'm le
 | [Shelf (Dart)](https://github.com/darren277/RESTettaStone/tree/master/backend/dart/shelfapp)             | ✅          | ✅              | ✅                    | ✅         |                      |
 | **ELIXIR**                                                                                               |            |                |                      |           |                      |
 | [Phoenix (Elixir)](https://github.com/darren277/RESTettaStone/tree/master/backend/elixir/phoenixapp)    | ✅          | ✅              | ✅                    | ✅         |                      |
+| **EMOJICODE**                                                                                            |            |                |                      |           |                      |
+| [Emojicode](https://github.com/darren277/RESTettaStone/backend/emojicode/emojicodeapp)                  | ✅          | ❌              | ❌                    | ❌         |                      |
 | **FORTRAN**                                                                                              |            |                |                      |           |                      |
 | [Fortran](https://github.com/darren277/risk)**                                                           | ❌          | ❌              | ✅                    | ❌          | Language             |
 | **F#**                                                                                                   |            |                |                      |           |                      |
