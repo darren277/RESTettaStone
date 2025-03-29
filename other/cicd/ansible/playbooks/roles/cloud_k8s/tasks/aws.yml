@@ -1,0 +1,22 @@
+- name: Create AWS EC2 instances for Kubernetes nodes
+  ec2:
+    key_name: my-key
+    instance_type: t2.medium
+    image: ami-0abcdef1234567890
+    wait: yes
+    count: 3
+    instance_tags:
+      Name: KubernetesNode
+  register: ec2_instances
+
+- name: Add new instances to host group
+  add_host:
+    hostname: "{{ item.public_ip }}"
+    groupname: k8s_nodes
+  loop: "{{ ec2_instances.instances }}"
+
+- name: Configure Kubernetes nodes
+  delegate_to: "{{ item.public_ip }}"
+  loop: "{{ ec2_instances.instances }}"
+  import_role:
+    name: k8s_node_setup

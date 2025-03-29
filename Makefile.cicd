@@ -1,0 +1,71 @@
+include .env
+
+ANSIBLE_SSH_KEY="/path/to/your/private/key"
+
+INSTALL_DEPS_PLAYBOOK="playbooks/install_dependencies.yml"
+INIT_MASTER_PLAYBOOK="playbooks/init_master.yml"
+JOIN_WORKER_NODES_PLAYBOOK="playbooks/join_worker_nodes.yml"
+VALIDATE_CLUSTER_PLAYBOOK="playbooks/validate_cluster.yml"
+
+
+jenkins:
+	docker pull jenkins/jenkins:lts
+	docker volume create jenkins_data
+	docker run -d --name jenkins -p $(JENKINS_PORT):$(JENKINS_PORT) -p $(JENKINS_AGENT_PORT):$(JENKINS_AGENT_PORT) -v jenkins_data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:lts
+
+jenkins-pw:
+	docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+jenkins-docker:
+	docker exec -it jenkins bash -c "apt update && apt install -y docker.io"
+
+# curl -X POST -u <username>:<api-token> -H "Content-Type: application/xml" -d @pipeline-config.xml http://localhost:8080/createItem?name=Flask-Pipeline
+jenkins-create-job:
+	...
+
+jenkins-build:
+	curl -X POST -u <username>:<api-token> http://localhost:8080/job/Flask-Pipeline/build
+
+jenkins-build-logs:
+	curl -u <username>:<api-token> http://localhost:8080/job/Flask-Pipeline/<build-number>/consoleText
+
+
+# local-minikube:
+# export DEPLOYMENT_TYPE=local
+# ansible-playbook -i inventory/hosts playbooks/site.yml
+
+# For Docker Deployment with KinD:
+# export DEPLOYMENT_TYPE=docker
+# ansible-playbook -i inventory/hosts playbooks/site.yml
+
+# For Cloud Deployment (e.g., AWS):
+# export DEPLOYMENT_TYPE=cloud
+# export CLOUD_PROVIDER=aws
+# export AWS_ACCESS_KEY=your_aws_access_key
+# export AWS_SECRET_KEY=your_aws_secret_key
+# ansible-playbook -i inventory/hosts playbooks/site.yml
+
+
+# - name: Task only for AWS
+#  debug:
+#    msg: "This is AWS"
+#  when: cloud_provider == 'aws'
+
+
+ansible:
+	docker build -t ansible-k8s:latest .
+
+ansible-run:
+	docker run --rm -it -v $(pwd)/playbooks:/ansible/playbooks -v $(pwd)/inventory.ini:/ansible/inventory.ini -v ${SSH_KEY}:/root/.ssh/id_rsa:ro ansible-k8s:latest -i inventory.ini $(PLAYBOOK)
+
+ansible-run-install-deps:
+	$(MAKE) ansible-run PLAYBOOK=$(INSTALL_DEPS_PLAYBOOK)
+
+ansible-run-init-master:
+	$(MAKE) ansible-run PLAYBOOK=$(INIT_MASTER_PLAYBOOK)
+
+ansible-run-join-worker-nodes:
+	$(MAKE) ansible-run PLAYBOOK=$(JOIN_WORKER_NODES_PLAYBOOK)
+
+ansible-run-validate-cluster:
+	$(MAKE) ansible-run PLAYBOOK=$(VALIDATE_CLUSTER_PLAYBOOK)

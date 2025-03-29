@@ -39,6 +39,10 @@
           + [Key File Permissions](#key-file-permissions)
           + [Key Format](#key-format)
   * [RabbitMQ](#rabbitmq)
+  * [CICD](#cicd)
+    + [Ansible](#ansible)
+    + [Jenkins](#jenkins)
+    + [GitHub Actions](#github-actions)
 - [Lessons](#lessons)
   * [DevOps Gotchas](#devops-gotchas)
     + [Nginx Gotchas](#nginx-gotchas)
@@ -651,6 +655,27 @@ To interact with the RabbitMQ container, there are quite a few commands in the `
 make mq create-queue queue=my_queue
 make mq publish-message queue=my_queue msg="Hello, World!"
 ```
+
+## CICD
+
+### Ansible
+
+TBD...
+
+### Jenkins
+
+1. Enable Jenkins CLI 
+   1. Access your Jenkins instance and go to Manage Jenkins > Configure Global Security. 
+   2. Ensure that CLI over Remoting is enabled.
+
+2. Generate an API Token 
+   1. Go to your Jenkins user profile (e.g., http://localhost:8080/user/<your-username>). 
+   2. Click on Configure > API Token > Add New Token. 
+   3. Save the token for use in the next steps.
+
+### GitHub Actions
+
+TBD...
 
 # Lessons
 
